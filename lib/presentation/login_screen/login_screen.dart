@@ -21,35 +21,39 @@ class LoginScreen extends StatelessWidget {
 
     return SafeArea(
       child: Scaffold(
-        resizeToAvoidBottomInset: false,
+       resizeToAvoidBottomInset: true,
         body: Form(
           key: _formKey,
           child: SizedBox(
             width: double.maxFinite,
-            child: Column(
-              children: [
-                SizedBox(height: 16.v),
-                CustomImageView(
-                  imagePath: ImageConstant.imgRectangle5,
-                  height: 290.v,
-                  width: 327.h,
-                  radius: BorderRadius.circular(
-                    12.h,
+            //height: double.maxFinite,
+            child: SingleChildScrollView(
+         //     physics: BouncingScrollPhysics(),
+              child: Column(
+                children: [
+                  SizedBox(height: 16.v),
+                  CustomImageView(
+                    imagePath: ImageConstant.imgRectangle5,
+                    height: 290.v,
+                    width: 327.h,
+                    radius: BorderRadius.circular(
+                      12.h,
+                    ),
                   ),
-                ),
-                SizedBox(height: 13.v),
-                Text(
-                  "Hi there!",
-                  style: CustomTextStyles.titleLargeMedium21,
-                ),
-                Text(
-                  "Let’s Get Started",
-                  style: theme.textTheme.headlineMedium,
-                ),
-                SizedBox(height: 19.v),
-                _buildThree(context),
-                Divider(color: Colors.yellow)
-              ],
+                  SizedBox(height: 13.v),
+                  Text(
+                    "Hi there!",
+                    style: CustomTextStyles.titleLargeMedium21,
+                  ),
+                  Text(
+                    "Let’s Get Started",
+                    style: theme.textTheme.headlineMedium,
+                  ),
+                  SizedBox(height: 19.v),
+                  _buildThree(context),
+
+                ],
+              ),
             ),
           ),
         ),
@@ -98,9 +102,10 @@ class LoginScreen extends StatelessWidget {
       ),
       child: CustomTextFormField(
         controller: passwordController,
-        hintText: "****",
+        hintText: "Password must contain 8 letters at least",
         textInputAction: TextInputAction.done,
         textInputType: TextInputType.visiblePassword,
+        hintStyle: CustomTextStyles.bodySmallGray90003,
         alignment: Alignment.centerRight,
         prefix: Container(
           margin: EdgeInsets.only(
@@ -154,6 +159,7 @@ class LoginScreen extends StatelessWidget {
   /// Section Widget
   Widget _buildThree(BuildContext context) {
     return Container(
+
       padding: EdgeInsets.symmetric(vertical: 16.v),
       decoration: AppDecoration.fillBlueE.copyWith(
         borderRadius: BorderRadiusStyle.customBorderTL43,
@@ -188,8 +194,8 @@ class LoginScreen extends StatelessWidget {
           SizedBox(
             width: double.maxFinite,
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.end,
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+             // crossAxisAlignment: CrossAxisAlignment.end,
               children: [
                 Padding(
                   padding: EdgeInsets.only(
