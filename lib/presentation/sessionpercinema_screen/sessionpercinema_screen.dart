@@ -10,11 +10,14 @@ import 'package:flutter/material.dart';
 class SessionpercinemaScreen extends StatelessWidget {
   SessionpercinemaScreen({Key? key}) : super(key: key);
 
+  List<List<String>>? Movies;
+
   GlobalKey<NavigatorState> navigatorKey = GlobalKey();
 
   @override
   Widget build(BuildContext context) {
     mediaQueryData = MediaQuery.of(context);
+    Movies = [["SAW X","21:00","VF",ImageConstant.imgSession1],["EQUALIZER3","18:00","VF",ImageConstant.imgSession],["EQUALIZER3","18:00","VF",ImageConstant.imgSession],["SAW X","18:00","VF",ImageConstant.imgSession1],["The Nun2","20:00","VO",ImageConstant.imgSession2]];
     return SafeArea(
         child: Scaffold(
             appBar: _buildAppBar(context),
@@ -22,7 +25,43 @@ class SessionpercinemaScreen extends StatelessWidget {
                 width: double.maxFinite,
                 padding: EdgeInsets.symmetric(vertical: 21.v),
                 child: Column(children: [
-                  SizedBox(height: 154.v),
+                  SizedBox(height: 5.v),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      Container(
+                          child: Column(
+                            children: [
+                              SizedBox(
+                                width: 50.v,
+                                height: 50.h,
+                                child: Icon(
+                                  Icons.calendar_month_sharp,
+                                  size: 45.adaptSize,
+                                  color: Colors.grey,
+                                ),
+                              ),
+
+                              Padding(
+                                padding: const EdgeInsets.only(top: 0),
+                                child: Text(
+                                  "18 novembre 2023",
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          )
+                      ),
+
+
+                    ],
+                  ),
+                  SizedBox(
+                    width: 30.v,
+                    height: 30.h,
+                  ),
                   _buildUserProfile(context)
                 ])),
             bottomNavigationBar: _buildBottomBar(context)));
@@ -45,14 +84,23 @@ class SessionpercinemaScreen extends StatelessWidget {
         child: Container(
             decoration: AppDecoration.fillOnPrimaryContainer,
             child: ListView.separated(
-                physics: BouncingScrollPhysics(),
+                physics : BouncingScrollPhysics(),
                 shrinkWrap: true,
                 separatorBuilder: (context, index) {
                   return SizedBox(height: 1.v);
                 },
-                itemCount: 5,
+                itemCount: Movies!.length,
                 itemBuilder: (context, index) {
-                  return UserprofileItemWidget(onTapImgUserImage: () {
+                  String? title = Movies?[index][0];
+                  String? hour = Movies?[index][1];
+                  String? lang = Movies?[index][2];
+                  String? img = Movies?[index][3];
+                  return UserprofileItemWidget(
+                    movie_hour: hour,
+                      movie_title: title,
+                      movie_img: img,
+                      movie_lang: lang,
+                      onTapImgUserImage: () {
                     onTapImgUserImage(context);
                   });
                 })));

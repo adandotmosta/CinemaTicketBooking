@@ -7,20 +7,28 @@ class UserprofileItemWidget extends StatelessWidget {
   UserprofileItemWidget({
     Key? key,
     this.onTapImgUserImage,
+    this.movie_title,
+    this.movie_lang,
+    this.movie_img,
+    this.movie_hour,
   }) : super(
           key: key,
         );
 
   VoidCallback? onTapImgUserImage;
+  String? movie_title;
+  String? movie_hour;
+  String? movie_lang;
+  String? movie_img;
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
         CustomImageView(
-          imagePath: ImageConstant.imgSession,
-          height: 76.v,
-          width: 374.h,
+          imagePath: movie_img,
+          height: 100.v,
+          width: double.maxFinite,
           onTap: () {
             onTapImgUserImage!.call();
           },
@@ -28,51 +36,51 @@ class UserprofileItemWidget extends StatelessWidget {
         Container(
           width: double.maxFinite,
           padding: EdgeInsets.symmetric(
-            horizontal: 14.h,
-            vertical: 3.v,
+            horizontal: 20.h,
+            vertical: 10.v,
           ),
           decoration: AppDecoration.fillOnPrimaryContainer,
           child: Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            crossAxisAlignment: CrossAxisAlignment.end,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+
             children: [
-              Padding(
-                padding: EdgeInsets.only(
-                  left: 8.h,
-                  top: 8.v,
-                  bottom: 2.v,
-                ),
-                child: Text(
-                  "14:50",
-                  style: CustomTextStyles.labelLargeBold,
-                ),
+              Text(
+                movie_hour!,
+                  style: TextStyle(
+                  fontSize: 12.adaptSize,
+                  fontWeight: FontWeight.bold,
+                  ),
               ),
-              Spacer(
-                flex: 45,
-              ),
-              Padding(
-                padding: EdgeInsets.only(top: 5.v),
-                child: Text(
-                  "Equalizer3",
-                  style: CustomTextStyles.titleSmallWhiteA70001,
+              Text(
+                movie_title!,
+                style: TextStyle(
+                  fontSize: 12.adaptSize,
+                  fontWeight: FontWeight.bold
                 ),
               ),
-              Spacer(
-                flex: 54,
-              ),
-              CustomElevatedButton(
-                height: 23.v,
-                width: 22.h,
-                text: "VF",
-                margin: EdgeInsets.only(
-                  top: 2.v,
-                  bottom: 3.v,
+              Container(
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: movie_lang=="VF" ? Color(0xFF0C2DA5) : Colors.yellow,
+
                 ),
-                buttonStyle: CustomButtonStyles.fillBlue,
-                buttonTextStyle: theme.textTheme.labelSmall!,
-              ),
+                child: Padding(
+                  padding: const EdgeInsets.all(3.0),
+                  child: Text(
+                    movie_lang!,
+                    style: TextStyle(
+                        fontSize: 10.adaptSize,
+                        fontWeight: FontWeight.bold
+                    ),
+
+                  ),
+                ),
+              )
             ],
           ),
+
+
+
         ),
       ],
     );

@@ -22,7 +22,7 @@ class MyApp extends StatelessWidget {
       theme: theme,
       title: 'abdenour_s_application1',
       debugShowCheckedModeBanner: false,
-      initialRoute: AppRoutes.homeScreen,
+      initialRoute: AppRoutes.sessionpercinemaScreen,
       routes: AppRoutes.routes,
     );
   }
