@@ -3,6 +3,7 @@ import 'package:abdenour_s_application1/widgets/app_bar/appbar_leading_image.dar
 import 'package:abdenour_s_application1/widgets/app_bar/appbar_title.dart';
 import 'package:abdenour_s_application1/widgets/app_bar/custom_app_bar.dart';
 import 'package:abdenour_s_application1/widgets/custom_bottom_bar.dart';
+import 'package:abdenour_s_application1/widgets/custom_elevated_button.dart';
 import 'package:abdenour_s_application1/widgets/custom_icon_button.dart';
 import 'package:abdenour_s_application1/widgets/custom_text_form_field.dart';
 import 'package:flutter/material.dart';
@@ -10,8 +11,8 @@ import 'package:flutter/material.dart';
 class SettingsScreen extends StatelessWidget {
   SettingsScreen({Key? key})
       : super(
-          key: key,
-        );
+    key: key,
+  );
 
   TextEditingController personalDataController = TextEditingController();
 
@@ -49,54 +50,13 @@ class SettingsScreen extends StatelessWidget {
                 ),
               ),
               SizedBox(height: 11.v),
-              CustomTextFormField(
-                controller: personalDataController,
-                hintText: "Personal Data",
-                prefix: Container(
-                  padding: EdgeInsets.all(12.h),
-                  margin: EdgeInsets.only(right: 14.h),
-                  decoration: BoxDecoration(
-                    color: appTheme.indigoA200,
-                    borderRadius: BorderRadius.circular(
-                      10.h,
-                    ),
-                  ),
-                  child: CustomImageView(
-                    imagePath: ImageConstant.imgActivity,
-                    height: 24.adaptSize,
-                    width: 24.adaptSize,
-                  ),
-                ),
-                prefixConstraints: BoxConstraints(
-                  maxHeight: 48.v,
-                ),
-                suffix: Container(
-                  margin: EdgeInsets.only(
-                    left: 30.h,
-                    top: 11.v,
-                    bottom: 11.v,
-                  ),
-                  child: CustomImageView(
-                    imagePath: ImageConstant.imgBtnBackWhiteA70001,
-                    height: 26.adaptSize,
-                    width: 26.adaptSize,
-                  ),
-                ),
-                suffixConstraints: BoxConstraints(
-                  maxHeight: 48.v,
-                ),
-                contentPadding: EdgeInsets.symmetric(vertical: 9.v),
-              ),
+              // Personal data
+              _buildPersonalData(context,"Personal Data","assets/images/img_activity.png",Colors.indigo),
               SizedBox(height: 22.v),
-              _buildDeactiveAccount(
-                context,
-                deactiveAccount: "Email & Payment",
-              ),
+              _buildPersonalData(context,"Email & Payement", "assets/images/png/img_add_user.png",Color(0xFF54C2E5)),
               SizedBox(height: 22.v),
-              _buildDeactiveAccount(
-                context,
-                deactiveAccount: "Deactive Account",
-              ),
+              _buildPersonalData(context,"Desactive Account", "assets/images/png/img_delete.png",Color(0xFFE55454)),
+
               SizedBox(height: 34.v),
               Align(
                 alignment: Alignment.centerLeft,
@@ -114,55 +74,11 @@ class SettingsScreen extends StatelessWidget {
                 ),
               ),
               SizedBox(height: 10.v),
-              CustomTextFormField(
-                controller: notificationController,
-                hintText: "Notification",
-                textInputAction: TextInputAction.done,
-                prefix: Container(
-                  padding: EdgeInsets.all(12.h),
-                  margin: EdgeInsets.only(right: 14.h),
-                  decoration: BoxDecoration(
-                    color: appTheme.indigoA200,
-                    borderRadius: BorderRadius.circular(
-                      10.h,
-                    ),
-                  ),
-                  child: CustomImageView(
-                    imagePath: ImageConstant.imgNotification,
-                    height: 24.adaptSize,
-                    width: 24.adaptSize,
-                  ),
-                ),
-                prefixConstraints: BoxConstraints(
-                  maxHeight: 48.v,
-                ),
-                suffix: Container(
-                  margin: EdgeInsets.only(
-                    left: 30.h,
-                    top: 11.v,
-                    bottom: 11.v,
-                  ),
-                  child: CustomImageView(
-                    imagePath: ImageConstant.imgBtnBackWhiteA70001,
-                    height: 26.adaptSize,
-                    width: 26.adaptSize,
-                  ),
-                ),
-                suffixConstraints: BoxConstraints(
-                  maxHeight: 48.v,
-                ),
-                contentPadding: EdgeInsets.symmetric(vertical: 9.v),
-              ),
+              _buildPersonalData(context, "Notifications","assets/images/png/img_notification.png", Colors.indigo),
               SizedBox(height: 22.v),
-              _buildDeactiveAccount(
-                context,
-                deactiveAccount: "Your Ticket",
-              ),
+              _buildPersonalData(context,"Your Ticket", "assets/images/png/img_ticket_white_a700_01.png",Color(0xFF54C2E5)),
               SizedBox(height: 22.v),
-              _buildDeactiveAccount(
-                context,
-                deactiveAccount: "Logout",
-              ),
+              _buildPersonalData(context,"Logout", "assets/images/png/img_logout.png",Color(0xFFE55454)),
               SizedBox(height: 6.v),
             ],
           ),
@@ -172,10 +88,82 @@ class SettingsScreen extends StatelessWidget {
     );
   }
 
+  Widget _buildPersonalData(BuildContext context,String title,leading_icon,color ){
+    return   Row(
+      mainAxisAlignment: MainAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(
+              10.h,
+            ),
+            color: color,
+          ),
+          child: Padding(
+            padding: const EdgeInsets.all(10.0),
+            /*          child: CustomImageView(
+              imagePath: ImageConstant.imgActivity,
+              width: 24.v,
+              height: 24.v,
+            ),*/
+            child : Image.asset(
+              leading_icon,
+              height: 24.v,
+              width: 24.v,
+            ),
+          ),
+        ),
+        Container(
+          //  alignment: Alignment.topLeft*,
+         margin: EdgeInsets.only(left: 12.v,),
+
+          child: Text(
+            title,
+            style: TextStyle(
+              fontWeight: FontWeight.w500,
+              fontSize: 18.adaptSize,
+            ),
+            textAlign: TextAlign.left,
+
+
+          ),
+        ),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  Container(
+
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(
+                        10.h,
+                      ),
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.all(10.0),
+                      child: GestureDetector(
+
+                        child: CustomImageView(
+                          imagePath: ImageConstant.imgBtnBackWhiteA70001,
+                          width: 24.v,
+                          height: 24.v,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+
+
+      ],
+    );
+  }
   /// Section Widget
   PreferredSizeWidget _buildAppBar(BuildContext context) {
     return CustomAppBar(
-      leadingWidth: 56.h,
+      leadingWidth: 50.h,
       leading: AppbarLeadingImage(
         imagePath: ImageConstant.imgBtnBack,
         margin: EdgeInsets.only(
@@ -222,7 +210,7 @@ class SettingsScreen extends StatelessWidget {
           imagePath: ImageConstant.imgBtnBackWhiteA70001,
           height: 26.adaptSize,
           width: 26.adaptSize,
-          margin: EdgeInsets.symmetric(vertical: 11.v),
+          margin: EdgeInsets.only(right: 10.v),
         ),
       ],
     );
@@ -235,44 +223,4 @@ class SettingsScreen extends StatelessWidget {
     );
   }
 
-  /// Common widget
-  Widget _buildDeactiveAccount(
-    BuildContext context, {
-    required String deactiveAccount,
-  }) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        CustomIconButton(
-          height: 48.adaptSize,
-          width: 48.adaptSize,
-          padding: EdgeInsets.all(12.h),
-          decoration: IconButtonStyleHelper.fillRedTL10,
-          child: CustomImageView(
-            imagePath: ImageConstant.imgDelete,
-          ),
-        ),
-        Padding(
-          padding: EdgeInsets.only(
-            left: 14.h,
-            top: 9.v,
-            bottom: 11.v,
-          ),
-          child: Text(
-            deactiveAccount,
-            style: CustomTextStyles.titleMedium18.copyWith(
-              color: appTheme.whiteA70001,
-            ),
-          ),
-        ),
-        Spacer(),
-        CustomImageView(
-          imagePath: ImageConstant.imgBtnBackWhiteA70001,
-          height: 26.adaptSize,
-          width: 26.adaptSize,
-          margin: EdgeInsets.symmetric(vertical: 11.v),
-        ),
-      ],
-    );
-  }
 }

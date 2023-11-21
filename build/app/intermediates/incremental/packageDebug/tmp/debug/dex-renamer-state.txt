@@ -1,4 +1,4 @@
-#Sun Nov 19 17:10:52 CET 2023
+#Tue Nov 21 20:13:30 CET 2023
 base.0=/home/abdenour/FlutterDev/abdenour_s_application1-v1.0.1/build/app/intermediates/dex/debug/mergeExtDexDebug/classes.dex
 base.1=/home/abdenour/FlutterDev/abdenour_s_application1-v1.0.1/build/app/intermediates/dex/debug/mergeLibDexDebug/0/classes.dex
 base.2=/home/abdenour/FlutterDev/abdenour_s_application1-v1.0.1/build/app/intermediates/dex/debug/mergeProjectDexDebug/0/classes.dex
