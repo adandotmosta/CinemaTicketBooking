@@ -1,9 +1,9 @@
 import '../sessionpercinema_screen/widgets/userprofile_item_widget.dart';
-import 'package:abdenour_s_application1/core/app_export.dart';
-import 'package:abdenour_s_application1/widgets/app_bar/appbar_leading_image.dart';
-import 'package:abdenour_s_application1/widgets/app_bar/appbar_title.dart';
-import 'package:abdenour_s_application1/widgets/app_bar/custom_app_bar.dart';
-import 'package:abdenour_s_application1/widgets/custom_bottom_bar.dart';
+import 'package:cinema_ticket_booking_app/core/app_export.dart';
+import 'package:cinema_ticket_booking_app/widgets/app_bar/appbar_leading_image.dart';
+import 'package:cinema_ticket_booking_app/widgets/app_bar/appbar_title.dart';
+import 'package:cinema_ticket_booking_app/widgets/app_bar/custom_app_bar.dart';
+import 'package:cinema_ticket_booking_app/widgets/custom_bottom_bar.dart';
 import 'package:flutter/material.dart';
 
 // ignore_for_file: must_be_immutable
@@ -18,6 +18,7 @@ class SessionpercinemaScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     mediaQueryData = MediaQuery.of(context);
     Movies = [["SAW X","21:00","VF",ImageConstant.imgSession1],["EQUALIZER3","18:00","VF",ImageConstant.imgSession],["EQUALIZER3","18:00","VF",ImageConstant.imgSession],["SAW X","18:00","VF",ImageConstant.imgSession1],["The Nun2","20:00","VO",ImageConstant.imgSession2]];
+
     return SafeArea(
         child: Scaffold(
             appBar: _buildAppBar(context),

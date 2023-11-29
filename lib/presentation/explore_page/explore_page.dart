@@ -1,5 +1,5 @@
 import '../explore_page/widgets/topmoviessection_item_widget.dart';
-import 'package:abdenour_s_application1/core/app_export.dart';
+import 'package:cinema_ticket_booking_app/core/app_export.dart';
 import 'package:flutter/material.dart';
 
 // ignore_for_file: must_be_immutable

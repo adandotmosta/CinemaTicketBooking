@@ -1,10 +1,10 @@
 import '../details_tab_container_screen/widgets/chipviewwidget_item_widget.dart';
-import 'package:abdenour_s_application1/core/app_export.dart';
-import 'package:abdenour_s_application1/presentation/details_page/details_page.dart';
-import 'package:abdenour_s_application1/widgets/app_bar/appbar_leading_image.dart';
-import 'package:abdenour_s_application1/widgets/app_bar/appbar_title.dart';
-import 'package:abdenour_s_application1/widgets/app_bar/appbar_trailing_image.dart';
-import 'package:abdenour_s_application1/widgets/app_bar/custom_app_bar.dart';
+import 'package:cinema_ticket_booking_app/core/app_export.dart';
+import 'package:cinema_ticket_booking_app/presentation/details_page/details_page.dart';
+import 'package:cinema_ticket_booking_app/widgets/app_bar/appbar_leading_image.dart';
+import 'package:cinema_ticket_booking_app/widgets/app_bar/appbar_title.dart';
+import 'package:cinema_ticket_booking_app/widgets/app_bar/appbar_trailing_image.dart';
+import 'package:cinema_ticket_booking_app/widgets/app_bar/custom_app_bar.dart';
 import 'package:flutter/material.dart';
 
 class DetailsTabContainerScreen extends StatefulWidget {
@@ -21,6 +21,7 @@ class DetailsTabContainerScreen extends StatefulWidget {
 class DetailsTabContainerScreenState extends State<DetailsTabContainerScreen>
     with TickerProviderStateMixin {
   late TabController tabviewController;
+  late MediaQueryData mediaQueryData;
 
   @override
   void initState() {

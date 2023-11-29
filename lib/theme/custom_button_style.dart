@@ -1,5 +1,5 @@
 import 'dart:ui';
-import 'package:abdenour_s_application1/core/app_export.dart';
+import 'package:cinema_ticket_booking_app/core/app_export.dart';
 import 'package:flutter/material.dart';
 
 /// A class that offers pre-defined button styles for customizing button appearance.

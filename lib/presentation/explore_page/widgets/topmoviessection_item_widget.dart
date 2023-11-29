@@ -1,5 +1,5 @@
-import 'package:abdenour_s_application1/core/app_export.dart';
-import 'package:abdenour_s_application1/widgets/custom_rating_bar.dart';
+import 'package:cinema_ticket_booking_app/core/app_export.dart';
+import 'package:cinema_ticket_booking_app/widgets/custom_rating_bar.dart';
 import 'package:flutter/material.dart';
 
 // ignore: must_be_immutable

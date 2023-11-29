@@ -1,14 +1,14 @@
 import '../movie_sessions_page/widgets/sessionlist_item_widget.dart';
-import 'package:abdenour_s_application1/core/app_export.dart';
-import 'package:abdenour_s_application1/widgets/custom_switch.dart';
+import 'package:cinema_ticket_booking_app/core/app_export.dart';
+import 'package:cinema_ticket_booking_app/widgets/custom_switch.dart';
 import 'package:flutter/material.dart';
 
 // ignore_for_file: must_be_immutable
 class MovieSessionsPage extends StatefulWidget {
   const MovieSessionsPage({Key? key})
       : super(
-          key: key,
-        );
+    key: key,
+  );
 
   @override
   MovieSessionsPageState createState() => MovieSessionsPageState();
@@ -20,6 +20,7 @@ class MovieSessionsPageState extends State<MovieSessionsPage>
 
   @override
   bool get wantKeepAlive => true;
+
   @override
   Widget build(BuildContext context) {
     mediaQueryData = MediaQuery.of(context);
@@ -58,8 +59,7 @@ class MovieSessionsPageState extends State<MovieSessionsPage>
                                     padding: EdgeInsets.only(bottom: 550.v),
                                     child: Text(
                                       "Time",
-                                      style: CustomTextStyles
-                                          .labelLargePTRootUIBluegray200,
+                                      style: CustomTextStyles.labelLargePTRootUIBluegray200,
                                     ),
                                   ),
                                   Spacer(
@@ -69,8 +69,7 @@ class MovieSessionsPageState extends State<MovieSessionsPage>
                                     padding: EdgeInsets.only(bottom: 550.v),
                                     child: Text(
                                       "Adult",
-                                      style: CustomTextStyles
-                                          .labelLargePTRootUIBluegray200,
+                                      style: CustomTextStyles.labelLargePTRootUIBluegray200,
                                     ),
                                   ),
                                   Spacer(
@@ -80,8 +79,7 @@ class MovieSessionsPageState extends State<MovieSessionsPage>
                                     padding: EdgeInsets.only(bottom: 550.v),
                                     child: Text(
                                       "Child",
-                                      style: CustomTextStyles
-                                          .labelLargePTRootUIBluegray200,
+                                      style: CustomTextStyles.labelLargePTRootUIBluegray200,
                                     ),
                                   ),
                                   Spacer(
@@ -91,8 +89,7 @@ class MovieSessionsPageState extends State<MovieSessionsPage>
                                     padding: EdgeInsets.only(bottom: 550.v),
                                     child: Text(
                                       "Student",
-                                      style: CustomTextStyles
-                                          .labelLargePTRootUIBluegray200,
+                                      style: CustomTextStyles.labelLargePTRootUIBluegray200,
                                     ),
                                   ),
                                   Padding(
@@ -103,8 +100,7 @@ class MovieSessionsPageState extends State<MovieSessionsPage>
                                     ),
                                     child: Text(
                                       "VIP",
-                                      style: CustomTextStyles
-                                          .labelLargePTRootUIBluegray200,
+                                      style: CustomTextStyles.labelLargePTRootUIBluegray200,
                                     ),
                                   ),
                                 ],
@@ -186,7 +182,9 @@ class MovieSessionsPageState extends State<MovieSessionsPage>
                 CustomSwitch(
                   value: isSelectedSwitch,
                   onChange: (value) {
-                    isSelectedSwitch = value;
+                    setState(() {
+                      isSelectedSwitch = value;
+                    });
                   },
                 ),
                 SizedBox(height: 2.v),

@@ -1,10 +1,10 @@
-import 'package:abdenour_s_application1/core/app_export.dart';
-import 'package:abdenour_s_application1/widgets/app_bar/appbar_leading_image.dart';
-import 'package:abdenour_s_application1/widgets/app_bar/appbar_title.dart';
-import 'package:abdenour_s_application1/widgets/app_bar/custom_app_bar.dart';
-import 'package:abdenour_s_application1/widgets/custom_drop_down.dart';
-import 'package:abdenour_s_application1/widgets/custom_elevated_button.dart';
-import 'package:abdenour_s_application1/widgets/custom_radio_button.dart';
+import 'package:cinema_ticket_booking_app/core/app_export.dart';
+import 'package:cinema_ticket_booking_app/widgets/app_bar/appbar_leading_image.dart';
+import 'package:cinema_ticket_booking_app/widgets/app_bar/appbar_title.dart';
+import 'package:cinema_ticket_booking_app/widgets/app_bar/custom_app_bar.dart';
+import 'package:cinema_ticket_booking_app/widgets/custom_drop_down.dart';
+import 'package:cinema_ticket_booking_app/widgets/custom_elevated_button.dart';
+import 'package:cinema_ticket_booking_app/widgets/custom_radio_button.dart';
 import 'package:flutter/material.dart';
 
 class SelectSeatsScreen extends StatefulWidget {
@@ -14,25 +14,16 @@ class SelectSeatsScreen extends StatefulWidget {
 }
 
 class MyState extends State<SelectSeatsScreen> {
-
+  DateTime? selectedDate; // Declare selectedDate here
+  TimeOfDay? selectedTime; // Declare selectedTime here
 
   List<String> dropdownItemList = [
-    "Item One",
-    "Item Two",
-    "Item Three",
+    "Equalizer 2",
+    "Killers of the follower moon",
+    "SAW X",
   ];
 
-  List<String> dropdownItemList1 = [
-    "Item One",
-    "Item Two",
-    "Item Three",
-  ];
 
-  List<String> dropdownItemList2 = [
-    "Item One",
-    "Item Two",
-    "Item Three",
-  ];
   List<String> seats = [
     'A1',
     'A2',
@@ -91,11 +82,9 @@ class MyState extends State<SelectSeatsScreen> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    for (int i = 1; i <= 160; i++) {
-      seats.add('F$i');
-      Selected_Items["F$i"] = 0;
-    }
+
   }
+
   @override
   Widget build(BuildContext context) {
     mediaQueryData = MediaQuery.of(context);
@@ -111,30 +100,18 @@ class MyState extends State<SelectSeatsScreen> {
           ),
           child: Column(
             children: [
+
+              SizedBox(height: 12.v),
               Align(
                 alignment: Alignment.centerLeft,
                 child: Text(
-                  "Room",
+                  "The movie will take palace in room 3",
                   style: theme.textTheme.labelLarge,
                 ),
               ),
-              SizedBox(height: 8.v),
-              CustomDropDown(
-                icon: Container(
-                  margin: EdgeInsets.fromLTRB(30.h, 16.v, 24.h, 16.v),
-                  child: CustomImageView(
-                    imagePath: ImageConstant.imgArrowdown,
-                    height: 16.adaptSize,
-                    width: 16.adaptSize,
-                  ),
-                ),
-                hintText: "Empire XXI Yogyakarta",
-                items: dropdownItemList,
-                onChanged: (value) {},
-              ),
-              SizedBox(height: 15.v),
+              SizedBox(height: 20.v),
               _buildDateRow(context),
-              SizedBox(height: 42.v),
+              SizedBox(height: 50.v),
               _buildSeatStack(context),
               SizedBox(height: 46.v),
               _buildInfoSeats(context),
@@ -167,7 +144,6 @@ class MyState extends State<SelectSeatsScreen> {
     );
   }
 
-  /// Section Widget
   Widget _buildDateRow(BuildContext context) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
@@ -183,19 +159,29 @@ class MyState extends State<SelectSeatsScreen> {
                   style: theme.textTheme.labelLarge,
                 ),
                 SizedBox(height: 8.v),
-                CustomDropDown(
-                  width: 141.h,
-                  icon: Container(
-                    margin: EdgeInsets.fromLTRB(7.h, 16.v, 24.h, 16.v),
-                    child: CustomImageView(
-                      imagePath: ImageConstant.imgArrowdown,
-                      height: 16.adaptSize,
-                      width: 16.adaptSize,
+                InkWell(
+                  onTap: () {
+                    _selectDate(context);
+                  },
+                  child: Container(
+                    height: 48.v,
+                    decoration: BoxDecoration(
+                      border: Border.all(color: Colors.grey),
+                      borderRadius: BorderRadius.circular(8.h),
+                    ),
+                    padding: EdgeInsets.symmetric(horizontal: 16.h),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          selectedDate == null
+                              ? "Select Date"
+                              : "${selectedDate!.day}/${selectedDate!.month}/${selectedDate!.year}",
+                        ),
+                        Icon(Icons.calendar_today),
+                      ],
                     ),
                   ),
-                  hintText: "02 Nov 2021",
-                  items: dropdownItemList1,
-                  onChanged: (value) {},
                 ),
               ],
             ),
@@ -212,19 +198,29 @@ class MyState extends State<SelectSeatsScreen> {
                   style: theme.textTheme.labelLarge,
                 ),
                 SizedBox(height: 8.v),
-                CustomDropDown(
-                  width: 141.h,
-                  icon: Container(
-                    margin: EdgeInsets.fromLTRB(26.h, 16.v, 24.h, 16.v),
-                    child: CustomImageView(
-                      imagePath: ImageConstant.imgArrowdown,
-                      height: 16.adaptSize,
-                      width: 16.adaptSize,
+                InkWell(
+                  onTap: () {
+                    _selectTime(context);
+                  },
+                  child: Container(
+                    height: 48.v,
+                    decoration: BoxDecoration(
+                      border: Border.all(color: Colors.grey),
+                      borderRadius: BorderRadius.circular(8.h),
+                    ),
+                    padding: EdgeInsets.symmetric(horizontal: 16.h),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          selectedTime == null
+                              ? "Select Time"
+                              : "${selectedTime!.hour}:${selectedTime!.minute}",
+                        ),
+                        Icon(Icons.access_time),
+                      ],
                     ),
                   ),
-                  hintText: "01.00 PM",
-                  items: dropdownItemList2,
-                  onChanged: (value) {},
                 ),
               ],
             ),
@@ -234,81 +230,110 @@ class MyState extends State<SelectSeatsScreen> {
     );
   }
 
+  void _selectDate(BuildContext context) async {
+    final DateTime? picked = await showDatePicker(
+      context: context,
+      initialDate: selectedDate ?? DateTime.now(),
+      firstDate: DateTime.now(),
+      lastDate: DateTime(2101),
+    );
+    if (picked != null && picked != selectedDate) {
+      setState(() {
+        selectedDate = picked;
+      });
+    }
+  }
+
+  void _selectTime(BuildContext context) async {
+    final TimeOfDay? picked = await showTimePicker(
+      context: context,
+      initialTime: selectedTime ?? TimeOfDay.now(),
+    );
+    if (picked != null && picked != selectedTime) {
+      setState(() {
+        selectedTime = picked;
+      });
+    }
+  }
+
+
+
+
   /// Section Widget
   Widget _buildSeatStack(BuildContext context) {
     return SizedBox(
-      height: 322.v,
+      height: 380.v,
       width: 315.h,
       child: Column(
+
       //  alignment: Alignment.topCenter,
+
+        //  alignment: Alignment.topCenter,
+
         children: [
 
           CustomImageView(
             imagePath: ImageConstant.imgScreen,
-            height: 88.v,
+            height: 100.v,
             width: 315.h,
             alignment: Alignment.topCenter,
           ),
           Container(
+            child: Padding(
+              padding: const EdgeInsets.only(left: 20, right: 20),
+              child: GridView.count(
+                crossAxisSpacing: 20,
+                shrinkWrap: true,
+                crossAxisCount: 6,
+                mainAxisSpacing: 5,
+                childAspectRatio: 1,
+                children: List.generate(seats.length, (index) {
+                  String seat = seats[index];
 
-             child: SingleChildScrollView(
+                  Color buttonColor;
+                  switch (Selected_Items[seat]) {
+                    case 0:
+                      buttonColor = Colors.black;
+                      break;
+                    case 1:
+                      buttonColor = Colors.blue;
+                      break;
+                    case 2:
+                      buttonColor = Colors.red;
+                      break;
+                    default:
+                      buttonColor = Colors.black;
+                      break;
+                  }
 
-               child: Padding(
-                  padding: const EdgeInsets.only(left: 20, right: 20),
-                  child: GridView.count(
-                    crossAxisSpacing: 20,
-                    shrinkWrap: true,
-                    crossAxisCount: 6,
-                    mainAxisSpacing: 5,
-                    childAspectRatio: 1,
-                    children: List.generate(seats.length, (index) {
-                      String seat = seats[index];
+                  return Center(
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        fixedSize: Size(30.adaptSize, 30.adaptSize),
+                        backgroundColor: buttonColor,
+                        foregroundColor: Colors.white,
+                      ),
+                      onPressed: () {
+                        print(seat + " changed");
+                        print(seat + " state = " + "${Selected_Items[seat]}");
+                        setState((){
+                          int? seat_state = Selected_Items[seat];
+                          if(seat_state==0) {
+                            Selected_Items[seat] =1;
 
-                      Color buttonColor;
-                      switch (Selected_Items[seat]) {
-                        case 0:
-                          buttonColor = Colors.black;
-                          break;
-                        case 1:
-                          buttonColor = Colors.indigo;
-                          break;
-                        case 2:
-                          buttonColor = Colors.red;
-                          break;
-                        default:
-                          buttonColor = Colors.black;
-                          break;
-                      }
-
-                      return Center(
-                        child: ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                            fixedSize: Size(30.adaptSize, 30.adaptSize),
-                            backgroundColor: buttonColor,
-                            foregroundColor: Colors.white,
-                          ),
-                          onPressed: () {
-                            print(seat + " changed");
-                            print(seat + " state = " + "${Selected_Items[seat]}");
-                            setState((){
-                              int? seat_state = Selected_Items[seat];
-                              if(seat_state==0) {
-                                Selected_Items[seat] =1;
-
-                              } else if(seat_state==1) {
-                                Selected_Items[seat] =0;
-                              }
-                            });
-                          },
-                          child: Text(
-                            seat,
-                          ),
-                        ),
-                      );
-                    }),
-                  ),
-                ),
-             ),
+                          } else if(seat_state==1) {
+                            Selected_Items[seat] =0;
+                          }
+                        });
+                      },
+                      child: Text(
+                        seat,
+                      ),
+                    ),
+                  );
+                }),
+              ),
+            ),
           ),
 
 
@@ -381,7 +406,8 @@ class MyState extends State<SelectSeatsScreen> {
       ],
     );
   }
- Widget _SetColor(BuildContext context){
+
+  Widget _SetColor(BuildContext context){
     return Text("hello world");
   }
   /// Section Widget
@@ -397,6 +423,6 @@ class MyState extends State<SelectSeatsScreen> {
   }
 
 
-}
 
+}
 

@@ -1,4 +1,4 @@
-import 'package:abdenour_s_application1/core/app_export.dart';
+import 'package:cinema_ticket_booking_app/core/app_export.dart';
 import 'package:flutter/material.dart';
 
 class CustomTextFormField extends StatelessWidget {
@@ -87,7 +87,7 @@ class CustomTextFormField extends StatelessWidget {
           controller: controller,
           focusNode: focusNode ?? FocusNode(),
           autofocus: autofocus!,
-          style: textStyle ?? CustomTextStyles.labelMediumGray90003,
+          style: textStyle ?? CustomTextStyles.labelLargeWhiteA70001,
           obscureText: obscureText!,
           textInputAction: textInputAction,
           keyboardType: textInputType,

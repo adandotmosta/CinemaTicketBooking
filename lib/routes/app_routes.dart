@@ -1,21 +1,21 @@
 import 'package:flutter/material.dart';
-import 'package:abdenour_s_application1/presentation/all_cinemas_screen/all_cinemas_screen.dart';
-import 'package:abdenour_s_application1/presentation/sessionpercinema_screen/sessionpercinema_screen.dart';
-import 'package:abdenour_s_application1/presentation/cinema_description_screen/cinema_description_screen.dart';
-import 'package:abdenour_s_application1/presentation/home_screen/home_screen.dart';
-import 'package:abdenour_s_application1/presentation/explore_tab_container_screen/explore_tab_container_screen.dart';
-import 'package:abdenour_s_application1/presentation/details_tab_container_screen/details_tab_container_screen.dart';
-import 'package:abdenour_s_application1/presentation/select_seats_screen/select_seats_screen.dart';
-import 'package:abdenour_s_application1/presentation/checkout_screen/checkout_screen.dart';
-import 'package:abdenour_s_application1/presentation/payment_success_screen/payment_success_screen.dart';
-import 'package:abdenour_s_application1/presentation/login_screen/login_screen.dart';
-import 'package:abdenour_s_application1/presentation/sign_up_screen/sign_up_screen.dart';
-import 'package:abdenour_s_application1/presentation/e_ticket_screen/e_ticket_screen.dart';
-import 'package:abdenour_s_application1/presentation/download_e_ticket_screen/download_e_ticket_screen.dart';
-import 'package:abdenour_s_application1/presentation/movie_sessions_tab_container_screen/movie_sessions_tab_container_screen.dart';
-import 'package:abdenour_s_application1/presentation/saved_plan_screen/saved_plan_screen.dart';
-import 'package:abdenour_s_application1/presentation/settings_screen/settings_screen.dart';
-import 'package:abdenour_s_application1/presentation/app_navigation_screen/app_navigation_screen.dart';
+import 'package:cinema_ticket_booking_app/presentation/all_cinemas_screen/all_cinemas_screen.dart';
+import 'package:cinema_ticket_booking_app/presentation/sessionpercinema_screen/sessionpercinema_screen.dart';
+import 'package:cinema_ticket_booking_app/presentation/cinema_description_screen/cinema_description_screen.dart';
+import 'package:cinema_ticket_booking_app/presentation/home_screen/home_screen.dart';
+import 'package:cinema_ticket_booking_app/presentation/explore_tab_container_screen/explore_tab_container_screen.dart';
+import 'package:cinema_ticket_booking_app/presentation/details_tab_container_screen/details_tab_container_screen.dart';
+import 'package:cinema_ticket_booking_app/presentation/select_seats_screen/select_seats_screen.dart';
+import 'package:cinema_ticket_booking_app/presentation/checkout_screen/checkout_screen.dart';
+import 'package:cinema_ticket_booking_app/presentation/payment_success_screen/payment_success_screen.dart';
+import 'package:cinema_ticket_booking_app/presentation/login_screen/login_screen.dart';
+import 'package:cinema_ticket_booking_app/presentation/sign_up_screen/sign_up_screen.dart';
+import 'package:cinema_ticket_booking_app/presentation/e_ticket_screen/e_ticket_screen.dart';
+import 'package:cinema_ticket_booking_app/presentation/download_e_ticket_screen/download_e_ticket_screen.dart';
+import 'package:cinema_ticket_booking_app/presentation/movie_sessions_tab_container_screen/movie_sessions_tab_container_screen.dart';
+import 'package:cinema_ticket_booking_app/presentation/saved_plan_screen/saved_plan_screen.dart';
+import 'package:cinema_ticket_booking_app/presentation/settings_screen/settings_screen.dart';
+import 'package:cinema_ticket_booking_app/presentation/app_navigation_screen/app_navigation_screen.dart';
 
 class AppRoutes {
   static const String allCinemasScreen = '/all_cinemas_screen';
@@ -28,7 +28,6 @@ class AppRoutes {
 
   static const String explorePage = '/explore_page';
 
-  static const String explore = '/explore';
 
   static const String exploreTabContainerScreen =
       '/explore_tab_container_screen';

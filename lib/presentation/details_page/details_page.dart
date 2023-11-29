@@ -1,14 +1,14 @@
-import 'package:abdenour_s_application1/core/app_export.dart';
-import 'package:abdenour_s_application1/widgets/custom_elevated_button.dart';
+import 'package:cinema_ticket_booking_app/core/app_export.dart';
+import 'package:cinema_ticket_booking_app/widgets/custom_elevated_button.dart';
 import 'package:flutter/material.dart';
 import 'package:readmore/readmore.dart';
 
-// ignore_for_file: must_be_immutable
+late MediaQueryData mediaQueryData; // Declare mediaQueryData
+
+// Import statements
+
 class DetailsPage extends StatefulWidget {
-  const DetailsPage({Key? key})
-      : super(
-          key: key,
-        );
+  const DetailsPage({Key? key}) : super(key: key);
 
   @override
   DetailsPageState createState() => DetailsPageState();
@@ -16,8 +16,11 @@ class DetailsPage extends StatefulWidget {
 
 class DetailsPageState extends State<DetailsPage>
     with AutomaticKeepAliveClientMixin<DetailsPage> {
+  late MediaQueryData mediaQueryData;
+
   @override
   bool get wantKeepAlive => true;
+
   @override
   Widget build(BuildContext context) {
     mediaQueryData = MediaQuery.of(context);
@@ -38,7 +41,6 @@ class DetailsPageState extends State<DetailsPage>
     );
   }
 
-  /// Section Widget
   Widget _buildBookTicket(BuildContext context) {
     return Container(
       height: 161.v,
@@ -48,8 +50,8 @@ class DetailsPageState extends State<DetailsPage>
         alignment: Alignment.topCenter,
         children: [
           CustomElevatedButton(
-            width: 315.h,
             text: "Book Ticket",
+            width: 315.h,
             buttonStyle: CustomButtonStyles.fillBlueTL12,
             buttonTextStyle: CustomTextStyles.titleMedium18,
             alignment: Alignment.bottomCenter,
