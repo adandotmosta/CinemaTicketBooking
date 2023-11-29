@@ -87,6 +87,15 @@ class MyState extends State<SelectSeatsScreen> {
     'E4': 0,
     'E5': 0,
   };
+@override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    for (int i = 1; i <= 160; i++) {
+      seats.add('F$i');
+      Selected_Items["F$i"] = 0;
+    }
+  }
   @override
   Widget build(BuildContext context) {
     mediaQueryData = MediaQuery.of(context);
@@ -241,61 +250,65 @@ class MyState extends State<SelectSeatsScreen> {
             alignment: Alignment.topCenter,
           ),
           Container(
-            child: Padding(
-              padding: const EdgeInsets.only(left: 20, right: 20),
-              child: GridView.count(
-                crossAxisSpacing: 20,
-                shrinkWrap: true,
-                crossAxisCount: 6,
-                mainAxisSpacing: 5,
-                childAspectRatio: 1,
-                children: List.generate(seats.length, (index) {
-                  String seat = seats[index];
 
-                  Color buttonColor;
-                  switch (Selected_Items[seat]) {
-                    case 0:
-                      buttonColor = Colors.black;
-                      break;
-                    case 1:
-                      buttonColor = Colors.indigo;
-                      break;
-                    case 2:
-                      buttonColor = Colors.red;
-                      break;
-                    default:
-                      buttonColor = Colors.black;
-                      break;
-                  }
+             child: SingleChildScrollView(
 
-                  return Center(
-                    child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        fixedSize: Size(30.adaptSize, 30.adaptSize),
-                        backgroundColor: buttonColor,
-                        foregroundColor: Colors.white,
-                      ),
-                      onPressed: () {
-                        print(seat + " changed");
-                        print(seat + " state = " + "${Selected_Items[seat]}");
-                        setState((){
-                          int? seat_state = Selected_Items[seat];
-                          if(seat_state==0) {
-                            Selected_Items[seat] =1;
+               child: Padding(
+                  padding: const EdgeInsets.only(left: 20, right: 20),
+                  child: GridView.count(
+                    crossAxisSpacing: 20,
+                    shrinkWrap: true,
+                    crossAxisCount: 6,
+                    mainAxisSpacing: 5,
+                    childAspectRatio: 1,
+                    children: List.generate(seats.length, (index) {
+                      String seat = seats[index];
 
-                          } else if(seat_state==1) {
-                            Selected_Items[seat] =0;
-                          }
-                        });
-                      },
-                      child: Text(
-                        seat,
-                      ),
-                    ),
-                  );
-                }),
-              ),
-            ),
+                      Color buttonColor;
+                      switch (Selected_Items[seat]) {
+                        case 0:
+                          buttonColor = Colors.black;
+                          break;
+                        case 1:
+                          buttonColor = Colors.indigo;
+                          break;
+                        case 2:
+                          buttonColor = Colors.red;
+                          break;
+                        default:
+                          buttonColor = Colors.black;
+                          break;
+                      }
+
+                      return Center(
+                        child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            fixedSize: Size(30.adaptSize, 30.adaptSize),
+                            backgroundColor: buttonColor,
+                            foregroundColor: Colors.white,
+                          ),
+                          onPressed: () {
+                            print(seat + " changed");
+                            print(seat + " state = " + "${Selected_Items[seat]}");
+                            setState((){
+                              int? seat_state = Selected_Items[seat];
+                              if(seat_state==0) {
+                                Selected_Items[seat] =1;
+
+                              } else if(seat_state==1) {
+                                Selected_Items[seat] =0;
+                              }
+                            });
+                          },
+                          child: Text(
+                            seat,
+                          ),
+                        ),
+                      );
+                    }),
+                  ),
+                ),
+             ),
           ),
 
 

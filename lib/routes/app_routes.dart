@@ -28,6 +28,8 @@ class AppRoutes {
 
   static const String explorePage = '/explore_page';
 
+  static const String explore = '/explore';
+
   static const String exploreTabContainerScreen =
       '/explore_tab_container_screen';
 
