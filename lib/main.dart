@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/scheduler.dart';
-import 'package:abdenour_s_application1/theme/theme_helper.dart';
-import 'package:abdenour_s_application1/routes/app_routes.dart';
+import 'package:cinema_ticket_booking_app/theme/theme_helper.dart';
+import 'package:cinema_ticket_booking_app/routes/app_routes.dart';
+
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -20,10 +21,11 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       theme: theme,
-      title: 'abdenour_s_application1',
+      title: 'mohamed_nadir_student_s_application3',
       debugShowCheckedModeBanner: false,
-      initialRoute: AppRoutes.homeScreen,
+      initialRoute: AppRoutes.paymentSuccessScreen,
       routes: AppRoutes.routes,
     );
   }
 }
+

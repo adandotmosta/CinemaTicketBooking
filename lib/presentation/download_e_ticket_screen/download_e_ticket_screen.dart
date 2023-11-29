@@ -1,8 +1,8 @@
-import 'package:abdenour_s_application1/core/app_export.dart';
-import 'package:abdenour_s_application1/widgets/app_bar/appbar_leading_image.dart';
-import 'package:abdenour_s_application1/widgets/app_bar/appbar_title.dart';
-import 'package:abdenour_s_application1/widgets/app_bar/custom_app_bar.dart';
-import 'package:abdenour_s_application1/widgets/custom_elevated_button.dart';
+import 'package:cinema_ticket_booking_app/core/app_export.dart';
+import 'package:cinema_ticket_booking_app/widgets/app_bar/appbar_leading_image.dart';
+import 'package:cinema_ticket_booking_app/widgets/app_bar/appbar_title.dart';
+import 'package:cinema_ticket_booking_app/widgets/app_bar/custom_app_bar.dart';
+import 'package:cinema_ticket_booking_app/widgets/custom_elevated_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg_provider/flutter_svg_provider.dart' as fs;
 import 'package:readmore/readmore.dart';
@@ -52,7 +52,7 @@ class DownloadETicketScreen extends StatelessWidget {
                           child: Stack(
                             alignment: Alignment.bottomCenter,
                             children: [
-                              _buildPopupColumn(context),
+                              //_buildPopupColumn(context),
                               Align(
                                 alignment: Alignment.bottomCenter,
                                 child: Container(
@@ -489,7 +489,7 @@ class DownloadETicketScreen extends StatelessWidget {
   }
 
   /// Section Widget
-  Widget _buildPopupColumn(BuildContext context) {
+/*  Widget _buildPopupColumn(BuildContext context) {
     return Align(
       alignment: Alignment.bottomCenter,
       child: Container(
@@ -503,7 +503,7 @@ class DownloadETicketScreen extends StatelessWidget {
           children: [
             SizedBox(height: 43.v),
             Container(
-              width: 250.h,
+              width: 250.v,
               margin: EdgeInsets.only(
                 left: 31.h,
                 right: 33.h,
@@ -518,7 +518,7 @@ class DownloadETicketScreen extends StatelessWidget {
             ),
             SizedBox(height: 16.v),
             SizedBox(
-              width: 302.h,
+              width: 302.v,
               child: ReadMoreText(
                 "Adele is a Scottish heiress whose extremely\nwealthy family owns estates and grounds.\nWhen she was a teenager. ",
                 trimLines: 3,
@@ -526,14 +526,14 @@ class DownloadETicketScreen extends StatelessWidget {
                 trimMode: TrimMode.Line,
                 trimCollapsedText: "Read More",
                 moreStyle: CustomTextStyles.bodyMediumPoppinsLight.copyWith(
-                  height: 1.57,
+                  height: 1.57.h,
                 ),
                 lessStyle: CustomTextStyles.bodyMediumPoppinsLight.copyWith(
-                  height: 1.57,
+                  height: 1.57.h,
                 ),
               ),
             ),
-            SizedBox(height: 32.v),
+            SizedBox(height: 32.h),
             CustomElevatedButton(
               text: "Back To Home",
               buttonStyle: CustomButtonStyles.outlinePrimaryTL121,
@@ -542,7 +542,7 @@ class DownloadETicketScreen extends StatelessWidget {
         ),
       ),
     );
-  }
+  }*/
 
   /// Section Widget
   Widget _buildDownloadETicketButton(BuildContext context) {

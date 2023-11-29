@@ -1,6 +1,6 @@
-import 'package:abdenour_s_application1/core/app_export.dart';
-import 'package:abdenour_s_application1/widgets/custom_elevated_button.dart';
-import 'package:abdenour_s_application1/widgets/custom_text_form_field.dart';
+import 'package:cinema_ticket_booking_app/core/app_export.dart';
+import 'package:cinema_ticket_booking_app/widgets/custom_elevated_button.dart';
+import 'package:cinema_ticket_booking_app/widgets/custom_text_form_field.dart';
 import 'package:flutter/material.dart';
 
 class LoginScreen extends StatelessWidget {

@@ -1,21 +1,30 @@
-import 'package:abdenour_s_application1/core/app_export.dart';
-import 'package:abdenour_s_application1/widgets/app_bar/appbar_leading_image.dart';
-import 'package:abdenour_s_application1/widgets/app_bar/appbar_title.dart';
-import 'package:abdenour_s_application1/widgets/app_bar/custom_app_bar.dart';
-import 'package:abdenour_s_application1/widgets/custom_drop_down.dart';
-import 'package:abdenour_s_application1/widgets/custom_elevated_button.dart';
-import 'package:abdenour_s_application1/widgets/custom_text_form_field.dart';
+import 'package:cinema_ticket_booking_app/core/app_export.dart';
+import 'package:cinema_ticket_booking_app/widgets/app_bar/appbar_leading_image.dart';
+import 'package:cinema_ticket_booking_app/widgets/app_bar/appbar_title.dart';
+import 'package:cinema_ticket_booking_app/widgets/app_bar/custom_app_bar.dart';
+import 'package:cinema_ticket_booking_app/widgets/custom_drop_down.dart';
+import 'package:cinema_ticket_booking_app/widgets/custom_elevated_button.dart';
+import 'package:cinema_ticket_booking_app/widgets/custom_text_form_field.dart';
 import 'package:flutter/material.dart';
 import 'package:readmore/readmore.dart';
+import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
-class PaymentSuccessScreen extends StatelessWidget {
-  PaymentSuccessScreen({Key? key})
-      : super(
-          key: key,
-        );
+class PaymentSuccessScreen extends StatefulWidget {
+  PaymentSuccessScreen({Key? key}) : super(key: key);
 
+  @override
+  _PaymentSuccessScreenState createState() => _PaymentSuccessScreenState();
+}
+
+class _PaymentSuccessScreenState extends State<PaymentSuccessScreen> {
   TextEditingController selectTransferSourceController =
-      TextEditingController();
+  TextEditingController();
+  TextEditingController cardholderNameController = TextEditingController();
+  TextEditingController dateController = TextEditingController();
+  TextEditingController cardNumberController = TextEditingController();
+  TextEditingController cvvController = TextEditingController();
+  DateTime? selectedDate;
 
   List<String> dropdownItemList = [
     "Item One",
@@ -23,10 +32,11 @@ class PaymentSuccessScreen extends StatelessWidget {
     "Item Three",
   ];
 
+  bool isPopupVisible = false;
+  bool isImage1 = true;
+
   @override
   Widget build(BuildContext context) {
-    mediaQueryData = MediaQuery.of(context);
-
     return SafeArea(
       child: Scaffold(
         resizeToAvoidBottomInset: false,
@@ -35,28 +45,33 @@ class PaymentSuccessScreen extends StatelessWidget {
           width: double.maxFinite,
           child: Column(
             children: [
-              SizedBox(height: 19.v),
+              SizedBox(height: 19),
               _buildSectionPaymentMethod(context),
-              SizedBox(height: 3.v),
+              SizedBox(height: 3),
               _buildOne(context),
-              SizedBox(height: 11.v),
+              SizedBox(height: 11),
               SizedBox(
-                height: 486.v,
+                height: 440.h,
                 width: double.maxFinite,
                 child: Stack(
                   alignment: Alignment.topCenter,
                   children: [
                     CustomElevatedButton(
-                      width: 315.h,
-                      text: "99.8",
-                      margin: EdgeInsets.only(bottom: 28.v),
+                      width: 315.v,
+                      text: "Pay Now    |   990 DZ",
+                      margin: EdgeInsets.only(bottom: 15),
                       buttonStyle: CustomButtonStyles.outlinePrimaryTL12,
                       buttonTextStyle:
-                          CustomTextStyles.titleMediumWhiteA700SemiBold,
+                      CustomTextStyles.titleMediumWhiteA700SemiBold,
                       alignment: Alignment.bottomCenter,
+                      onPressed: () {
+                        setState(() {
+                          _showDownloadETicketPopup(context);
+                        });
+                      },
                     ),
                     _buildInputPaymentDetails(context),
-                    _buildPopupPaymentSuccessful(context),
+                    if (isPopupVisible) _buildPopupPaymentSuccessful(context),
                   ],
                 ),
               ),
@@ -100,12 +115,12 @@ class PaymentSuccessScreen extends StatelessWidget {
           ),
           Padding(
             padding: EdgeInsets.only(
-              top: 2.v,
-              bottom: 6.v,
+              top: 4.v,
+              bottom: 4.v,
             ),
             child: Text(
               "Change",
-              style: CustomTextStyles.bodyMediumPoppinsBluegray200,
+
             ),
           ),
         ],
@@ -146,6 +161,7 @@ class PaymentSuccessScreen extends StatelessWidget {
   }
 
   /// Section Widget
+
   Widget _buildInputPaymentDetails(BuildContext context) {
     return Align(
       alignment: Alignment.topCenter,
@@ -167,8 +183,11 @@ class PaymentSuccessScreen extends StatelessWidget {
             SizedBox(height: 8.v),
             CustomTextFormField(
               controller: selectTransferSourceController,
-              hintText: "Select the transfer source",
-              hintStyle: CustomTextStyles.labelLargeBluegray200,
+              hintText: "EDAHABIA",
+              hintStyle: TextStyle(
+                color: Colors.white,
+                fontSize: 16
+              ),
               textInputAction: TextInputAction.done,
             ),
             SizedBox(height: 11.v),
@@ -176,40 +195,30 @@ class PaymentSuccessScreen extends StatelessWidget {
               "Cardholder Name",
               style: theme.textTheme.labelLarge,
             ),
-            SizedBox(height: 8.v),
-            Container(
-              width: 315.h,
-              padding: EdgeInsets.symmetric(
-                horizontal: 23.h,
-                vertical: 13.v,
+            CustomTextFormField(
+              controller: cardholderNameController,
+              hintText: "HAMOU NADIR",
+              hintStyle: TextStyle(
+                  color: Colors.white,
+                  fontSize: 16
               ),
-              decoration: AppDecoration.outlineBlueGray.copyWith(
-                borderRadius: BorderRadiusStyle.roundedBorder12,
-              ),
-              child: Text(
-                "Miles Morales",
-                style: CustomTextStyles.labelLargeBluegray200,
-              ),
+              textInputAction: TextInputAction.done,
             ),
-            SizedBox(height: 11.v),
+
+            SizedBox(height: 8.v),
             Text(
               "Card Number",
               style: theme.textTheme.labelLarge,
             ),
-            SizedBox(height: 8.v),
-            Container(
-              width: 315.h,
-              padding: EdgeInsets.symmetric(
-                horizontal: 23.h,
-                vertical: 13.v,
+            CustomTextFormField(
+              // Assuming cardNumberController is a TextEditingController
+              controller: cardNumberController,
+              hintText: "**** **** **** 1247",
+              hintStyle: TextStyle(
+                  color: Colors.white,
+                  fontSize: 16
               ),
-              decoration: AppDecoration.outlineBlueGray.copyWith(
-                borderRadius: BorderRadiusStyle.roundedBorder12,
-              ),
-              child: Text(
-                "**** **** **** 51446",
-                style: CustomTextStyles.labelLargeBluegray200,
-              ),
+              textInputAction: TextInputAction.done,
             ),
             SizedBox(height: 11.v),
             Row(
@@ -226,19 +235,22 @@ class PaymentSuccessScreen extends StatelessWidget {
                           style: theme.textTheme.labelLarge,
                         ),
                         SizedBox(height: 8.v),
-                        CustomDropDown(
-                          width: 141.h,
-                          icon: Container(
-                            margin: EdgeInsets.fromLTRB(7.h, 16.v, 24.h, 16.v),
-                            child: CustomImageView(
-                              imagePath: ImageConstant.imgArrowdown,
-                              height: 16.adaptSize,
-                              width: 16.adaptSize,
+                        GestureDetector(
+                          onTap: () {
+                            _showDownloadETicketPopup(context);
+                          },
+                          child: Text(
+                            selectedDate != null
+                                ? DateFormat("dd MMM yyyy").format(
+                                selectedDate!)
+                                : "Select Date",
+                            style: TextStyle(
+                              fontSize: 16,
+                              color: selectedDate != null
+                                  ? Colors.white
+                                  : Colors.white,
                             ),
                           ),
-                          hintText: "02 Nov 2021",
-                          items: dropdownItemList,
-                          onChanged: (value) {},
                         ),
                       ],
                     ),
@@ -255,19 +267,15 @@ class PaymentSuccessScreen extends StatelessWidget {
                           style: theme.textTheme.labelLarge,
                         ),
                         SizedBox(height: 8.v),
-                        Container(
-                          width: 141.h,
-                          padding: EdgeInsets.symmetric(
-                            horizontal: 23.h,
-                            vertical: 13.v,
+                        CustomTextFormField(
+                          // Assuming cvvController is a TextEditingController
+                          controller: cvvController,
+                          hintText: "123",
+                          hintStyle: TextStyle(
+                              color: Colors.white,
+                              fontSize: 16
                           ),
-                          decoration: AppDecoration.outlineBlueGray.copyWith(
-                            borderRadius: BorderRadiusStyle.roundedBorder12,
-                          ),
-                          child: Text(
-                            "123",
-                            style: CustomTextStyles.labelLargeBluegray200,
-                          ),
+                          textInputAction: TextInputAction.done,
                         ),
                       ],
                     ),
@@ -281,121 +289,110 @@ class PaymentSuccessScreen extends StatelessWidget {
     );
   }
 
-  /// Section Widget
+
   Widget _buildPopupPaymentSuccessful(BuildContext context) {
-    return Align(
+    return Stack(
       alignment: Alignment.bottomCenter,
-      child: SizedBox(
-        height: 405.v,
-        width: double.maxFinite,
-        child: Stack(
-          alignment: Alignment.center,
-          children: [
-            Align(
-              alignment: Alignment.centerLeft,
-              child: Container(
-                height: 389.v,
-                width: 361.h,
-                decoration: BoxDecoration(
-                  color: theme.colorScheme.onPrimaryContainer.withOpacity(0.5),
-                  borderRadius: BorderRadius.circular(
-                    20.h,
+      children: [
+        Container(
+          padding: EdgeInsets.all(30),
+          decoration: AppDecoration.fillBlue.copyWith(
+            borderRadius: BorderRadiusStyle.customBorderTL60,
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              SizedBox(height: 43.h),
+              Container(
+                width: 250.v,
+                margin: EdgeInsets.only(
+                  left: 31.v,
+                  right: 33.h,
+                ),
+                child: Text(
+                  "Your Payment was successful",
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                  textAlign: TextAlign.center,
+                  style: theme.textTheme.headlineSmall,
+                ),
+              ),
+              SizedBox(height: 16.h),
+              SizedBox(
+                width: 302.v,
+                child: ReadMoreText(
+                  "Adele is a Scottish heiress whose extremely\nwealthy family owns estates and grounds.\nWhen she was a teenager. ",
+                  trimLines: 3,
+                  colorClickableText: appTheme.whiteA70001,
+                  trimMode: TrimMode.Line,
+                  trimCollapsedText: "Read More",
+                  moreStyle: CustomTextStyles.bodyMediumPoppinsLight.copyWith(
+                    height: 1.57.h,
+                  ),
+                  lessStyle: CustomTextStyles.bodyMediumPoppinsLight.copyWith(
+                    height: 1.57.h,
                   ),
                 ),
               ),
-            ),
-            Align(
-              alignment: Alignment.center,
-              child: SizedBox(
-                height: 405.v,
-                width: double.maxFinite,
-                child: Stack(
-                  alignment: Alignment.topCenter,
-                  children: [
-                    Align(
-                      alignment: Alignment.bottomCenter,
-                      child: Container(
-                        padding: EdgeInsets.all(30.h),
-                        decoration: AppDecoration.fillBlue.copyWith(
-                          borderRadius: BorderRadiusStyle.customBorderTL60,
-                        ),
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            SizedBox(height: 46.v),
-                            Container(
-                              width: 231.h,
-                              margin: EdgeInsets.only(
-                                left: 41.h,
-                                right: 42.h,
-                              ),
-                              child: Text(
-                                "Your payment was successful",
-                                maxLines: 2,
-                                overflow: TextOverflow.ellipsis,
-                                textAlign: TextAlign.center,
-                                style: theme.textTheme.headlineSmall,
-                              ),
-                            ),
-                            SizedBox(height: 14.v),
-                            SizedBox(
-                              width: 302.h,
-                              child: ReadMoreText(
-                                "Adele is a Scottish heiress whose extremely\nwealthy family owns estates and grounds.\nWhen she was a teenager. ",
-                                trimLines: 3,
-                                colorClickableText: appTheme.whiteA70001,
-                                trimMode: TrimMode.Line,
-                                trimCollapsedText: "Read More",
-                                moreStyle: CustomTextStyles
-                                    .bodyMediumPoppinsLight
-                                    .copyWith(
-                                  height: 1.57,
-                                ),
-                                lessStyle: CustomTextStyles
-                                    .bodyMediumPoppinsLight
-                                    .copyWith(
-                                  height: 1.57,
-                                ),
-                              ),
-                            ),
-                            SizedBox(height: 32.v),
-                            CustomElevatedButton(
-                              text: "See E-Ticket",
-                              buttonStyle:
-                                  CustomButtonStyles.outlinePrimaryTL121,
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                    Align(
-                      alignment: Alignment.topCenter,
-                      child: Container(
-                        height: 112.adaptSize,
-                        width: 112.adaptSize,
-                        padding: EdgeInsets.symmetric(
-                          horizontal: 33.h,
-                          vertical: 29.v,
-                        ),
-                        decoration: AppDecoration.outlineWhiteA.copyWith(
-                          borderRadius: BorderRadiusStyle.circleBorder56,
-                        ),
-                        child: CustomImageView(
-                          imagePath: ImageConstant.imgCheckmark,
-                          height: 46.v,
-                          width: 39.h,
-                          alignment: Alignment.center,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
+              SizedBox(height: 32.h),
+              CustomElevatedButton(
+                text: "See E-Ticket",
+                buttonStyle: CustomButtonStyles.outlinePrimaryTL121,
+                onPressed: () {
+                  // Handle button press here and navigate back to the home screen
+                },
               ),
-            ),
-          ],
+            ],
+          ),
         ),
-      ),
+        Align(
+          alignment: Alignment.bottomCenter,
+          child: Container(
+            height: 112.adaptSize,
+            width: 112.adaptSize,
+            margin: EdgeInsets.only(bottom: 293.h),
+            padding: EdgeInsets.symmetric(
+              horizontal: 33.h,
+              vertical: 29.h,
+            ),
+            decoration: AppDecoration.outlineWhiteA.copyWith(
+              borderRadius: BorderRadiusStyle.circleBorder56,
+            ),
+            child: CustomImageView(
+              imagePath: ImageConstant.imgCheckmark,
+              height: 46.h,
+              width: 39.v,
+              alignment: Alignment.center,
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+
+ /* void _showDatePicker(BuildContext context) async {
+    final DateTime? pickedDate = await showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime(2000),
+      lastDate: DateTime(2100),
+    );
+
+    if (pickedDate != null) {
+      setState(() {
+        selectedDate = pickedDate;
+      });
+    }
+  }*/
+  void _showDownloadETicketPopup(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      backgroundColor: Colors.transparent, // Set the background color to be transparent
+      builder: (BuildContext context) {
+        return _buildPopupPaymentSuccessful(context);
+      },
     );
   }
 }

@@ -1,4 +1,4 @@
-import 'package:abdenour_s_application1/core/app_export.dart';
+import 'package:cinema_ticket_booking_app/core/app_export.dart';
 import 'package:flutter/material.dart';
 
 // ignore: must_be_immutable
@@ -24,6 +24,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   final Widget? title;
 
   final bool? centerTitle;
+
 
   final List<Widget>? actions;
 

@@ -1,9 +1,9 @@
-#Sat Nov 18 15:21:29 CET 2023
-base.0=/home/abdenour/FlutterDev/abdenour_s_application1-v1.0.1/build/app/intermediates/dex/debug/mergeExtDexDebug/classes.dex
-base.1=/home/abdenour/FlutterDev/abdenour_s_application1-v1.0.1/build/app/intermediates/dex/debug/mergeLibDexDebug/0/classes.dex
-base.2=/home/abdenour/FlutterDev/abdenour_s_application1-v1.0.1/build/app/intermediates/dex/debug/mergeProjectDexDebug/0/classes.dex
-base.3=/home/abdenour/FlutterDev/abdenour_s_application1-v1.0.1/build/app/intermediates/dex/debug/mergeProjectDexDebug/1/classes.dex
-base.4=/home/abdenour/FlutterDev/abdenour_s_application1-v1.0.1/build/app/intermediates/dex/debug/mergeProjectDexDebug/3/classes.dex
+#Tue Nov 28 12:51:26 CET 2023
+base.0=/home/hamoumohamednadir/cinema_ticket_bookin_app/build/app/intermediates/dex/debug/mergeExtDexDebug/classes.dex
+base.1=/home/hamoumohamednadir/cinema_ticket_bookin_app/build/app/intermediates/dex/debug/mergeLibDexDebug/0/classes.dex
+base.2=/home/hamoumohamednadir/cinema_ticket_bookin_app/build/app/intermediates/dex/debug/mergeProjectDexDebug/0/classes.dex
+base.3=/home/hamoumohamednadir/cinema_ticket_bookin_app/build/app/intermediates/dex/debug/mergeProjectDexDebug/1/classes.dex
+base.4=/home/hamoumohamednadir/cinema_ticket_bookin_app/build/app/intermediates/dex/debug/mergeProjectDexDebug/3/classes.dex
 path.0=classes.dex
 path.1=0/classes.dex
 path.2=0/classes.dex

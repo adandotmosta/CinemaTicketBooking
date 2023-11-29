@@ -1,10 +1,10 @@
-import 'package:abdenour_s_application1/core/app_export.dart';
-import 'package:abdenour_s_application1/widgets/app_bar/appbar_leading_image.dart';
-import 'package:abdenour_s_application1/widgets/app_bar/appbar_title.dart';
-import 'package:abdenour_s_application1/widgets/app_bar/custom_app_bar.dart';
-import 'package:abdenour_s_application1/widgets/custom_bottom_bar.dart';
-import 'package:abdenour_s_application1/widgets/custom_drop_down.dart';
-import 'package:abdenour_s_application1/widgets/custom_elevated_button.dart';
+import 'package:cinema_ticket_booking_app/core/app_export.dart';
+import 'package:cinema_ticket_booking_app/widgets/app_bar/appbar_leading_image.dart';
+import 'package:cinema_ticket_booking_app/widgets/app_bar/appbar_title.dart';
+import 'package:cinema_ticket_booking_app/widgets/app_bar/custom_app_bar.dart';
+import 'package:cinema_ticket_booking_app/widgets/custom_bottom_bar.dart';
+import 'package:cinema_ticket_booking_app/widgets/custom_drop_down.dart';
+import 'package:cinema_ticket_booking_app/widgets/custom_elevated_button.dart';
 import 'package:flutter/material.dart';
 
 class SavedPlanScreen extends StatelessWidget {
