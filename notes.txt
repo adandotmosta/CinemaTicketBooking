@@ -1,0 +1,9 @@
+Notes on Nadir Last Work :
+-Work marked as completed but there only one problem due to removing height and weight extensions.
+-Render Flex problem in button of shangShi ticket button due to not using height and width extensions ( .v and .h)
+
+Problem Fixed ? : 
+Yes, After using extensions for each heigth and width, the error has gone.
+
+Lesson :
+This project is designed based on our intial figma design thus we must respect the figma measures otherwise It will leads to responsive design problems, it may work on your emulator but in different emulators not always.
