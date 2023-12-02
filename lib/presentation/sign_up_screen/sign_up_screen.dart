@@ -107,9 +107,17 @@ class SignUpScreen extends StatelessWidget {
                   SizedBox(height: 11.v),
                   Align(
                     alignment: Alignment.center,
-                    child: Text(
-                      "I’m already a member",
-                      style: CustomTextStyles.labelLargeWhiteA70001,
+                    child: GestureDetector(
+                          onTap: (){
+                            Navigator.pushNamed(context,
+                              AppRoutes.loginScreen, );
+
+
+                      },
+                      child: Text(
+                        "I’m already a member",
+                        style: CustomTextStyles.labelLargeWhiteA70001,
+                      ),
                     ),
                   ),
                   SizedBox(height: 2.v),
@@ -266,6 +274,10 @@ class SignUpScreen extends StatelessWidget {
   /// Section Widget
   Widget _buildCreateAccount(BuildContext context) {
     return CustomElevatedButton(
+        onPressed: () {
+          Navigator.pushNamed(context,
+            AppRoutes.loginScreen,);
+        },
       width: MediaQuery.of(context).size.width*0.8,
       text: "Create account",
       buttonTextStyle: CustomTextStyles.titleMediumWhiteA700Bold,
@@ -294,17 +306,17 @@ class SignUpScreen extends StatelessWidget {
                 decoration: AppDecoration.fillBlue.copyWith(
                   borderRadius: BorderRadiusStyle.roundedBorder8,
                 ),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    SizedBox(height: 2.v),
-                    Text(
-                      "Sign up",
-                      style: CustomTextStyles.titleMediumSemiBold,
-                    ),
-                  ],
-                ),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      SizedBox(height: 2.v),
+                      Text(
+                        "Sign up",
+                        style: CustomTextStyles.titleMediumSemiBold,
+                      ),
+                    ],
+                  ),
               ),
             ),
             _buildCreateAccount(context),

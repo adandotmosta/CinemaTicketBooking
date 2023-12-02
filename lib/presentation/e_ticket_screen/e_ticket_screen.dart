@@ -68,14 +68,7 @@ class ETicketScreen extends StatelessWidget {
   PreferredSizeWidget _buildAppBar(BuildContext context) {
     return CustomAppBar(
       leadingWidth: 56.v,
-      leading: AppbarLeadingImage(
-        imagePath: ImageConstant.imgBtnBack,
-        margin: EdgeInsets.only(
-          left: 30.v,
-          top: 15.h,
-          bottom: 14.h,
-        ),
-      ),
+
       centerTitle: true,
       title: AppbarTitle(
         text: "E-Ticket",

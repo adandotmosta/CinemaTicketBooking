@@ -1,5 +1,7 @@
+
 import 'package:cinema_ticket_booking_app/core/app_export.dart';
 import 'package:cinema_ticket_booking_app/presentation/movie_sessions_page/movie_sessions_page.dart';
+import 'package:cinema_ticket_booking_app/presentation/details_page/details_page.dart';
 import 'package:cinema_ticket_booking_app/widgets/app_bar/appbar_leading_image.dart';
 import 'package:cinema_ticket_booking_app/widgets/app_bar/appbar_title.dart';
 import 'package:cinema_ticket_booking_app/widgets/app_bar/custom_app_bar.dart';
@@ -7,10 +9,7 @@ import 'package:cinema_ticket_booking_app/widgets/custom_bottom_bar.dart';
 import 'package:flutter/material.dart';
 
 class MovieSessionsTabContainerScreen extends StatefulWidget {
-  const MovieSessionsTabContainerScreen({Key? key})
-      : super(
-          key: key,
-        );
+  const MovieSessionsTabContainerScreen({Key? key}) : super(key: key);
 
   @override
   MovieSessionsTabContainerScreenState createState() =>
@@ -21,6 +20,7 @@ class MovieSessionsTabContainerScreenState
     extends State<MovieSessionsTabContainerScreen>
     with TickerProviderStateMixin {
   late TabController tabviewController;
+  bool isAboutTabActive = true;
 
   GlobalKey<NavigatorState> navigatorKey = GlobalKey();
 
@@ -28,6 +28,13 @@ class MovieSessionsTabContainerScreenState
   void initState() {
     super.initState();
     tabviewController = TabController(length: 2, vsync: this);
+
+    // Listen for manual tab changes
+    tabviewController.addListener(() {
+      setState(() {
+        isAboutTabActive = tabviewController.index == 0;
+      });
+    });
   }
 
   @override
@@ -36,7 +43,7 @@ class MovieSessionsTabContainerScreenState
 
     return SafeArea(
       child: Scaffold(
-        backgroundColor: appTheme.gray90001,
+        appBar: _buildAppBar(context),
         body: SizedBox(
           width: double.maxFinite,
           child: Column(
@@ -48,7 +55,7 @@ class MovieSessionsTabContainerScreenState
                   child: TabBarView(
                     controller: tabviewController,
                     children: [
-                      MovieSessionsPage(),
+                      DetailsPage(),
                       MovieSessionsPage(),
                     ],
                   ),
@@ -61,64 +68,94 @@ class MovieSessionsTabContainerScreenState
       ),
     );
   }
-
-  /// Section Widget
   Widget _buildFixed(BuildContext context) {
-    return Container(
-      decoration: AppDecoration.fillOnPrimaryContainer1,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.end,
-        children: [
-          SizedBox(height: 29.v),
-          CustomAppBar(
-            height: 30.v,
-            leadingWidth: 55.h,
-            leading: AppbarLeadingImage(
-              imagePath: ImageConstant.imgBtnBack,
-              margin: EdgeInsets.only(
-                left: 29.h,
-                bottom: 3.v,
-              ),
-            ),
-            centerTitle: true,
-            title: AppbarTitle(
-              text: "Shang -Chi",
-            ),
+    return Align(
+      alignment: Alignment.topCenter,
+      child: Container(
+        decoration: BoxDecoration(
+          color: Colors.transparent,
+          border: Border.all(
+            color: Colors.transparent,
           ),
-          SizedBox(height: 60.v),
-          Container(
-            height: 36.v,
-            width: double.maxFinite,
-            child: TabBar(
-              controller: tabviewController,
-              isScrollable: true,
-              labelColor: appTheme.red400,
-              unselectedLabelColor: appTheme.whiteA70001,
-              indicatorColor:
-                  theme.colorScheme.onPrimaryContainer.withOpacity(1),
-              tabs: [
-                Tab(
-                  child: Text(
-                    "About",
-                  ),
-                ),
-                Tab(
-                  child: Container(
-                    decoration: AppDecoration.outlineDeepOrangeF,
-                    child: Text(
-                      "Sessions",
+        ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+            SizedBox(height: 10.h,),
+            Container(
+              height: 36.v,
+              width: 748.h,
+              child: Row(
+                children: [
+                  Expanded(
+                    child: GestureDetector(
+                      onTap: () {
+                        setState(() {
+                          isAboutTabActive = true;
+                          tabviewController.animateTo(0);
+                        });
+                      },
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: Colors.transparent,
+                          border: Border.all(
+                            color: Colors.transparent,
+                          ),
+                        ),
+                        child: Center(
+                          child: Text(
+                            "About",
+                            style: TextStyle(
+                              color: isAboutTabActive ? Colors.red : Colors.white,
+                            ),
+                          ),
+                        ),
+                      ),
                     ),
                   ),
-                ),
-              ],
+                  SizedBox(width: 10.h),
+                  Expanded(
+                    child: GestureDetector(
+                      onTap: () {
+                        setState(() {
+                          isAboutTabActive = false;
+                          tabviewController.animateTo(1);
+                        });
+                      },
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: Colors.transparent,
+                          border: Border.all(
+                            color: Colors.transparent,
+                          ),
+                        ),
+                        child: Center(
+                          child: Text(
+                            "Sessions",
+                            style: TextStyle(
+                              color: !isAboutTabActive ? Colors.red : Colors.white,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
-
-  /// Section Widget
+  PreferredSizeWidget _buildAppBar(BuildContext context) {
+    return CustomAppBar(
+        leadingWidth: 56.h,
+        centerTitle: true,
+        title: AppbarTitle(text: "Sessions Available"));
+  }
   Widget _buildBottomBar(BuildContext context) {
     return CustomBottomBar(
       onChanged: (BottomBarEnum type) {},

@@ -164,14 +164,8 @@ class SettingsScreen extends StatelessWidget {
   PreferredSizeWidget _buildAppBar(BuildContext context) {
     return CustomAppBar(
       leadingWidth: 50.h,
-      leading: AppbarLeadingImage(
-        imagePath: ImageConstant.imgBtnBack,
-        margin: EdgeInsets.only(
-          left: 30.h,
-          top: 13.v,
-          bottom: 16.v,
-        ),
-      ),
+      leading: Text(""),
+
       centerTitle: true,
       title: AppbarTitle(
         text: "Settings",
@@ -220,6 +214,7 @@ class SettingsScreen extends StatelessWidget {
   Widget _buildBottomBar(BuildContext context) {
     return CustomBottomBar(
       onChanged: (BottomBarEnum type) {},
+      index: 3,
     );
   }
 

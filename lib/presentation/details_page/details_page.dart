@@ -22,12 +22,10 @@ class DetailsPage extends StatelessWidget {
       {'name': 'Awkwafina', 'imagePath': 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/ba/Awkwafina%2C_2018_%28cropped%29.jpg/640px-Awkwafina%2C_2018_%28cropped%29.jpg'},
       {'name': 'Tony Leung', 'imagePath': 'https://i.mydramalist.com/wPpBn_5_c.jpg'},
     ];
-    return MaterialApp(
-        debugShowCheckedModeBanner: false,
-        home: Scaffold(
-          appBar:_buildAppBar2(context)  ,
+    return SafeArea(
+        child: Scaffold(
 
-          backgroundColor: const Color(0xFF1A2232),
+     //     backgroundColor: const Color(0xFF1A2232),
           body: SingleChildScrollView(child: Column(
               children: [
 
@@ -108,7 +106,7 @@ class DetailsPage extends StatelessWidget {
                 ),
 
 
-                Container(
+/*                Container(
                   decoration: BoxDecoration(
                     color: const Color(0xFF54A8E5),
                     borderRadius: BorderRadius.circular(20),
@@ -130,7 +128,8 @@ class DetailsPage extends StatelessWidget {
                       style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                     ),
                   ),
-                ),SizedBox(height: 20,)]),
+                ),*/
+                SizedBox(height: 20,)]),
             // const Spacer(),
 
 

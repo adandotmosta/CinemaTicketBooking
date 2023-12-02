@@ -1,17 +1,25 @@
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
 import 'package:cinema_ticket_booking_app/core/app_export.dart';
 
 class CustomBottomBar extends StatefulWidget {
-  CustomBottomBar({this.onChanged});
+  CustomBottomBar({this.onChanged,this.index});
 
   Function(BottomBarEnum)? onChanged;
+  int? index;
 
   @override
   CustomBottomBarState createState() => CustomBottomBarState();
 }
 
 class CustomBottomBarState extends State<CustomBottomBar> {
-  int selectedIndex = 0;
+  late int selectedIndex;
+  @override
+  void initState() {
+    super.initState();
+    selectedIndex = widget.index ?? 0;
+  }
 
   List<BottomMenuModel> bottomMenuList = [
     BottomMenuModel(
@@ -79,13 +87,13 @@ class CustomBottomBarState extends State<CustomBottomBar> {
           // Navigate to the corresponding screen
           switch (bottomMenuList[index].type) {
             case BottomBarEnum.Home:
-              Navigator.of(context).pushReplacementNamed(AppRoutes.homeScreen);
+              Navigator.of(context).pushNamed(AppRoutes.homeScreen);
               break;
             case BottomBarEnum.Play:
-              Navigator.of(context).pushReplacementNamed(AppRoutes.explorePage);
+              Navigator.of(context).pushNamed(AppRoutes.explorePage);
               break;
             case BottomBarEnum.Cinemas:
-              Navigator.of(context).pushReplacementNamed(AppRoutes.allCinemasScreen);
+              Navigator.of(context).pushNamed(AppRoutes.allCinemasScreen);
               break;
             case BottomBarEnum.Profileblue400:
               Navigator.of(context).pushReplacementNamed(AppRoutes.settingsScreen);

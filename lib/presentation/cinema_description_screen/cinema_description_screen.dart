@@ -22,7 +22,7 @@ class CinemaDescriptionScreen2 extends StatelessWidget {
 
         child: Scaffold(
           appBar: _buildAppBar2(context),
-          backgroundColor: const Color(0xFF1A2232),
+     //     backgroundColor: const Color(0xFF1A2232),
           body: SingleChildScrollView(
             child: Column(
               children: [
@@ -216,20 +216,7 @@ class CinemaDescriptionScreen2 extends StatelessWidget {
   PreferredSizeWidget _buildAppBar(BuildContext context) {
     return CustomAppBar(
       leadingWidth: 56.h,
-      leading: GestureDetector(
-        onTap: () {
-          print("GestureDetector tapped!"); // Debug print
-          Navigator.pop(context);
-        },
-        child: AppbarLeadingImage(
-          imagePath: ImageConstant.imgBtnBack,
-          margin: EdgeInsets.only(
-            left: 30.h,
-            top: 15.v,
-            bottom: 14.v,
-          ),
-        ),
-      ),
+
       centerTitle: true,
       title: AppbarTitle(
         text: "Details Cinema",
@@ -240,12 +227,6 @@ class CinemaDescriptionScreen2 extends StatelessWidget {
   PreferredSizeWidget _buildAppBar2(BuildContext context) {
     return CustomAppBar(
       leadingWidth: 56.h,
-      leading: IconButton(
-        icon: Icon(Icons.arrow_back_ios ,color: Colors.white,),
-        onPressed: () {
-          Navigator.pop(context);
-        },
-      ),
       centerTitle: true,
       title: AppbarTitle(
         text: "Details Cinema",

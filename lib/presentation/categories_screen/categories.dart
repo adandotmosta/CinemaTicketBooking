@@ -64,7 +64,7 @@ class _FilmCategoriesState extends State<FilmCategories> {
     return SafeArea(child: 
     Scaffold(
       appBar: _buildAppBar2(context),
-      backgroundColor: const Color(0xFF1A2232),
+     // backgroundColor: const Color(0xFF1A2232),
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(16),
@@ -118,6 +118,8 @@ class _FilmCategoriesState extends State<FilmCategories> {
         onTap: () {
           setState(() {
             selectedCategory = categories[index]['name']!;
+            Navigator.pushNamed(context,
+              AppRoutes.movieSessionsTabContainerScreen, );
           });
         },
         child: Padding(

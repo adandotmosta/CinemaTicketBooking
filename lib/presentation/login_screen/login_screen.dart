@@ -135,6 +135,10 @@ class LoginScreen extends StatelessWidget {
   /// Section Widget
   Widget _buildLogin(BuildContext context) {
     return CustomElevatedButton(
+      onPressed: () {
+        Navigator.pushNamed(context,
+          AppRoutes.homeScreen,);
+      },
       height: 48.v,
       text: "Login ",
       margin: EdgeInsets.symmetric(horizontal: 48.h),
@@ -147,6 +151,10 @@ class LoginScreen extends StatelessWidget {
   /// Section Widget
   Widget _buildCreateAccount(BuildContext context) {
     return CustomElevatedButton(
+      onPressed: () {
+        Navigator.pushNamed(context,
+          AppRoutes.signUpScreen,);
+      },
       height: 48.v,
       text: "Create account",
       margin: EdgeInsets.symmetric(horizontal: 48.h),

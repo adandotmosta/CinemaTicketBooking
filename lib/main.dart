@@ -23,7 +23,7 @@ class MyApp extends StatelessWidget {
       theme: theme,
       title: 'mohamed_nadir_student_s_application3',
       debugShowCheckedModeBanner: false,
-      initialRoute: AppRoutes.homeScreen,
+      initialRoute: AppRoutes.loginScreen,
       routes: AppRoutes.routes,
     );
   }

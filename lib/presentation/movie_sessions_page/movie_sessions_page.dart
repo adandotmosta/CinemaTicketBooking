@@ -27,7 +27,7 @@ class MovieSessionsPageState extends State<MovieSessionsPage>
 
     return SafeArea(
       child: Scaffold(
-        backgroundColor: appTheme.gray90001,
+    //    backgroundColor: appTheme.gray90001,
         body: SizedBox(
           width: mediaQueryData.size.width,
           child: SingleChildScrollView(

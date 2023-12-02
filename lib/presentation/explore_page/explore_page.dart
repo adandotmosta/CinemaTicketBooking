@@ -25,7 +25,7 @@ class ExplorePageState extends State<ExplorePage> {
     return SafeArea(child:
     Scaffold(
       appBar:_buildAppBar2(context) ,
-      backgroundColor: const Color(0xFF1A2232),
+   //   backgroundColor: const Color(0xFF1A2232),
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(0),
@@ -40,7 +40,7 @@ class ExplorePageState extends State<ExplorePage> {
                   height: 60,
                   width: 350,
                   decoration: BoxDecoration(
-                    color: const Color(0xFF32363D),
+               //     color: const Color(0xFF32363D),
                     borderRadius: BorderRadius.circular(12),
                   ),
                   child: Padding(
@@ -233,9 +233,9 @@ class ExplorePageState extends State<ExplorePage> {
               GestureDetector(
 
                 onTap: (){
-                  Navigator.push(context,
-                      MaterialPageRoute(builder:(context) => const FilmCategories() )
-                  );},
+                  Navigator.pushNamed(context,
+                      AppRoutes.categories, );
+                },
                 child:
                 Text("See more",style: TextStyle(fontSize: 26,fontWeight: FontWeight.bold,color: Colors.grey),),
 
@@ -250,12 +250,8 @@ class ExplorePageState extends State<ExplorePage> {
   PreferredSizeWidget _buildAppBar2(BuildContext context) {
     return CustomAppBar(
       leadingWidth: 56.h,
-      leading: IconButton(
-        icon: Icon(Icons.arrow_back_ios ,color: Colors.white,),
-        onPressed: () {
-          Navigator.pop(context);
-        },
-      ),
+      leading: Text(""),
+
       centerTitle: true,
       title: AppbarTitle(
         text: "Available movies",
@@ -265,6 +261,7 @@ class ExplorePageState extends State<ExplorePage> {
   Widget _buildBottomBar(BuildContext context) {
     return CustomBottomBar(
       onChanged: (BottomBarEnum type) {},
+      index: 1,
     );
   }
 }
@@ -272,9 +269,8 @@ class ExplorePageState extends State<ExplorePage> {
 Widget _buildItem(BuildContext context, String title, String imagePath) {
   return GestureDetector(
       onTap: (){
-        Navigator.push(context,
-          MaterialPageRoute(builder:(context) => const DetailsPage() ),
-        );
+        Navigator.pushNamed(context,
+          AppRoutes.movieSessionsTabContainerScreen, );
       },
       child: Padding(
         padding: EdgeInsets.all(MediaQuery.of(context).size.width * 0.03),
@@ -282,7 +278,7 @@ Widget _buildItem(BuildContext context, String title, String imagePath) {
           width: MediaQuery.of(context).size.width * 0.5,
           decoration: BoxDecoration(
             shape: BoxShape.rectangle,
-            color: const Color(0xFF1A2232),
+       //     color: const Color(0xFF1A2232),
           ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,

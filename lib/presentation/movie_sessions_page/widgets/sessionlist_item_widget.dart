@@ -25,18 +25,23 @@ class SessionlistItemWidget extends StatelessWidget {
               ),
               child: Row(
                 children: [
-                  Column(
-                    children: [
-                      Text(
-                        "14:40",
-                        style: CustomTextStyles.titleMediumBold18,
-                      ),
-                      SizedBox(height: 3.v),
-                      Text(
-                        "Рус",
-                        style: CustomTextStyles.labelLargePTRootUIBluegray500,
-                      ),
-                    ],
+                  GestureDetector(
+                    onTap: (){
+                      Navigator.pushNamed(context, AppRoutes.cinemaDescriptionScreen);
+                    },
+                    child: Column(
+                      children: [
+                        Text(
+                          "14:40",
+                          style: CustomTextStyles.titleMediumBold18,
+                        ),
+                        SizedBox(height: 3.v),
+                        Text(
+                          "",
+                          style: CustomTextStyles.labelLargePTRootUIBluegray500,
+                        ),
+                      ],
+                    ),
                   ),
                   Padding(
                     padding: EdgeInsets.only(left: 29.h),
@@ -54,31 +59,11 @@ class SessionlistItemWidget extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          "Eurasia Cinema7",
+                          "TMV CINEMA",
                           style: CustomTextStyles.titleSmallWhiteA70001Bold,
                         ),
                         SizedBox(height: 6.v),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              "2200 ₸",
-                              style: theme.textTheme.bodyMedium,
-                            ),
-                            Text(
-                              "1000 ₸",
-                              style: theme.textTheme.bodyMedium,
-                            ),
-                            Text(
-                              "1500 ₸",
-                              style: theme.textTheme.bodyMedium,
-                            ),
-                            Text(
-                              "•",
-                              style: CustomTextStyles.bodyMediumBluegray500,
-                            ),
-                          ],
-                        ),
+
                       ],
                     ),
                   ),

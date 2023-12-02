@@ -1,3 +1,4 @@
+import 'package:cinema_ticket_booking_app/presentation/categories_screen/categories.dart';
 import 'package:cinema_ticket_booking_app/presentation/details_page/details_page.dart';
 import 'package:cinema_ticket_booking_app/presentation/explore_page/explore_page.dart';
 import 'package:flutter/material.dart';
@@ -25,6 +26,8 @@ class AppRoutes {
   static const String sessionpercinemaScreen = '/sessionpercinema_screen';
 
   static const String cinemaDescriptionScreen = '/cinema_description_screen';
+
+  static const String categories  = '/categories';
 
   static const String homeScreen = '/home_screen';
 
@@ -82,6 +85,7 @@ class AppRoutes {
         MovieSessionsTabContainerScreen(),
     savedPlanScreen: (context) => SavedPlanScreen(),
     settingsScreen: (context) => SettingsScreen(),
-    appNavigationScreen: (context) => AppNavigationScreen()
+    appNavigationScreen: (context) => AppNavigationScreen(),
+    categories : (context) => FilmCategories(),
   };
 }

@@ -56,7 +56,6 @@ class _AllCinemasScreenState extends State<AllCinemasScreen> {
     return  SafeArea(
         child:   Scaffold(
           appBar: _buildWelcomeBackGroup(context),
-          backgroundColor: const Color(0xff1A2232),
 
           body:  Padding(padding: const EdgeInsets.all(16),
             child: Column(
@@ -155,6 +154,7 @@ class _AllCinemasScreenState extends State<AllCinemasScreen> {
   }
   PreferredSizeWidget _buildWelcomeBackGroup(BuildContext context) {
     return CustomAppBar(
+      leading: Text(""),
       title: Padding(
         padding: EdgeInsets.only(left: 30.h),
         child: Column(
@@ -187,6 +187,7 @@ class _AllCinemasScreenState extends State<AllCinemasScreen> {
   Widget _buildBottomBar(BuildContext context) {
     return CustomBottomBar(
       onChanged: (BottomBarEnum type) {},
+      index : 2,
     );
   }
 }

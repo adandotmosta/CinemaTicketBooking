@@ -30,7 +30,6 @@ class HomeScreen extends StatelessWidget {
       SafeArea(
           child: Scaffold(
             appBar: _buildWelcomeBackGroup(context),
-            backgroundColor: const Color(0xFF1A2232),
 
             body:
             SingleChildScrollView(child:
@@ -138,6 +137,7 @@ class HomeScreen extends StatelessWidget {
   /// Section Widget
   PreferredSizeWidget _buildWelcomeBackGroup(BuildContext context) {
     return CustomAppBar(
+      leading: Text(""),
       title: Padding(
         padding: EdgeInsets.only(left: 30.h),
         child: Column(
@@ -153,11 +153,17 @@ class HomeScreen extends StatelessWidget {
         ),
       ),
       actions: [
-        AppbarTrailingImage(
-          imagePath: ImageConstant.imgProfile,
-          margin: EdgeInsets.symmetric(
-            horizontal: 30.h,
-            vertical: 4.v,
+        GestureDetector(
+          onTap: (){
+            Navigator.pushNamed(context,
+              AppRoutes.settingsScreen, );
+          },
+          child: AppbarTrailingImage(
+            imagePath: ImageConstant.imgProfile,
+            margin: EdgeInsets.symmetric(
+              horizontal: 30.h,
+              vertical: 4.v,
+            ),
           ),
         ),
       ],
@@ -185,15 +191,13 @@ Widget _buildItem(BuildContext context,String title, String description, String 
       width: MediaQuery.of(context).size.width * 0.80,
       decoration:const BoxDecoration(
         shape: BoxShape.rectangle,
-        color: Color(0xFF1A2232),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,        children: [
         GestureDetector(
             onTap: (){
-              Navigator.push(context,
-                MaterialPageRoute(builder:(context) => const DetailsPage()),
-              );
+              Navigator.pushNamed(context,
+                AppRoutes.movieSessionsTabContainerScreen,);
             },
             child:
             Container(
@@ -268,7 +272,6 @@ class _SearchPageState extends State<SearchPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFF1A2232),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16),
         child: Column(
@@ -277,7 +280,6 @@ class _SearchPageState extends State<SearchPage> {
           children: [
             Expanded(
               child: Container(
-                color: const Color(0xFF1A2232),
                 child: ListView.builder(
                   shrinkWrap: true,
                   itemCount: display_list.length,
