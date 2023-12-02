@@ -21,7 +21,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       theme: theme,
-      title: 'mohamed_nadir_student_s_application3',
+      title: 'Cinema Ticket Reservation',
       debugShowCheckedModeBanner: false,
       initialRoute: AppRoutes.loginScreen,
       routes: AppRoutes.routes,
