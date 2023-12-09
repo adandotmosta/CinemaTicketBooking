@@ -115,7 +115,7 @@ class HomeScreen extends StatelessWidget {
 
                     ),
                     SizedBox(
-                        height: 200,
+                        height: 225,
                         child: Expanded(child:
                         const SearchPage(),)
                     ),

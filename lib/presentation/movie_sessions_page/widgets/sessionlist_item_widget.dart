@@ -27,7 +27,7 @@ class SessionlistItemWidget extends StatelessWidget {
                 children: [
                   GestureDetector(
                     onTap: (){
-                      Navigator.pushNamed(context, AppRoutes.cinemaDescriptionScreen);
+                      Navigator.pushNamed(context, AppRoutes.selectSeatsScreen);
                     },
                     child: Column(
                       children: [

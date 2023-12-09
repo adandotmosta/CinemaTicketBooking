@@ -186,8 +186,8 @@ class _PaymentSuccessScreenState extends State<PaymentSuccessScreen> {
               controller: selectTransferSourceController,
               hintText: "EDAHABIA",
               hintStyle: TextStyle(
-                color: Colors.white,
-                fontSize: 16
+                  color: Colors.white,
+                  fontSize: 16
               ),
               textInputAction: TextInputAction.done,
             ),

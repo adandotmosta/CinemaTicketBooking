@@ -118,8 +118,6 @@ class _FilmCategoriesState extends State<FilmCategories> {
         onTap: () {
           setState(() {
             selectedCategory = categories[index]['name']!;
-            Navigator.pushNamed(context,
-              AppRoutes.movieSessionsTabContainerScreen, );
           });
         },
         child: Padding(
@@ -229,7 +227,13 @@ Widget _buildItem2(BuildContext context, String title, String imagePath) {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Container(
+            GestureDetector(
+              onTap: (){
+
+                Navigator.pushNamed(context,
+                  AppRoutes.movieSessionsTabContainerScreen, );
+              },
+              child: Container(
   height: 200,
   clipBehavior: Clip.antiAlias,
   decoration:  BoxDecoration(
@@ -240,6 +244,7 @@ Widget _buildItem2(BuildContext context, String title, String imagePath) {
     fit: BoxFit.cover,
   ),
 ),
+            ),
             Wrap(
               children: [
                 Padding(

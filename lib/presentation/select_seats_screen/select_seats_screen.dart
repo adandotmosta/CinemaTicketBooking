@@ -406,7 +406,7 @@ class MyState extends State<SelectSeatsScreen> {
   Widget _buildCheckoutButton(BuildContext context) {
     return CustomElevatedButton(
       onPressed: (){
-        Navigator.pushNamed(context, AppRoutes.eTicketScreen);
+        Navigator.pushNamed(context, AppRoutes.paymentSuccessScreen);
       },
       text: "Checkout",
       margin: EdgeInsets.only(
