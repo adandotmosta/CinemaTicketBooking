@@ -1,3 +1,6 @@
+import 'package:cinema_ticket_booking_app/core/utils/Cinema/cinema.dart';
+import 'package:cinema_ticket_booking_app/databases/DBCinemas.dart';
+
 import '../all_cinemas_screen/widgets/locationdetails_item_widget.dart';
 import 'package:cinema_ticket_booking_app/core/app_export.dart';
 import 'package:cinema_ticket_booking_app/widgets/app_bar/appbar_subtitle.dart';
@@ -21,38 +24,22 @@ class AllCinemasScreen extends StatefulWidget {
 
 class _AllCinemasScreenState extends State<AllCinemasScreen> {
 
-  static List<CineamaModel> main_cinema_list =[
-    CineamaModel("TMV Cinema",10,"Garden City, Cheraga, Alger",        Image.network("https://media.licdn.com/dms/image/D4E0BAQFAR9M8HoD8NQ/company-logo_200_200/0/1695818527430/tmv_cinemas_logo?e=2147483647&v=beta&t=UH_0Le2kwwnzV9XzbyVKy2h5is7aMCIH3A39yvCcskI"),),
-
-    CineamaModel("CineGold",10,"Senia Mall, Es Senia, Oran",      Image.network("https://media.licdn.com/dms/image/D4E0BAQFAR9M8HoD8NQ/company-logo_200_200/0/1695818527430/tmv_cinemas_logo?e=2147483647&v=beta&t=UH_0Le2kwwnzV9XzbyVKy2h5is7aMCIH3A39yvCcskI"),),
-
-    CineamaModel("Cosmos Alpha",10,"Garden City, Cheraga, Alger",      Image.network("https://media.licdn.com/dms/image/D4E0BAQFAR9M8HoD8NQ/company-logo_200_200/0/1695818527430/tmv_cinemas_logo?e=2147483647&v=beta&t=UH_0Le2kwwnzV9XzbyVKy2h5is7aMCIH3A39yvCcskI"),),
-    CineamaModel("IBN ZEYDOUN",10,"El Madania, Algeria",      Image.network("https://media.licdn.com/dms/image/D4E0BAQFAR9M8HoD8NQ/company-logo_200_200/0/1695818527430/tmv_cinemas_logo?e=2147483647&v=beta&t=UH_0Le2kwwnzV9XzbyVKy2h5is7aMCIH3A39yvCcskI"),),
-
-    CineamaModel("Viva Cinema",10,"Center of algiers",      Image.network("https://media.licdn.com/dms/image/D4E0BAQFAR9M8HoD8NQ/company-logo_200_200/0/1695818527430/tmv_cinemas_logo?e=2147483647&v=beta&t=UH_0Le2kwwnzV9XzbyVKy2h5is7aMCIH3A39yvCcskI"),),
 
 
 
 
-
-
-
-
-  ];
-
-  static List<CineamaModel> display_list= List.from(main_cinema_list);
-
-  void updateList(String value) {
+/*  void updateList(String value) {
     setState(() {
-      display_list = main_cinema_list
+      display_list =["hello","workd"];
           .where((element) =>
           element.cinema_name!.toLowerCase().contains(value.toLowerCase()))
           .toList();
     });
-  }
+  }*/
 
   @override
   Widget build(BuildContext context) {
+    Future<List<Map>> main_cinema_list = getCinemas();
     return  SafeArea(
         child:   Scaffold(
           appBar: _buildWelcomeBackGroup(context),
@@ -72,7 +59,7 @@ class _AllCinemasScreenState extends State<AllCinemasScreen> {
                 ),
                 const SizedBox(height: 20.0,),
                 TextField(
-                  onChanged: (value) => updateList(value),
+               //   onChanged: (value) => updateList(value),
                   style:const TextStyle(color: const Color.fromARGB(255, 40, 39, 39),
                     fontSize: 14,),
                   decoration:InputDecoration(
@@ -91,57 +78,29 @@ class _AllCinemasScreenState extends State<AllCinemasScreen> {
                   ) ,
                 ),
                 SizedBox(height: 10,),
+                Row(
+                  children: [
+                    Spacer(),
+                    Container(
+                        margin: EdgeInsets.all(10),
+                        child: SizedBox(
+                          height: 40,
+                          width: 80,
+                          child: ElevatedButton(
+                              onPressed: () async {
+                                await service_sync_cinemas();
+                                setState(() {});
+                              },
+
+                              child: Text("Refresh Categories")),
+                        )),
+                  ],
+                ),
                 Expanded(
 
-                  child: display_list.isEmpty  ?const Center(child: Text("No result found",style: TextStyle(color: Colors.white,fontSize: 22.0,fontWeight: FontWeight.bold,),)):
+                  child:
+                      FutureBuilder(future: main_cinema_list, builder: _build_list_cinemas)
 
-                  ListView.builder(
-                    itemCount: display_list.length,
-                    itemBuilder: (context, index) => Container(
-                      margin: const EdgeInsets.only(bottom: 16.0), // Adjust the value as needed
-                      child: ListTile(
-                        title: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              display_list[index].cinema_location ?? '',
-                              style: TextStyle(color: const Color.fromARGB(255, 0, 140, 255),fontSize: 12,),
-                            ),
-                            const SizedBox(height: 10.0),
-                            Text(
-                              display_list[index].cinema_name!,
-                              style: const TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 16,
-                              ),
-                            ),
-                          ],
-                        ),
-                        subtitle: Text(
-                          "Closed at ${display_list[index].cinema_close!} PM",
-                          style: const TextStyle(color: Colors.grey,fontSize: 12),
-                        ),
-                        leading: GestureDetector(
-                          onTap: () => {
-                            Navigator.push(context,
-                              MaterialPageRoute(builder:(context)=>const CinemaDescriptionScreen2() ),)
-                          },
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(10.0),
-                            child: display_list[index].cinemaImage ?? Container(
-                              color: Colors.grey,
-                              width: 500.0, // Adjust the width as needed
-                              height: 50.0, // Adjust the height as needed
-                            ),
-                          ),
-                        ),
-
-
-
-                      ),
-                    ),
-                  ),
 
 
                 ),],
@@ -151,6 +110,84 @@ class _AllCinemasScreenState extends State<AllCinemasScreen> {
           ),
           bottomNavigationBar: _buildBottomBar(context), )
     );
+  }
+  Future<List<Map>> getCinemas() async {
+    Future<List<Map>> locals =  DBCinemas.getAllCinemas();
+    print("getCinemas()");
+    return locals;
+  }
+  Widget _build_list_cinemas(BuildContext context, AsyncSnapshot snapshot){
+    if(snapshot.hasData) {
+      print("snapshot.hasData");
+      List<Map> display_list = snapshot.data as List<Map>;
+      return ListView.builder(
+        itemCount: display_list.length,
+        itemBuilder: (context, index) {
+          var cinema_name = display_list[index]["Cinema_name"];
+          var cinema_location = display_list[index]["Cinema_location"];
+          var cinema_closing = display_list[index]["Cinema_closing"];
+          var cinema_desc =  display_list[index]["Cinema_description"];
+          var cinema_img = display_list[index]["Cinema_image"];
+
+          return Container(
+            margin: const EdgeInsets.only(bottom: 16.0),
+            // Adjust the value as needed
+            child: ListTile(
+              title: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    cinema_location,
+                    style: TextStyle(
+                      color: const Color.fromARGB(255, 0, 140, 255),
+                      fontSize: 12,
+                    ),
+                  ),
+                  const SizedBox(height: 10.0),
+                  Text(
+                    cinema_name,
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 16,
+                    ),
+                  ),
+                ],
+              ),
+              subtitle: Text(
+                "Closed at $cinema_closing",
+                style: const TextStyle(color: Colors.grey, fontSize: 12),
+              ),
+              leading: GestureDetector(
+                onTap: () {
+                  Navigator.pushNamed(
+                    context,
+                    AppRoutes.cinemaDescriptionScreen,
+                    arguments: {'id': index, 'cinema_name': cinema_name, 'cinema_description' : cinema_desc, 'cinema_location' : cinema_location ,
+                    'cinema_image' : cinema_img, 'cinema_closing' : cinema_closing},
+                  );
+                },
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(10.0),
+                  child: Image.asset("assets/images/png/cinemas.png") ??
+                      Container(
+                        color: Colors.grey,
+                        width: 500.0, // Adjust the width as needed
+                        height: 50.0, // Adjust the height as needed
+                      ),
+                ),
+              ),
+            ),
+          );
+        },
+      );
+
+
+  } else if(snapshot.hasError){
+      print("44444444444444444444444444444");
+      return Text("${snapshot.hasError}");
+    }
+    return CircularProgressIndicator();
   }
   PreferredSizeWidget _buildWelcomeBackGroup(BuildContext context) {
     return CustomAppBar(

@@ -1,4 +1,6 @@
 
+import 'dart:ffi';
+
 import 'package:cinema_ticket_booking_app/core/app_export.dart';
 import 'package:cinema_ticket_booking_app/presentation/movie_sessions_page/movie_sessions_page.dart';
 import 'package:cinema_ticket_booking_app/presentation/details_page/details_page.dart';
@@ -23,6 +25,8 @@ class MovieSessionsTabContainerScreenState
   bool isAboutTabActive = true;
 
   GlobalKey<NavigatorState> navigatorKey = GlobalKey();
+
+
 
   @override
   void initState() {

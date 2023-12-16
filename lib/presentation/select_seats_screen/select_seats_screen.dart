@@ -1,4 +1,5 @@
 import 'package:cinema_ticket_booking_app/core/app_export.dart';
+import 'package:cinema_ticket_booking_app/core/utils/Cinema/SessionsPerCinema.dart';
 import 'package:cinema_ticket_booking_app/widgets/app_bar/appbar_leading_image.dart';
 import 'package:cinema_ticket_booking_app/widgets/app_bar/appbar_title.dart';
 import 'package:cinema_ticket_booking_app/widgets/app_bar/custom_app_bar.dart';
@@ -6,9 +7,9 @@ import 'package:cinema_ticket_booking_app/widgets/custom_drop_down.dart';
 import 'package:cinema_ticket_booking_app/widgets/custom_elevated_button.dart';
 import 'package:cinema_ticket_booking_app/widgets/custom_radio_button.dart';
 import 'package:flutter/material.dart';
+import 'package:cinema_ticket_booking_app/core/utils/sessions_per_room.dart';
 
 class SelectSeatsScreen extends StatefulWidget {
-
   @override
   MyState createState() => MyState();
 }
@@ -22,7 +23,6 @@ class MyState extends State<SelectSeatsScreen> {
     "Killers of the follower moon",
     "SAW X",
   ];
-
 
   List<String> seats = [
     'A1',
@@ -50,7 +50,40 @@ class MyState extends State<SelectSeatsScreen> {
     'E4',
     'E5',
   ];
-
+  int max_rows = 12;
+  int max_cols = 6;
+  var s_h = 20;
+  var s_w = 60;
+  List<Map<String, List<String>>> mappedSeatMatrix = [
+    {'0': ['A1#0x0', 'A2#0x1', 'A3#0x2']},
+    {'1': ['B1#1x0', 'B2#1x1', 'B3#1x2', 'B6#1x5']},
+    {'2': ['C1#2x0', 'C2#2x1', 'C3#2x2', 'C4#2x3', 'C5#2x4', 'C6#2x5']},
+    //{'3': ['D1#3x0', 'D2#3x1', 'D3#3x2', 'D4#3x3', 'D5#3x4', 'D6#3x5']},
+    {'4': ['E1#4x0', 'E2#4x1', 'E3#4x2', 'E4#4x3', 'E5#4x4', 'E6#4x5']},
+    {'5': ['F1#5x0', 'F2#5x1', 'F3#5x2', 'F4#5x3', 'F5#5x4', 'F6#5x5']},
+  //  {'6': ['G1#6x0', 'G2#6x1', 'G5#6x4', 'G6#6x5']},
+   // {'7': ['H1#7x0', 'H2#7x1', 'H5#7x4', 'H6#7x5']},
+    {'8': ['I1#8x0', 'I2#8x1', 'I3#8x2', 'I4#8x3', 'I5#8x4', 'I6#8x5']},
+    {'9': ['J1#9x0', 'J2#9x1', 'J3#9x2', 'J4#9x3', 'J5#9x4', 'J6#9x5']},
+    {'10': ['K1#10x0', 'K2#10x1', 'K5#10x4', 'K6#10x5']},
+    {'11': ['L1#11x0', 'L2#11x1', 'L5#11x4', 'L6#11x5']},
+    // Add more rows as needed
+  ];
+  final List<List<String>> seatMatrix = [
+    ['A1#0x0', 'A2#0x1', 'A3#0x2'],
+    ['B1#1x0', 'B2#1x1', 'B3#1x2', 'B6#1x5'],
+    ['C1#2x0', 'C2#2x1', 'C3#2x2', 'C4#2x3', 'C5#2x4', 'C6#2x5'],
+    ['D1#3x0', 'D2#3x1', 'D3#3x2', 'D4#3x3', 'D5#3x4', 'D6#3x5'],
+    ['E1#4x0', 'E2#4x1', 'E3#4x2', 'E4#4x3', 'E5#4x4', 'E6#4x5'],
+    ['F1#5x0', 'F2#5x1', 'F3#5x2', 'F4#5x3', 'F5#5x4', 'F6#5x5'],
+    ['G1#6x0', 'G2#6x1', 'G5#6x4', 'G6#6x5'],
+    ['H1#7x0', 'H2#7x1', 'H5#7x4', 'H6#7x5'],
+    ['I1#8x0', 'I2#8x1', 'I3#8x2', 'I4#8x3', 'I5#8x4', 'I6#8x5'],
+    ['J1#9x0', 'J2#9x1', 'J3#9x2', 'J4#9x3', 'J5#9x4', 'J6#9x5'],
+    ['K1#10x0', 'K2#10x1', 'K5#10x4', 'K6#10x5'],
+    ['L1#11x0', 'L2#11x1', 'L5#11x4', 'L6#11x5'],
+    // Add more rows as needed
+  ];
   String radioGroup = "";
   Map<String, int> Selected_Items = {
     'A1': 0,
@@ -78,13 +111,28 @@ class MyState extends State<SelectSeatsScreen> {
     'E4': 0,
     'E5': 0,
   };
-@override
-  void initState() {
+
+  var i = 0;
+  @override
+  void initState()  {
     // TODO: implement initState
     super.initState();
 
-  }
+    for (int i = 0; i < 30; i++) {
+      seats.add("Y$i");
+      Selected_Items["Y$i"] = 0;
+    }
 
+    for (final row in mappedSeatMatrix) {
+      for (final key in row.keys) {
+        print('Row Number: $key');
+      }
+    }
+
+    //endpoint_api_get_room();
+
+
+  }
   @override
   Widget build(BuildContext context) {
     mediaQueryData = MediaQuery.of(context);
@@ -100,7 +148,6 @@ class MyState extends State<SelectSeatsScreen> {
           ),
           child: Column(
             children: [
-
               SizedBox(height: 12.v),
               Align(
                 alignment: Alignment.centerLeft,
@@ -123,7 +170,6 @@ class MyState extends State<SelectSeatsScreen> {
       ),
     );
   }
-
 
   /// Section Widget
   PreferredSizeWidget _buildAppBar(BuildContext context) {
@@ -248,92 +294,182 @@ class MyState extends State<SelectSeatsScreen> {
     }
   }
 
-
-
-
   /// Section Widget
   Widget _buildSeatStack(BuildContext context) {
     return SizedBox(
-      height: 380.v,
-      width: 315.h,
+      //  height: 380.v,
+      width: double.maxFinite,
       child: Column(
-
-      //  alignment: Alignment.topCenter,
+        //  alignment: Alignment.topCenter,
 
         //  alignment: Alignment.topCenter,
 
         children: [
-
           CustomImageView(
             imagePath: ImageConstant.imgScreen,
             height: 100.v,
             width: 315.h,
             alignment: Alignment.topCenter,
           ),
-          Container(
-            child: Padding(
-              padding: const EdgeInsets.only(left: 20, right: 20),
-              child: GridView.count(
-                crossAxisSpacing: 20,
-                shrinkWrap: true,
-                crossAxisCount: 6,
-                mainAxisSpacing: 5,
-                childAspectRatio: 1,
-                children: List.generate(seats.length, (index) {
-                  String seat = seats[index];
+          SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            child: Container(
+              height: 280.v,
+              width: ((s_w + 15) * max_cols).h,
+              child: Padding(
+                padding: EdgeInsets.only(left: 10.h),
+                child: ListView.builder(
+                  scrollDirection: Axis.vertical,
+                  itemCount: max_rows,
+                  itemBuilder: (context, index) {
 
-                  Color buttonColor;
-                  switch (Selected_Items[seat]) {
-                    case 0:
-                      buttonColor = Colors.black;
-                      break;
-                    case 1:
-                      buttonColor = Colors.blue;
-                      break;
-                    case 2:
-                      buttonColor = Colors.red;
-                      break;
-                    default:
-                      buttonColor = Colors.black;
-                      break;
-                  }
 
-                  return Center(
-                    child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        fixedSize: Size(30.adaptSize, 30.adaptSize),
-                        backgroundColor: buttonColor,
-                        foregroundColor: Colors.white,
-                      ),
-                      onPressed: () {
-                        print(seat + " changed");
-                        print(seat + " state = " + "${Selected_Items[seat]}");
-                        setState((){
-                          int? seat_state = Selected_Items[seat];
-                          if(seat_state==0) {
-                            Selected_Items[seat] =1;
+                    List<String> rowSeats = fetch_row(index);
 
-                          } else if(seat_state==1) {
-                            Selected_Items[seat] =0;
-                          }
-                        });
-                      },
-                      child: Text(
-                        seat,
-                      ),
-                    ),
-                  );
-                }),
+                    print('after fetch in index=$index with rowSeats : $rowSeats');
+
+                    return (rowSeats!=["a#b"])
+                        ? Padding(
+                            padding: EdgeInsets.only(top: 10),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: List.generate(max_cols, (rowIndex) {
+                                String actual_location =
+                                    "${index.toString()}x${rowIndex.toString()}";
+                           //     print("we are at $actual_location");
+
+                                var seat = check_in_row(rowSeats, actual_location);
+
+                                Color buttonColor = Colors.black;
+                                String seat_name = "";
+                                String seat_row = "";
+                                String seat_col = "";
+
+                                if (seat != "") {
+                             //     print("for column $rowIndex");
+                                  List<String> parts = seat.split("#");
+
+                                  if (parts.length == 2) {
+                                    seat_name = parts[0];
+                                    String seat_location = parts[1];
+
+                                    List<String> seat_coordinates =
+                                        seat_location.split("x");
+
+                                    if (seat_coordinates.length == 2) {
+                                      seat_row = seat_coordinates[0];
+                                      seat_col = seat_coordinates[1];
+
+/*                                      // Now you can use seat_name, seat_row, and seat_col as needed
+                                      print('Seat Name: $seat_name');
+                                      print('Seat Row: $seat_row');
+                                      print('Seat Column: $seat_col');*/
+                                    } else {
+                                      print(
+                                          'Invalid seat location format: $seat_location');
+                                    }
+                                  } else {
+                                    print('Invalid seat format: $seat');
+                                  }
+
+                                  switch (Selected_Items[seat_name]) {
+                                    case 0:
+                                      buttonColor = Colors.black;
+                                      break;
+                                    case 1:
+                                      buttonColor = Colors.blue;
+                                      break;
+                                    case 2:
+                                      buttonColor = Colors.red;
+                                      break;
+                                    default:
+                                      buttonColor = Colors.black;
+                                      break;
+                                  }
+                                }
+
+                                return (seat != "")
+                                    ? Container(
+                                        height: s_h.v,
+                                        width: s_w.h,
+                                        margin: EdgeInsets.only(left: 10.h),
+                                        child: ElevatedButton(
+                                          style: ElevatedButton.styleFrom(
+                                            //    fixedSize: Size(5,5),
+
+                                            backgroundColor: buttonColor,
+                                            foregroundColor: Colors.white,
+                                          ),
+                                          onPressed: () {
+                                            print('$seat changed');
+                                            print(
+                                                '$seat state = ${Selected_Items[seat_name]}');
+                                            setState(() {
+                                              Selected_Items[seat_name] =
+                                                  Selected_Items[seat_name] == 0
+                                                      ? 1
+                                                      : 0;
+                                            });
+                                          },
+                                          child: Text(seat_name),
+                                        ),
+                                      )
+                                    : Container(
+                                        width: s_w.h,
+                                        height: s_h.v,
+                                        margin: EdgeInsets.only(left: 10.h),
+                                      );
+                              }),
+                            ),
+                          )
+                        : Padding(
+                            padding: EdgeInsets.only(top:30.v),
+                            child: Text("wiii sal3a"),
+                          );
+                  },
+                ),
               ),
             ),
           ),
-
-
         ],
       ),
     );
   }
 
+  check_in_row(List<String> row_seats, String location) {
+    var seat = "";
+    for (seat in row_seats) {
+      List parts = seat.split("#");
+      String seat_location = parts[1];
+      if (seat_location == location) {
+       // print("actual location will be printed");
+        return seat;
+      }
+    }
+
+    return "";
+  }
+
+  fetch_row(int row_index){
+    print("fetcch row for index=$row_index");
+    var returned=["a#b"];
+
+
+    for(var map in mappedSeatMatrix ){
+      print("map is $map");
+
+      Iterable<String> key = map.keys;
+        var original_key = key.first;
+        if(original_key==row_index.toString()){
+          print("key is $original_key and map =${map[original_key]}");
+          returned = map[original_key]!;
+        }
+
+    }
+    print('rani hna bi =$row_index');
+    return returned;
+
+  }
   /// Section Widget
   Widget _buildInfoSeats(BuildContext context) {
     return Row(
@@ -399,13 +535,14 @@ class MyState extends State<SelectSeatsScreen> {
     );
   }
 
-  Widget _SetColor(BuildContext context){
+  Widget _SetColor(BuildContext context) {
     return Text("hello world");
   }
+
   /// Section Widget
   Widget _buildCheckoutButton(BuildContext context) {
     return CustomElevatedButton(
-      onPressed: (){
+      onPressed: () {
         Navigator.pushNamed(context, AppRoutes.paymentSuccessScreen);
       },
       text: "Checkout",
@@ -416,8 +553,4 @@ class MyState extends State<SelectSeatsScreen> {
       ),
     );
   }
-
-
-
 }
-

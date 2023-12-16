@@ -262,7 +262,7 @@ class SearchPage extends StatefulWidget {
 
 class _SearchPageState extends State<SearchPage> {
   static List<CineamaModel> main_cinema_list = [
-    CineamaModel("TMV Cinema", 10, "Garden City, Cheraga, Alger"),
+    CineamaModel("Cosmos Alpha", 10, "Alger"),
     CineamaModel("CineGold", 10, "Senia Mall, Es Senia, Oran"),
     CineamaModel("CineGold", 10, "Senia Mall, Es Senia, Oran"),
   ];
@@ -326,8 +326,8 @@ class _SearchPageState extends State<SearchPage> {
                         },
                         child: ClipRRect(
                           borderRadius: BorderRadius.circular(15),
-                          child: Image.network(
-                            'https://media.licdn.com/dms/image/D4E0BAQFAR9M8HoD8NQ/company-logo_200_200/0/1695818527430/tmv_cinemas_logo?e=2147483647&v=beta&t=UH_0Le2kwwnzV9XzbyVKy2h5is7aMCIH3A39yvCcskI',
+                          child: Image.asset(
+                            'assets/images/png/img_cosmosalpha_1.png',
                             fit: BoxFit.cover,
                             width: 70,
                             height: 100,

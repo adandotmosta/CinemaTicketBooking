@@ -25,13 +25,19 @@ class UserprofileItemWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        CustomImageView(
-          imagePath: movie_img,
-          height: 100.v,
-          width: double.maxFinite,
-          onTap: () {
-            onTapImgUserImage!.call();
+
+        GestureDetector(
+          onTap: (){
+            onTapImgUserImage?.call();
           },
+
+          child: Image.network(
+              movie_img!,
+            height: 150.v,
+            fit: BoxFit.cover,
+            width: double.maxFinite,
+
+          ),
         ),
         Container(
           width: double.maxFinite,

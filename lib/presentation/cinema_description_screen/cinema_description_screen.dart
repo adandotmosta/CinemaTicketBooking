@@ -6,9 +6,7 @@ import 'package:cinema_ticket_booking_app/widgets/custom_elevated_button.dart';
 import 'package:cinema_ticket_booking_app/widgets/custom_icon_button.dart';
 import 'package:flutter/material.dart';
 
-double screenWidth(BuildContext context) {
-  return MediaQuery.of(context).size.width;
-}
+
 
 
 
@@ -17,7 +15,25 @@ class CinemaDescriptionScreen2 extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    double width = screenWidth(context);
+    var receivedArguments = ModalRoute.of(context)!.settings.arguments;
+    var cinema_id;
+    var cinema_name ;
+    var cinema_description;
+    var cinema_location;
+    var cinema_image;
+    var cinema_closing;
+
+    // Check if receivedArguments is a Map and contains the 'index' key
+    if(receivedArguments is Map){
+      cinema_id = receivedArguments['id'];
+      cinema_name= receivedArguments["cinema_name"];
+      cinema_location = receivedArguments["cinema_location"];
+      cinema_description =  receivedArguments["cinema_description"];
+      cinema_closing  = receivedArguments["cinema_closing"];
+      cinema_image = receivedArguments["cinema_image"];
+    }
+
+
     return SafeArea(
 
         child: Scaffold(
@@ -26,14 +42,14 @@ class CinemaDescriptionScreen2 extends StatelessWidget {
           body: SingleChildScrollView(
             child: Column(
               children: [
-                const SizedBox(height: 20),
+                SizedBox(height: 20.v),
 
                 Container(
                   alignment: Alignment.center,
                   child: Column(
                     children: [
                       Text(
-                        "TMV Cinema",
+                        cinema_name,
                         style: TextStyle(
                           fontSize: 26,
                           fontWeight: FontWeight.bold,
@@ -47,10 +63,10 @@ class CinemaDescriptionScreen2 extends StatelessWidget {
                 Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    SizedBox(height: 20,),
+                    SizedBox(height: 20.v,),
                     Container(
-                      width: 250,
-                      height: 250,
+                      width: 251.adaptSize,
+                      height: 268.adaptSize,
 
                       clipBehavior: Clip.antiAlias,
                       decoration:  BoxDecoration(
@@ -62,31 +78,33 @@ class CinemaDescriptionScreen2 extends StatelessWidget {
                       ),
                     ),
 
-                    const SizedBox(height: 10),
+                    SizedBox(height: 10.v),
                     Container(
-                      padding: EdgeInsets.symmetric(horizontal: width * 0.15,vertical: 10),
+                      padding: EdgeInsets.symmetric(horizontal: 10.h,vertical: 10),
                       child: Column(
                         children: [
                           ListTile(
-                            contentPadding: EdgeInsets.zero,
+                            contentPadding: EdgeInsets.only(
+                              left: 26.h,
+                            ),
                             leading: Container(
-                              height: 40,
-                              width: 40,
+                              height: 40.v,
+                              width: 40.h,
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(10),
                                 color: Color(0xffEB5757),
                               ),
-                              child: const Icon(
+                              child: Icon(
                                 Icons.location_on,
                                 color: Colors.black,
-                                size: 30,
+                                size: 30.adaptSize,
                               ),
                             ),
                             title: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  "Garden City, Cheraga, Algiers",
+                                  cinema_location,
                                   style: TextStyle(
                                     fontSize: 15,
                                     fontWeight: FontWeight.normal,
@@ -99,7 +117,7 @@ class CinemaDescriptionScreen2 extends StatelessWidget {
                             ),
                           ),
                           ListTile(
-                            contentPadding: EdgeInsets.zero,
+                            contentPadding: EdgeInsets.only( left : 26.h),
                             leading: Container(
                               height: 40,
                               width: 40,
@@ -138,14 +156,16 @@ class CinemaDescriptionScreen2 extends StatelessWidget {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
-                      SizedBox(height: 50),
-                      SizedBox(width: 20),
-                      Text(
-                        "Description",
-                        style: TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white,
+                      SizedBox(height: 50.v),
+                      Padding(
+                        padding: EdgeInsets.only(left : 30.h),
+                        child: Text(
+                          "Description",
+                          style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
+                          ),
                         ),
                       ),
                     ],
@@ -153,11 +173,11 @@ class CinemaDescriptionScreen2 extends StatelessWidget {
                 ),
                 Container(
                   padding: const EdgeInsets.symmetric(horizontal: 25),
-                  child: const Wrap(
+                  child: Wrap(
                     children: [
-                      SizedBox(height: 10),
+                      SizedBox(height: 10.h),
                       Text(
-                        "TMV garden city is a big cinema located on a big Cente cinema  which is Garden City, Cheraga, Algiers. It Contains 3 Rooms With ",
+                      cinema_description,
                         style: TextStyle(
                           fontSize: 15,
                           fontWeight: FontWeight.normal,
@@ -169,15 +189,15 @@ class CinemaDescriptionScreen2 extends StatelessWidget {
                 ),
                 const SizedBox(height: 30),
                 Container(
-                  height: 60,
-                  width:320,
-                  margin: const EdgeInsets.all(10),
+                  height: 57.v,
+                  width:315.h,
+                  margin: EdgeInsets.all(40.adaptSize),
                   child: ElevatedButton(
                     onPressed: () {
-                      Navigator.pushNamed(context, AppRoutes.sessionpercinemaScreen);
+                      Navigator.pushNamed(context, AppRoutes.sessionpercinemaScreen, arguments: { 'id' : cinema_id});
                     },
                     style:ElevatedButton.styleFrom(primary:Color(0xff54A8E5), shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(20.0),
+                      borderRadius: BorderRadius.circular(10.0),
                     ),),
                     child: Center(
                       child: Text('Available Movies', style: TextStyle(
@@ -185,10 +205,12 @@ class CinemaDescriptionScreen2 extends StatelessWidget {
                         fontWeight: FontWeight.normal,
                         color: Colors.white,
 
-                      ),),
+                      ),
+                      ),
                     ),
                   ),
-                ),  ],
+                ),
+              ],
             ),
           ),
           /* floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,

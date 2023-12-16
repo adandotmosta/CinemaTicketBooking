@@ -1,6 +1,7 @@
 import 'package:cinema_ticket_booking_app/presentation/categories_screen/categories.dart';
 import 'package:cinema_ticket_booking_app/presentation/details_page/details_page.dart';
 import 'package:cinema_ticket_booking_app/presentation/explore_page/explore_page.dart';
+import 'package:cinema_ticket_booking_app/presentation/sessionpercinema_screen/Sessions_tab_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:cinema_ticket_booking_app/presentation/all_cinemas_screen/all_cinemas_screen.dart';
 import 'package:cinema_ticket_booking_app/presentation/sessionpercinema_screen/sessionpercinema_screen.dart';
@@ -24,6 +25,8 @@ class AppRoutes {
   static const String allCinemasScreen = '/all_cinemas_screen';
 
   static const String sessionpercinemaScreen = '/sessionpercinema_screen';
+
+  static const String sessions_tab = '/sessionpercinema_screen';
 
   static const String cinemaDescriptionScreen = '/cinema_description_screen';
 

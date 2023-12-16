@@ -93,10 +93,11 @@ class CustomBottomBarState extends State<CustomBottomBar> {
               Navigator.of(context).pushNamed(AppRoutes.explorePage);
               break;
             case BottomBarEnum.Cinemas:
-              Navigator.of(context).pushNamed(AppRoutes.allCinemasScreen);
+            //  Navigator.of(context).pushNamed(AppRoutes.sessions_tab);
+              Navigator.of(context).pushNamed(AppRoutes.sessionpercinemaScreen,arguments: {'id' :  1 });
               break;
             case BottomBarEnum.Profileblue400:
-              Navigator.of(context).pushReplacementNamed(AppRoutes.settingsScreen);
+              Navigator.of(context).pushNamed(AppRoutes.settingsScreen);
               break;
           }
 

@@ -8,12 +8,20 @@ dependencies:
     sdk: flutter
   cached_network_image: ^3.2.1
   chewie: ^1.2.2
+
   video_player: ^2.3.1
   flutter_svg: ^1.1.6
   flutter_rating_bar: ^4.0.0
   readmore: ^2.1.0
+  cron: ^0.5.1
+  dio: ^5.4.0
+  flutter_barcode_scanner: ^2.0.0
+  image_picker: ^1.0.4
+  path: ^1.8.3
+  sqflite: ^2.3.0
   flutter_svg_provider: ^1.0.3
   intl: ^0.18.0
+  http: ^0.13.6
 dev_dependencies: 
   flutter_test: 
     sdk: flutter
