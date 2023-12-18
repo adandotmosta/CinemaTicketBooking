@@ -3,10 +3,13 @@ import 'package:flutter/material.dart';
 
 // ignore: must_be_immutable
 class SessionlistItemWidget extends StatelessWidget {
-  const SessionlistItemWidget({Key? key})
-      : super(
-          key: key,
-        );
+
+  final bool showAdditionalInfo;
+
+  const SessionlistItemWidget({
+    Key? key,
+    required this.showAdditionalInfo,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -26,19 +29,18 @@ class SessionlistItemWidget extends StatelessWidget {
               child: Row(
                 children: [
                   GestureDetector(
-                    onTap: (){
-                      Navigator.pushNamed(context, AppRoutes.selectSeatsScreen);
+
+                    onTap: () {
+                      Navigator.pushNamed(
+                          context, AppRoutes.selectSeatsScreen);
                     },
                     child: Column(
                       children: [
-                        Text(
-                          "14:40",
-                          style: CustomTextStyles.titleMediumBold18,
-                        ),
-                        SizedBox(height: 3.v),
-                        Text(
-                          "",
-                          style: CustomTextStyles.labelLargePTRootUIBluegray500,
+
+                        Image.asset(
+                          'assets/images/TMV.jpg', // replace with actual image URL
+                          height: 50.v, // adjust height as needed
+                          width: 50.h, // adjust width as needed
                         ),
                       ],
                     ),
@@ -64,6 +66,27 @@ class SessionlistItemWidget extends StatelessWidget {
                         ),
                         SizedBox(height: 6.v),
 
+                        if (showAdditionalInfo)
+                        // Add additional information widgets here
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                "Session Time: 14:40",
+                                style: CustomTextStyles.bodySmallGray600,
+                              ),
+                              SizedBox(height: 6.v),
+                              Text(
+                                "Session Price: \900DA", // replace with actual price
+                                style: CustomTextStyles.bodySmallGray600,
+                              ),
+                              SizedBox(height: 6.v),
+                              Text(
+                                "Remaining Places: 20", // replace with actual count
+                                style: CustomTextStyles.bodySmallGray600,
+                              ),
+                            ],
+                          ),
                       ],
                     ),
                   ),

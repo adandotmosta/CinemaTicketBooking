@@ -1,3 +1,5 @@
+
+import 'package:intl/intl.dart';
 import '../movie_sessions_page/widgets/sessionlist_item_widget.dart';
 import 'package:cinema_ticket_booking_app/core/app_export.dart';
 import 'package:cinema_ticket_booking_app/widgets/custom_switch.dart';
@@ -51,7 +53,7 @@ class MovieSessionsPageState extends State<MovieSessionsPage>
                                 horizontal: 38.h,
                                 vertical: 7.v,
                               ),
-                              decoration: AppDecoration.fillOnPrimaryContainer,
+
                               child: Row(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
@@ -121,6 +123,7 @@ class MovieSessionsPageState extends State<MovieSessionsPage>
     );
   }
 
+  DateTime selectedDate = DateTime.now();
   /// Section Widget
   Widget _buildControls(BuildContext context) {
     return Container(
@@ -138,19 +141,36 @@ class MovieSessionsPageState extends State<MovieSessionsPage>
               left: 9.h,
               top: 3.v,
             ),
-            child: Column(
-              children: [
-                CustomImageView(
-                  imagePath: ImageConstant.imgNavApril18,
-                  height: 24.adaptSize,
-                  width: 24.adaptSize,
-                ),
-                SizedBox(height: 2.v),
-                Text(
-                  "April, 18",
-                  style: CustomTextStyles.titleSmallWhiteA70001Bold,
-                ),
-              ],
+
+            child: GestureDetector(
+              onTap: () async {
+                final DateTime? pickedDate = await showDatePicker(
+                  context: context,
+                  initialDate: selectedDate,
+                  firstDate: DateTime(2023), // set the start date for your calendar
+                  lastDate: DateTime(2024),  // set the end date for your calendar
+                );
+
+                if (pickedDate != null && pickedDate != selectedDate) {
+                  setState(() {
+                    selectedDate = pickedDate;
+                  });
+                }
+              },
+              child: Column(
+                children: [
+                  CustomImageView(
+                    imagePath: ImageConstant.imgNavApril18,
+                    height: 24.adaptSize,
+                    width: 24.adaptSize,
+                  ),
+                  SizedBox(height: 2.v),
+                  Text(
+                    "${DateFormat('MMMM, d').format(selectedDate)}", // format the date as needed
+                    style: CustomTextStyles.titleSmallWhiteA70001Bold,
+                  ),
+                ],
+              ),
             ),
           ),
           Spacer(
@@ -212,7 +232,8 @@ class MovieSessionsPageState extends State<MovieSessionsPage>
           shrinkWrap: true,
           itemCount: 6,
           itemBuilder: (context, index) {
-            return SessionlistItemWidget();
+
+            return SessionlistItemWidget(showAdditionalInfo: true);
           },
         ),
       ),

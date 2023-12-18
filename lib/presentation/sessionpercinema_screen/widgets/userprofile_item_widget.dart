@@ -26,6 +26,7 @@ class UserprofileItemWidget extends StatelessWidget {
     return Column(
       children: [
 
+
         GestureDetector(
           onTap: (){
             onTapImgUserImage?.call();

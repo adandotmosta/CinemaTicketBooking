@@ -1,6 +1,8 @@
 import 'package:cinema_ticket_booking_app/core/app_export.dart';
 import 'package:cinema_ticket_booking_app/presentation/home_screen/home_screen.dart';
+
 import 'package:cinema_ticket_booking_app/widgets/app_bar/appbar_leading_image.dart';
+
 import 'package:cinema_ticket_booking_app/widgets/app_bar/appbar_title.dart';
 import 'package:cinema_ticket_booking_app/widgets/app_bar/custom_app_bar.dart';
 import 'package:cinema_ticket_booking_app/widgets/custom_elevated_button.dart';
@@ -8,11 +10,104 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg_provider/flutter_svg_provider.dart' as fs;
 import 'package:readmore/readmore.dart';
 
-class ETicketScreen extends StatelessWidget {
-  const ETicketScreen({Key? key})
-      : super(
-          key: key,
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+import 'dart:typed_data';
+
+class ETicketScreen extends StatefulWidget {
+  const ETicketScreen({Key? key}) : super(key: key);
+
+  @override
+  _ETicketScreenState createState() => _ETicketScreenState();
+}
+
+class TicketData {
+  final String film;
+  final String date;
+  final String seats;
+  final String location;
+  final String cinema;
+  final String time;
+  final String ticket_time;
+  final String Ticket_barcode;
+  final String paymentStatus; // Make sure you fetch this from the appropriate PHP column
+  final String orderNumber; // Make sure you fetch this from the appropriate PHP column
+
+  TicketData({
+    required this.film,
+    required this.date,
+    required this.seats,
+    required this.location,
+    required this.cinema,
+    required this.time,
+    required this.ticket_time,
+    required this.Ticket_barcode,
+    required this.paymentStatus,
+    required this.orderNumber,
+  });
+
+  // Factory method to create a TicketData object from JSON
+  factory TicketData.fromJson(Map<String, dynamic> json) {
+    return TicketData(
+      film: json['film'],
+      date: json['date'],
+      seats: json['seats'],
+      location: json['location'],
+      cinema: json['cinema'],
+      time: json['time'],
+      ticket_time: json['ticket_time'],
+      Ticket_barcode: json['Ticket_barcode'],
+      paymentStatus: json['paymentStatus'],
+      orderNumber: json['orderNumber'],
+    );
+  }
+}
+
+
+class _ETicketScreenState extends State<ETicketScreen> {
+  List<TicketData> tickets = [];
+
+  @override
+  void initState() {
+    super.initState();
+    // Call the function to fetch ticket data when the widget is first created
+    fetchTicketData();
+  }
+
+  Future<void> fetchTicketData() async {
+    var url = "http://192.168.177.56/Login-sign_up-flutter/ticket.php";
+    final response = await http.get(Uri.parse(url));
+
+    if (response.statusCode == 200) {
+      // If the server returns a 200 OK response, parse the JSON
+      List<dynamic> jsonResponse = json.decode(response.body);
+
+      // Map each JSON object to a TicketData object
+      List<TicketData> ticketList = jsonResponse.map((json) {
+        return TicketData(
+          film: json['film'],
+          date: json['date'],
+          seats: json['seats'],
+          location: json['location'],
+          cinema: json['cinema'],
+          time: json['time'],
+          ticket_time: json['ticket_time'],
+          Ticket_barcode: json['Ticket_barcode'],
+          paymentStatus: json['paymentStatus'],
+          orderNumber: json['orderNumber'],
         );
+      }).toList();
+
+      // Update the state to trigger a rebuild of the widget with the fetched data
+      setState(() {
+        tickets = ticketList;
+      });
+    } else {
+      // If the server did not return a 200 OK response,
+      // throw an exception.
+      throw Exception('Failed to load ticket data');
+    }
+  }
 
 
 
@@ -54,7 +149,9 @@ class ETicketScreen extends StatelessWidget {
                 ),
               ),
               SizedBox(height: 39.v),
-              _buildFilmShangChi2(context),
+
+              _buildFilmShangChi(context),
+
               SizedBox(height: 5.v),
             ],
           ),
@@ -76,8 +173,9 @@ class ETicketScreen extends StatelessWidget {
     );
   }
 
-  /// Section Widget
-  Widget _buildFilmShangChi2(BuildContext context) {
+
+  Widget _buildFilmShangChi(BuildContext context) {
+
     return Align(
       alignment: Alignment.centerRight,
       child: SingleChildScrollView(
@@ -86,76 +184,69 @@ class ETicketScreen extends StatelessWidget {
         child: IntrinsicWidth(
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Expanded(
-                child: Container(
-                  padding: EdgeInsets.symmetric(
-                    horizontal: 21.h,
-                    vertical: 19.h,
-                  ),
-                  decoration: BoxDecoration(
-                    image: DecorationImage(
-                      image: fs.Svg(
-                        ImageConstant.imgETicket1,
-                      ),
-                      fit: BoxFit.cover,
+
+            children: tickets.map((ticket) {
+              return Container(
+                margin: EdgeInsets.symmetric(horizontal: 10.v),
+                decoration: BoxDecoration(
+                  image: DecorationImage(
+                    image: fs.Svg(
+                      ImageConstant.imgETicket1,
                     ),
+                    fit: BoxFit.cover,
                   ),
+                ),
+                child: Container(
+                  padding: EdgeInsets.all(40.v),
+                  width: 350.v, // Adjust the width for the ticket
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
-                      SizedBox(height: 8.h),
+
+                      SizedBox(height: 15.h),
                       Padding(
                         padding: EdgeInsets.only(
-                          left: 8.v,
-                          right: 34.h,
+                          left: 12.v,
+                          right: 60.h,
                         ),
-                        child: _buildFilmShangChi(
-                          context,
-                          filmShangChiText: "Film: Shang-Chi",
-                          eTicketText: "e-ticket",
-                        ),
+                        child: _buildFilmShangChiText(context, ticket.film),
                       ),
-                      SizedBox(height: 27.h),
+                      SizedBox(height: 25.h),
                       Container(
-                        width: 207.v,
-                        margin: EdgeInsets.only(
-                          left: 8.v,
-                          right: 56.v,
-                        ),
+                        width: 300.v,
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Padding(
-                              padding: EdgeInsets.only(bottom: 1.h),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    "Date",
-                                    style: theme.textTheme.titleSmall,
-                                  ),
-                                  SizedBox(height: 3.h),
-                                  Text(
-                                    "06/09/2021",
-                                    style: CustomTextStyles.titleSmallBlack900,
-                                  ),
-                                ],
-                              ),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  "Movie Date",
+                                  style: theme.textTheme.titleSmall,
+                                ),
+                                SizedBox(height: 8.h),
+                                Text(
+                                  ticket.date,
+                                  style: CustomTextStyles.titleSmallBlack900,
+                                ),
+                              ],
+
                             ),
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  "Seats",
+
+                                  "Seat",
                                   style: theme.textTheme.titleSmall,
                                 ),
-                                SizedBox(height: 4.h),
+                                SizedBox(height: 8.h),
                                 Align(
                                   alignment: Alignment.center,
                                   child: Text(
-                                    "c4, c5",
+                                    ticket.seats,
+
                                     style: CustomTextStyles.titleSmallBlack900,
                                   ),
                                 ),
@@ -164,12 +255,10 @@ class ETicketScreen extends StatelessWidget {
                           ],
                         ),
                       ),
-                      SizedBox(height: 28.h),
-                      Padding(
-                        padding: EdgeInsets.only(
-                          left: 8.v,
-                          right: 39.v,
-                        ),
+
+                      SizedBox(height: 40.h),
+                      Container(
+                        width: 300.v,
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
@@ -177,60 +266,31 @@ class ETicketScreen extends StatelessWidget {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  "Location",
+
+                                  " Cinema",
                                   style: theme.textTheme.titleSmall,
                                 ),
-                                SizedBox(height: 4.h),
+                                SizedBox(height: 8.h),
                                 Text(
-                                  "Viva Cinema",
+                                  ticket.cinema,
+
                                   style: CustomTextStyles.titleSmallBlack900,
                                 ),
                               ],
                             ),
-                            _buildNineteen(
-                              context,
-                              orderLabel: "Time",
-                              orderValue: "01.00 PM",
-                            ),
-                          ],
-                        ),
-                      ),
-                      SizedBox(height: 30.h),
-                      Padding(
-                        padding: EdgeInsets.only(
-                          left: 8.v,
-                          right: 40.v,
-                        ),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Padding(
-                              padding: EdgeInsets.only(top: 2.h),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    "Payment",
-                                    style: theme.textTheme.titleSmall,
-                                  ),
-                                  SizedBox(height: 1.h),
-                                  Text(
-                                    "Successful",
-                                    style: CustomTextStyles.titleSmallBlack900,
-                                  ),
-                                ],
-                              ),
-                            ),
+
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  "Order",
+
+                                  "Session Time",
                                   style: theme.textTheme.titleSmall,
                                 ),
-                                SizedBox(height: 3.h),
+                                SizedBox(height: 8.h),
                                 Text(
-                                  "1904566",
+                                  ticket.time,
+
                                   style: CustomTextStyles.titleSmallBlack900,
                                 ),
                               ],
@@ -238,186 +298,45 @@ class ETicketScreen extends StatelessWidget {
                           ],
                         ),
                       ),
-                      SizedBox(height: 49.h),
-                      Divider(
-                        color:
-                            theme.colorScheme.onPrimaryContainer.withOpacity(1),
+
+                      SizedBox(height: 8.h),
+                      Container(
+                        width: 300.v,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  "Ticket Time: ${ticket.ticket_time}",
+                                  style: CustomTextStyles.titleSmallBlack900,
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
                       ),
-                      SizedBox(height: 28.h),
+                      SizedBox(height: 40.h),
                       CustomImageView(
                         imagePath: ImageConstant.imgBarcode,
-                        height: 66.h,
-                        width: 250.v,
+                        height: 100.h,
+                        width: 300.v,
                         alignment: Alignment.center,
                       ),
+                      // ... Other widgets
                     ],
                   ),
                 ),
-              ),
-              Expanded(
-                child: Container(
-                  margin: EdgeInsets.only(left: 12.v),
-                  padding: EdgeInsets.symmetric(
-                    horizontal: 21.h,
-                    vertical: 19.h,
-                  ),
-                  decoration: BoxDecoration(
-                    image: DecorationImage(
-                      image: fs.Svg(
-                        ImageConstant.imgETicket1,
-                      ),
-                      fit: BoxFit.cover,
-                    ),
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      SizedBox(height: 9.h),
-                      Padding(
-                        padding: EdgeInsets.only(
-                          left: 8.v,
-                          right: 34.v,
-                        ),
-                        child: _buildFilmShangChi(
-                          context,
-                          filmShangChiText: "Film: Shang-Chi",
-                          eTicketText: "e-ticket",
-                        ),
-                      ),
-                      SizedBox(height: 30.h),
-                      Padding(
-                        padding: EdgeInsets.only(
-                          left: 8.v,
-                          right: 52.v,
-                        ),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  "Date",
-                                  style: theme.textTheme.titleSmall,
-                                ),
-                                SizedBox(height: 4.h),
-                                Text(
-                                  "06/09/2021",
-                                  style: CustomTextStyles.titleSmallBlack900,
-                                ),
-                              ],
-                            ),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  "Seats",
-                                  style: theme.textTheme.titleSmall,
-                                ),
-                                SizedBox(height: 4.h),
-                                Text(
-                                  "c4, c5",
-                                  style: CustomTextStyles.titleSmallBlack900,
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
-                      ),
-                      SizedBox(height: 30.h),
-                      Padding(
-                        padding: EdgeInsets.only(
-                          left: 8.v,
-                          right: 33.v,
-                        ),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  "Location",
-                                  style: theme.textTheme.titleSmall,
-                                ),
-                                SizedBox(height: 4.h),
-                                Text(
-                                  "Viva Cinema",
-                                  style: CustomTextStyles.titleSmallBlack900,
-                                ),
-                              ],
-                            ),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  "Time",
-                                  style: theme.textTheme.titleSmall,
-                                ),
-                                SizedBox(height: 4.h),
-                                Text(
-                                  "01.00 PM",
-                                  style: CustomTextStyles.titleSmallBlack900,
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
-                      ),
-                      SizedBox(height: 30.h),
-                      Padding(
-                        padding: EdgeInsets.only(
-                          left: 8.v,
-                          right: 39.v,
-                        ),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  "Payment",
-                                  style: theme.textTheme.titleSmall,
-                                ),
-                                SizedBox(height: 4.h),
-                                Text(
-                                  "Successful",
-                                  style: CustomTextStyles.titleSmallBlack900,
-                                ),
-                              ],
-                            ),
-                            _buildNineteen(
-                              context,
-                              orderLabel: "Order",
-                              orderValue: "1904566",
-                            ),
-                          ],
-                        ),
-                      ),
-                      SizedBox(height: 49.h),
-                      Divider(
-                        color:
-                            theme.colorScheme.onPrimaryContainer.withOpacity(1),
-                      ),
-                      SizedBox(height: 28.h),
-                      CustomImageView(
-                        imagePath: ImageConstant.imgBarcode,
-                        height: 66.h,
-                        width: 250.v,
-                        alignment: Alignment.center,
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ],
+              );
+            }).toList(),
+
           ),
         ),
       ),
     );
   }
+
 
   Widget _buildDownloadETicketButton(BuildContext context) {
     return CustomElevatedButton(
@@ -434,25 +353,23 @@ class ETicketScreen extends StatelessWidget {
   }
 
 
-
-  /// Common widget
-  Widget _buildFilmShangChi(
-    BuildContext context, {
-    required String filmShangChiText,
-    required String eTicketText,
-  }) {
-    return Row(
+  Widget _buildFilmShangChiText(BuildContext context, String film) {
+    return Stack(
+      alignment: Alignment.topRight,
       children: [
-        Text(
-          filmShangChiText,
-          style: CustomTextStyles.titleMediumBlack900.copyWith(
-            color: appTheme.black900,
+        Container(
+          width: double.infinity, // Expand to the maximum width
+          child: Text(
+            film,
+            style: CustomTextStyles.titleMediumBlack900.copyWith(
+              color: appTheme.black900,
+            ),
           ),
         ),
-        Padding(
-          padding: EdgeInsets.only(left: 30.v),
+        Positioned(
+          //right: 1.v,
           child: Text(
-            eTicketText,
+            "e-ticket",
             style: CustomTextStyles.titleMediumRed40002.copyWith(
               color: appTheme.red40002,
             ),
@@ -490,9 +407,10 @@ class ETicketScreen extends StatelessWidget {
                   style: theme.textTheme.headlineSmall,
                 ),
               ),
-              SizedBox(height: 16.h),
+
+              SizedBox(height: 16.v),
               SizedBox(
-                width: 302.v,
+                width: 302.h,
                 child: ReadMoreText(
                   "Adele is a Scottish heiress whose extremely\nwealthy family owns estates and grounds.\nWhen she was a teenager.",
                   trimLines: 3,
@@ -500,14 +418,15 @@ class ETicketScreen extends StatelessWidget {
                   trimMode: TrimMode.Line,
                   trimCollapsedText: "Read More",
                   moreStyle: CustomTextStyles.bodyMediumPoppinsLight.copyWith(
-                    height: 1.57.h,
+
+                    height: 1.57.v,
                   ),
                   lessStyle: CustomTextStyles.bodyMediumPoppinsLight.copyWith(
-                    height: 1.57.h,
+                    height: 1.57.v,
                   ),
                 ),
               ),
-              SizedBox(height: 32.h),
+              SizedBox(height: 32.v),
               CustomElevatedButton(
                 text: "Back To Home",
                 buttonStyle: CustomButtonStyles.outlinePrimaryTL121,

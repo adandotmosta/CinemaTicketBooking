@@ -263,6 +263,7 @@ class SearchPage extends StatefulWidget {
 class _SearchPageState extends State<SearchPage> {
   static List<CineamaModel> main_cinema_list = [
     CineamaModel("Cosmos Alpha", 10, "Alger"),
+
     CineamaModel("CineGold", 10, "Senia Mall, Es Senia, Oran"),
     CineamaModel("CineGold", 10, "Senia Mall, Es Senia, Oran"),
   ];
@@ -328,6 +329,7 @@ class _SearchPageState extends State<SearchPage> {
                           borderRadius: BorderRadius.circular(15),
                           child: Image.asset(
                             'assets/images/png/img_cosmosalpha_1.png',
+
                             fit: BoxFit.cover,
                             width: 70,
                             height: 100,

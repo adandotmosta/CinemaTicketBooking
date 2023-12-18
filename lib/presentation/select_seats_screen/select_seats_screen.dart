@@ -84,6 +84,7 @@ class MyState extends State<SelectSeatsScreen> {
     ['L1#11x0', 'L2#11x1', 'L5#11x4', 'L6#11x5'],
     // Add more rows as needed
   ];
+
   String radioGroup = "";
   Map<String, int> Selected_Items = {
     'A1': 0,
@@ -111,6 +112,7 @@ class MyState extends State<SelectSeatsScreen> {
     'E4': 0,
     'E5': 0,
   };
+
 
   var i = 0;
   @override
@@ -148,6 +150,7 @@ class MyState extends State<SelectSeatsScreen> {
           ),
           child: Column(
             children: [
+
               SizedBox(height: 12.v),
               Align(
                 alignment: Alignment.centerLeft,
@@ -302,6 +305,7 @@ class MyState extends State<SelectSeatsScreen> {
       child: Column(
         //  alignment: Alignment.topCenter,
 
+
         //  alignment: Alignment.topCenter,
 
         children: [
@@ -431,6 +435,7 @@ class MyState extends State<SelectSeatsScreen> {
               ),
             ),
           ),
+
         ],
       ),
     );
@@ -470,6 +475,7 @@ class MyState extends State<SelectSeatsScreen> {
     return returned;
 
   }
+
   /// Section Widget
   Widget _buildInfoSeats(BuildContext context) {
     return Row(
@@ -543,6 +549,7 @@ class MyState extends State<SelectSeatsScreen> {
   Widget _buildCheckoutButton(BuildContext context) {
     return CustomElevatedButton(
       onPressed: () {
+
         Navigator.pushNamed(context, AppRoutes.paymentSuccessScreen);
       },
       text: "Checkout",

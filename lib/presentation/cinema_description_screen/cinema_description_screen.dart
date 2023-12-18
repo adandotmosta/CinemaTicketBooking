@@ -9,7 +9,6 @@ import 'package:flutter/material.dart';
 
 
 
-
 class CinemaDescriptionScreen2 extends StatelessWidget {
   const CinemaDescriptionScreen2({Key? key}) : super(key: key);
 
@@ -68,6 +67,7 @@ class CinemaDescriptionScreen2 extends StatelessWidget {
                       width: 251.adaptSize,
                       height: 268.adaptSize,
 
+
                       clipBehavior: Clip.antiAlias,
                       decoration:  BoxDecoration(
                           borderRadius: BorderRadius.circular(15) // Adjust the radius as needed
@@ -98,6 +98,7 @@ class CinemaDescriptionScreen2 extends StatelessWidget {
                                 Icons.location_on,
                                 color: Colors.black,
                                 size: 30.adaptSize,
+
                               ),
                             ),
                             title: Column(

@@ -11,8 +11,12 @@ class DBCinemas {
   Cinema_name TEXT,
   Cinema_location TEXT,
   Cinema_description TEXT,
+<<<<<<< HEAD
   Cinema_image TEXT,
   Cinema_closing Text
+=======
+  Cinema_image TEXT
+>>>>>>> origin/secondSubmission
   );
   ''';
 
@@ -76,7 +80,6 @@ class DBCinemas {
       String cinema_description = item["Cinema_description"];
       String cinema_image = item["Cinema_image"];
       String cinema_closing = item["Cinema_closing"];
-
       if (index_remote.containsKey(remote_id)) {
         int local_id = index_remote[remote_id];
         await updateRecord(local_id, {'Cinema_name':cinema_name, 'Cinema_location' : cinema_location,

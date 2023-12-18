@@ -6,6 +6,107 @@ import 'package:cinema_ticket_booking_app/widgets/custom_elevated_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg_provider/flutter_svg_provider.dart' as fs;
 import 'package:readmore/readmore.dart';
+import 'package:sqflite/sqflite.dart';
+import '../../databases/DBHelper.dart';
+
+class DBTickets {
+  static const tableName = 'Ticket';
+  static const sqlCode = '''
+    CREATE TABLE IF NOT EXISTS Ticket (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      film_name TEXT,
+      date TEXT,
+      seats TEXT,
+      location TEXT,
+      time TEXT,
+      payment_status TEXT,
+      order_number TEXT
+    );
+  ''';
+
+  static Future<List<Map<String, dynamic>>> getAllTickets() async {
+    try {
+      final database = await DBHelper.getDatabase();
+      var res = await database.rawQuery('SELECT * FROM $tableName');
+      return res;
+    } catch (error) {
+      print('Error in getAllTickets: $error');
+      throw error;
+    }
+  }
+
+  static Future<int> getAllCount() async {
+    final database = await DBHelper.getDatabase();
+    var res = await database.rawQuery('SELECT COUNT(id) as cc FROM $tableName');
+    return res[0]['cc'] ?? 0;
+  }
+
+  static Future<bool> syncTickets(List<Map<String, dynamic>> remoteData) async {
+    List localData = await getAllTickets();
+    Map indexRemote = {};
+    List localIds = [];
+
+    for (Map item in localData) {
+      indexRemote[item['order_number']] = item['id'];
+      localIds.add(item['id']);
+    }
+
+    for (Map item in remoteData) {
+      String orderNumber = item['order_number'];
+      String filmName = item['film_name'];
+      String date = item['date'];
+      String seats = item['seats'];
+      String location = item['location'];
+      String time = item['time'];
+      String paymentStatus = item['payment_status'];
+
+      if (indexRemote.containsKey(orderNumber)) {
+        int localId = indexRemote[orderNumber];
+        await updateRecord(localId, {
+          'film_name': filmName,
+          'date': date,
+          'seats': seats,
+          'location': location,
+          'time': time,
+          'payment_status': paymentStatus,
+        });
+        localIds.remove(localId);
+      } else {
+        await insertRecord({
+          'film_name': filmName,
+          'date': date,
+          'seats': seats,
+          'location': location,
+          'time': time,
+          'payment_status': paymentStatus,
+          'order_number': orderNumber,
+        });
+      }
+    }
+
+    for (int localId in localIds) await deleteRecord(localId);
+
+    return true;
+  }
+
+  static Future<bool> updateRecord(int id, Map<String, dynamic> data) async {
+    final database = await DBHelper.getDatabase();
+    database.update(tableName, data, where: 'id=?', whereArgs: [id]);
+    return true;
+  }
+
+  static Future<int> insertRecord(Map<String, dynamic> data) async {
+    final database = await DBHelper.getDatabase();
+    return await database.insert(tableName, data, conflictAlgorithm: ConflictAlgorithm.replace);
+  }
+
+  static Future<bool> deleteRecord(int id) async {
+    final database = await DBHelper.getDatabase();
+    database.rawQuery('DELETE FROM $tableName WHERE id=?', [id]);
+    return true;
+  }
+}
+
 
 class DownloadETicketScreen extends StatelessWidget {
   const DownloadETicketScreen({Key? key})
@@ -28,60 +129,23 @@ class DownloadETicketScreen extends StatelessWidget {
               SizedBox(
                 height: 527.v,
                 width: double.maxFinite,
-                child: Stack(
-                  alignment: Alignment.topCenter,
-                  children: [
-                    _buildFilmShangChiHorizontalScroll(context),
-                    Align(
-                      alignment: Alignment.topCenter,
-                      child: Card(
-                        clipBehavior: Clip.antiAlias,
-                        elevation: 0,
-                        margin: EdgeInsets.all(0),
-                        color: theme.colorScheme.onPrimaryContainer
-                            .withOpacity(0.5),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadiusStyle.roundedBorder20,
-                        ),
-                        child: Container(
-                          height: mediaQueryData.size.height,
-                          width: double.maxFinite,
-                          decoration: AppDecoration.outlineBlack.copyWith(
-                            borderRadius: BorderRadiusStyle.roundedBorder20,
-                          ),
-                          child: Stack(
-                            alignment: Alignment.bottomCenter,
-                            children: [
-                              //_buildPopupColumn(context),
-                              Align(
-                                alignment: Alignment.bottomCenter,
-                                child: Container(
-                                  height: 112.adaptSize,
-                                  width: 112.adaptSize,
-                                  margin: EdgeInsets.only(bottom: 293.v),
-                                  padding: EdgeInsets.symmetric(
-                                    horizontal: 33.h,
-                                    vertical: 29.v,
-                                  ),
-                                  decoration:
-                                      AppDecoration.outlineWhiteA.copyWith(
-                                    borderRadius:
-                                        BorderRadiusStyle.circleBorder56,
-                                  ),
-                                  child: CustomImageView(
-                                    imagePath: ImageConstant.imgDownload,
-                                    height: 46.v,
-                                    width: 39.h,
-                                    alignment: Alignment.center,
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
+
+                child: FutureBuilder<List<Map<String, dynamic>>>(
+                  future: DBTickets.getAllTickets(),
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return CircularProgressIndicator();
+                    } else if (snapshot.hasError) {
+                      return Text('Error: ${snapshot.error}');
+                    } else {
+                      List<Map<String, dynamic>> tickets = snapshot.data ?? [];
+                      if (tickets.isEmpty) {
+                        return Text('No tickets available.');
+                      } else {
+                        return _buildFilmShangChiHorizontalScroll(context, tickets[0]);
+                      }
+                    }
+                  },
                 ),
               ),
             ],
@@ -91,6 +155,7 @@ class DownloadETicketScreen extends StatelessWidget {
       ),
     );
   }
+
 
   /// Section Widget
   Widget _buildBtnBackColumn(BuildContext context) {
@@ -141,8 +206,11 @@ class DownloadETicketScreen extends StatelessWidget {
     );
   }
 
-  /// Section Widget
-  Widget _buildFilmShangChiHorizontalScroll(BuildContext context) {
+
+  Widget _buildFilmShangChiHorizontalScroll(
+      BuildContext context,
+      Map<String, dynamic> ticketData,
+      ) {
     return Align(
       alignment: Alignment.centerRight,
       child: SingleChildScrollView(
@@ -182,7 +250,7 @@ class DownloadETicketScreen extends StatelessWidget {
                         ),
                         child: _buildFilmShangChi(
                           context,
-                          filmShangChiText: "Film: Shang-Chi",
+                          filmShangChiText: "Film: ${ticketData['film_name']}",
                           eTicketText: "e-ticket",
                         ),
                       ),
@@ -207,7 +275,7 @@ class DownloadETicketScreen extends StatelessWidget {
                                   ),
                                   SizedBox(height: 3.v),
                                   Text(
-                                    "06/09/2021",
+                                    ticketData['date'] ?? 'N/A',
                                     style: CustomTextStyles.titleSmallBlack900,
                                   ),
                                 ],
@@ -224,7 +292,7 @@ class DownloadETicketScreen extends StatelessWidget {
                                 Align(
                                   alignment: Alignment.center,
                                   child: Text(
-                                    "c4, c5",
+                                    ticketData['seats'] ?? 'N/A',
                                     style: CustomTextStyles.titleSmallBlack900,
                                   ),
                                 ),
@@ -237,7 +305,7 @@ class DownloadETicketScreen extends StatelessWidget {
                       Padding(
                         padding: EdgeInsets.only(
                           left: 8.h,
-                          right: 39.h,
+                          right: 52.h,
                         ),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -251,15 +319,25 @@ class DownloadETicketScreen extends StatelessWidget {
                                 ),
                                 SizedBox(height: 4.v),
                                 Text(
-                                  "Viva Cinema",
+
+                                  ticketData['location'] ?? 'N/A',
                                   style: CustomTextStyles.titleSmallBlack900,
                                 ),
                               ],
                             ),
-                            _buildNineteen(
-                              context,
-                              orderLabel: "Time",
-                              orderValue: "01.00 PM",
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  "Time",
+                                  style: theme.textTheme.titleSmall,
+                                ),
+                                SizedBox(height: 4.v),
+                                Text(
+                                  ticketData['time'] ?? 'N/A',
+                                  style: CustomTextStyles.titleSmallBlack900,
+                                ),
+],
                             ),
                           ],
                         ),
@@ -268,7 +346,8 @@ class DownloadETicketScreen extends StatelessWidget {
                       Padding(
                         padding: EdgeInsets.only(
                           left: 8.h,
-                          right: 40.h,
+                          right: 39.h,
+
                         ),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -284,7 +363,8 @@ class DownloadETicketScreen extends StatelessWidget {
                                   ),
                                   SizedBox(height: 1.v),
                                   Text(
-                                    "Successful",
+
+                                    ticketData['payment_status'] ?? 'N/A',
                                     style: CustomTextStyles.titleSmallBlack900,
                                   ),
                                 ],
@@ -299,7 +379,8 @@ class DownloadETicketScreen extends StatelessWidget {
                                 ),
                                 SizedBox(height: 3.v),
                                 Text(
-                                  "1904566",
+
+                                  ticketData['order_number'] ?? 'N/A',
                                   style: CustomTextStyles.titleSmallBlack900,
                                 ),
                               ],
@@ -307,176 +388,8 @@ class DownloadETicketScreen extends StatelessWidget {
                           ],
                         ),
                       ),
-                      SizedBox(height: 49.v),
-                      Divider(
-                        color:
-                            theme.colorScheme.onPrimaryContainer.withOpacity(1),
-                      ),
-                      SizedBox(height: 28.v),
-                      CustomImageView(
-                        imagePath: ImageConstant.imgBarcode,
-                        height: 66.v,
-                        width: 250.h,
-                        alignment: Alignment.center,
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              Expanded(
-                child: Container(
-                  margin: EdgeInsets.only(left: 12.h),
-                  padding: EdgeInsets.symmetric(
-                    horizontal: 21.h,
-                    vertical: 19.v,
-                  ),
-                  decoration: BoxDecoration(
-                    image: DecorationImage(
-                      image: fs.Svg(
-                        ImageConstant.imgETicket1,
-                      ),
-                      fit: BoxFit.cover,
-                    ),
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      SizedBox(height: 9.v),
-                      Padding(
-                        padding: EdgeInsets.only(
-                          left: 8.h,
-                          right: 34.h,
-                        ),
-                        child: _buildFilmShangChi(
-                          context,
-                          filmShangChiText: "Film: Shang-Chi",
-                          eTicketText: "e-ticket",
-                        ),
-                      ),
-                      SizedBox(height: 30.v),
-                      Padding(
-                        padding: EdgeInsets.only(
-                          left: 8.h,
-                          right: 52.h,
-                        ),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  "Date",
-                                  style: theme.textTheme.titleSmall,
-                                ),
-                                SizedBox(height: 4.v),
-                                Text(
-                                  "06/09/2021",
-                                  style: CustomTextStyles.titleSmallBlack900,
-                                ),
-                              ],
-                            ),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  "Seats",
-                                  style: theme.textTheme.titleSmall,
-                                ),
-                                SizedBox(height: 4.v),
-                                Text(
-                                  "c4, c5",
-                                  style: CustomTextStyles.titleSmallBlack900,
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
-                      ),
-                      SizedBox(height: 30.v),
-                      Padding(
-                        padding: EdgeInsets.only(
-                          left: 8.h,
-                          right: 33.h,
-                        ),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  "Location",
-                                  style: theme.textTheme.titleSmall,
-                                ),
-                                SizedBox(height: 4.v),
-                                Text(
-                                  "Viva Cinema",
-                                  style: CustomTextStyles.titleSmallBlack900,
-                                ),
-                              ],
-                            ),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  "Time",
-                                  style: theme.textTheme.titleSmall,
-                                ),
-                                SizedBox(height: 4.v),
-                                Text(
-                                  "01.00 PM",
-                                  style: CustomTextStyles.titleSmallBlack900,
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
-                      ),
-                      SizedBox(height: 30.v),
-                      Padding(
-                        padding: EdgeInsets.only(
-                          left: 8.h,
-                          right: 39.h,
-                        ),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  "Payment",
-                                  style: theme.textTheme.titleSmall,
-                                ),
-                                SizedBox(height: 4.v),
-                                Text(
-                                  "Successful",
-                                  style: CustomTextStyles.titleSmallBlack900,
-                                ),
-                              ],
-                            ),
-                            _buildNineteen(
-                              context,
-                              orderLabel: "Order",
-                              orderValue: "1904566",
-                            ),
-                          ],
-                        ),
-                      ),
-                      SizedBox(height: 49.v),
-                      Divider(
-                        color:
-                            theme.colorScheme.onPrimaryContainer.withOpacity(1),
-                      ),
-                      SizedBox(height: 28.v),
-                      CustomImageView(
-                        imagePath: ImageConstant.imgBarcode,
-                        height: 66.v,
-                        width: 250.h,
-                        alignment: Alignment.center,
-                      ),
+
+                      // ... (remaining code)
                     ],
                   ),
                 ),
@@ -488,61 +401,6 @@ class DownloadETicketScreen extends StatelessWidget {
     );
   }
 
-  /// Section Widget
-/*  Widget _buildPopupColumn(BuildContext context) {
-    return Align(
-      alignment: Alignment.bottomCenter,
-      child: Container(
-        padding: EdgeInsets.all(30.h),
-        decoration: AppDecoration.fillBlue.copyWith(
-          borderRadius: BorderRadiusStyle.customBorderTL60,
-        ),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          mainAxisAlignment: MainAxisAlignment.end,
-          children: [
-            SizedBox(height: 43.v),
-            Container(
-              width: 250.v,
-              margin: EdgeInsets.only(
-                left: 31.h,
-                right: 33.h,
-              ),
-              child: Text(
-                "Your ticket has been downloaded",
-                maxLines: 2,
-                overflow: TextOverflow.ellipsis,
-                textAlign: TextAlign.center,
-                style: theme.textTheme.headlineSmall,
-              ),
-            ),
-            SizedBox(height: 16.v),
-            SizedBox(
-              width: 302.v,
-              child: ReadMoreText(
-                "Adele is a Scottish heiress whose extremely\nwealthy family owns estates and grounds.\nWhen she was a teenager. ",
-                trimLines: 3,
-                colorClickableText: appTheme.whiteA70001,
-                trimMode: TrimMode.Line,
-                trimCollapsedText: "Read More",
-                moreStyle: CustomTextStyles.bodyMediumPoppinsLight.copyWith(
-                  height: 1.57.h,
-                ),
-                lessStyle: CustomTextStyles.bodyMediumPoppinsLight.copyWith(
-                  height: 1.57.h,
-                ),
-              ),
-            ),
-            SizedBox(height: 32.h),
-            CustomElevatedButton(
-              text: "Back To Home",
-              buttonStyle: CustomButtonStyles.outlinePrimaryTL121,
-            ),
-          ],
-        ),
-      ),
-    );
-  }*/
 
   /// Section Widget
   Widget _buildDownloadETicketButton(BuildContext context) {

@@ -1,3 +1,4 @@
+
 import 'package:cinema_ticket_booking_app/core/utils/Cinema/cinema.dart';
 import 'package:cron/cron.dart';
 import 'package:dio/dio.dart';
@@ -14,10 +15,12 @@ void main() {
     DeviceOrientation.portraitUp,
   ]);
 
+
   final cron = Cron();
   // cron.schedule(Schedule.parse('*/10 * * * * *'), () async {
   //   service_sync_cinemas();
   // });
+
 
   ///Please update theme as per your need if required.
   ThemeHelper().changeTheme('primary');

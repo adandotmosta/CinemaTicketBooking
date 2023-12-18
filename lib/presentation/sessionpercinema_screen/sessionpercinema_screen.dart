@@ -1,4 +1,5 @@
 
+
 import 'dart:ffi';
 
 import 'package:cinema_ticket_booking_app/core/app_export.dart';
@@ -280,3 +281,4 @@ DateTime now = DateTime.now();
 
 
 }
+

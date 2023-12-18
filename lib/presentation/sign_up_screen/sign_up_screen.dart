@@ -1,3 +1,5 @@
+
+import 'dart:convert';
 import 'dart:ffi';
 
 import 'package:cinema_ticket_booking_app/core/app_export.dart';
@@ -6,11 +8,16 @@ import 'package:cinema_ticket_booking_app/widgets/custom_elevated_button.dart';
 import 'package:cinema_ticket_booking_app/widgets/custom_text_form_field.dart';
 import 'package:flutter/material.dart';
 
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:http/http.dart' as http;
+import 'package:cinema_ticket_booking_app/core/constants/constants.dart';
+
 class SignUpScreen extends StatelessWidget {
   SignUpScreen({Key? key})
       : super(
-          key: key,
-        );
+
+    key: key,
+  );
 
   TextEditingController usernameFieldController = TextEditingController();
   TextEditingController emailFieldController = TextEditingController();
@@ -18,6 +25,41 @@ class SignUpScreen extends StatelessWidget {
   TextEditingController passwordFieldController = TextEditingController();
   TextEditingController confirmPasswordFieldController = TextEditingController();
 
+
+  Future register() async {
+    var url = "http:///${Constants.hostname}/signup.php";
+      var response = await http.post(Uri.parse(url), body: {
+        "username": usernameFieldController.text,
+        "email": emailFieldController.text,
+        "password": passwordFieldController.text,
+        "phone": phoneNumberFieldController.text
+      });
+
+      var data = json.decode(response.body);
+    if (data['success']) {
+      Fluttertoast.showToast(
+        msg: data["message"],
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.CENTER,
+        timeInSecForIosWeb: 1,
+        backgroundColor: Colors.green,
+        textColor: Colors.white,
+        fontSize: 16.0,
+      );
+    } else {
+      // Registration failed
+      Fluttertoast.showToast(
+        msg: data["message"],
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.CENTER,
+        timeInSecForIosWeb: 1,
+        backgroundColor: Colors.red,
+        textColor: Colors.white,
+        fontSize: 16.0,
+      );
+    }
+  }
+  
   bool agreeCheckbox = false;
 
   GlobalKey<FormState> _formKey = GlobalKey<FormState>();
@@ -144,6 +186,9 @@ class SignUpScreen extends StatelessWidget {
     return Padding(
       padding: EdgeInsets.only(left: 11.h),
       child : TextField(
+ 
+        controller: usernameFieldController,
+  
       decoration: InputDecoration(
           hintText: "enter your username",
           hintStyle: TextStyle(
@@ -168,6 +213,8 @@ class SignUpScreen extends StatelessWidget {
     return Padding(
       padding: EdgeInsets.only(left: 11.h),
       child : TextField(
+
+        controller: emailFieldController,
         decoration: InputDecoration(
             hintText: "example@gmail.com",
             hintStyle: TextStyle(
@@ -193,6 +240,9 @@ class SignUpScreen extends StatelessWidget {
     return Padding(
       padding: EdgeInsets.only(left: 11.h),
       child : TextField(
+ 
+        controller: phoneNumberFieldController,
+  
         decoration: InputDecoration(
             hintText: "enter your phone number",
             hintStyle: TextStyle(
@@ -243,6 +293,9 @@ class SignUpScreen extends StatelessWidget {
     return Padding(
       padding: EdgeInsets.only(left: 11.h),
       child: TextField(
+ 
+        controller: passwordFieldController,
+  
         decoration: InputDecoration(
           hintText: "password must contains at least 8 characters",
           hintStyle: TextStyle(
@@ -259,7 +312,8 @@ class SignUpScreen extends StatelessWidget {
             borderSide:  BorderSide(color : Colors.white),
           )
         ),
-        controller: confirmPasswordFieldController,
+
+  
         textInputAction: TextInputAction.done,
         obscureText: true,
       ),
@@ -275,6 +329,9 @@ class SignUpScreen extends StatelessWidget {
   Widget _buildCreateAccount(BuildContext context) {
     return CustomElevatedButton(
         onPressed: () {
+ 
+          register();
+  
           Navigator.pushNamed(context,
             AppRoutes.loginScreen,);
         },

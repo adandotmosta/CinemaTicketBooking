@@ -1,6 +1,6 @@
+
 import 'package:cinema_ticket_booking_app/core/utils/Cinema/cinema.dart';
 import 'package:cinema_ticket_booking_app/databases/DBCinemas.dart';
-
 import '../all_cinemas_screen/widgets/locationdetails_item_widget.dart';
 import 'package:cinema_ticket_booking_app/core/app_export.dart';
 import 'package:cinema_ticket_booking_app/widgets/app_bar/appbar_subtitle.dart';
@@ -25,16 +25,27 @@ class AllCinemasScreen extends StatefulWidget {
 class _AllCinemasScreenState extends State<AllCinemasScreen> {
 
 
-
-
-
 /*  void updateList(String value) {
     setState(() {
       display_list =["hello","workd"];
+=======
+
+
+
+
+  ];
+
+  static List<CineamaModel> display_list= List.from(main_cinema_list);
+
+  void updateList(String value) {
+    setState(() {
+      display_list = main_cinema_list
+>>>>>>> origin/secondSubmission
           .where((element) =>
           element.cinema_name!.toLowerCase().contains(value.toLowerCase()))
           .toList();
     });
+<<<<<<< HEAD
   }*/
 
   @override
@@ -189,6 +200,7 @@ class _AllCinemasScreenState extends State<AllCinemasScreen> {
     }
     return CircularProgressIndicator();
   }
+
   PreferredSizeWidget _buildWelcomeBackGroup(BuildContext context) {
     return CustomAppBar(
       leading: Text(""),

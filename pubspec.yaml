@@ -1,14 +1,17 @@
 name: cinema_ticket_booking_app
 description: A new Flutter project.
 version: 1.0.0+1
-environment: 
+environment:
   sdk: '>=2.12.0 <3.0.0'
-dependencies: 
-  flutter: 
+dependencies:
+  pdf: ^3.5.0
+  path_provider: ^2.0.5
+  flutter:
     sdk: flutter
+  http: ^0.13.3
   cached_network_image: ^3.2.1
   chewie: ^1.2.2
-
+  url_launcher: ^6.0.9
   video_player: ^2.3.1
   flutter_svg: ^1.1.6
   flutter_rating_bar: ^4.0.0
@@ -21,19 +24,19 @@ dependencies:
   sqflite: ^2.3.0
   flutter_svg_provider: ^1.0.3
   intl: ^0.18.0
-  http: ^0.13.6
-dev_dependencies: 
-  flutter_test: 
+  fluttertoast: ^8.0.8
+dev_dependencies:
+  flutter_test:
     sdk: flutter
-flutter: 
+flutter:
   uses-material-design: true
-  assets: 
+  assets:
     - assets/
     - assets/images/
     - assets/images/png/
-  fonts: 
+  fonts:
     - family: Poppins
-      fonts: 
+      fonts:
         - asset: assets/fonts/PoppinsRegular.ttf
           weight: 400
         - asset: assets/fonts/PoppinsMedium.ttf
@@ -47,11 +50,11 @@ flutter:
         - asset: assets/fonts/PoppinsBlack.ttf
           weight: 900
     - family: Laila
-      fonts: 
+      fonts:
         - asset: assets/fonts/LailaMedium.ttf
           weight: 500
     - family: PT Root UI
-      fonts: 
+      fonts:
         - asset: assets/fonts/PTRootUIMedium.ttf
           weight: 500
         - asset: assets/fonts/PTRootUIRegular.ttf

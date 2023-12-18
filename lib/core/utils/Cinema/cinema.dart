@@ -2,6 +2,7 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import '../api_endpoints.dart';
 
+
 import '../../../databases/DBCinemas.dart';
 
 Future<List<Map<String, dynamic>>?> endpoint_api_get_categories() async {
