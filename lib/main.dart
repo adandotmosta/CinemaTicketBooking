@@ -34,7 +34,7 @@ class MyApp extends StatelessWidget {
       theme: theme,
       title: 'Cinema Ticket Reservation',
       debugShowCheckedModeBanner: false,
-      initialRoute: AppRoutes.loginScreen,
+      initialRoute: AppRoutes.explorePage,
       routes: AppRoutes.routes,
     );
   }

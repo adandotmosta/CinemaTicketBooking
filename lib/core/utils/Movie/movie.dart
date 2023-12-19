@@ -1,6 +1,6 @@
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-
+import 'package:cinema_ticket_booking_app/core/utils/api_endpoints.dart';
 import '../../../databases/DBMovies.dart';
 
 Future<List<Map<String, dynamic>>?> endpoint_api_get_movies() async {
@@ -8,7 +8,7 @@ Future<List<Map<String, dynamic>>?> endpoint_api_get_movies() async {
   try {
     print("salam");
     final response = await http.get(Uri.parse(
-        'http://192.168.7.56/Cinema_Endpoints/?action=movie.get'));
+        Endpoints.get_movies));
 
     print("malak");
     print("response ;  ${response.statusCode}");

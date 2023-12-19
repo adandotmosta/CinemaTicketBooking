@@ -332,56 +332,59 @@ class _DetailsPageState extends State<DetailsPage> {
         ),
         Padding(
           padding: EdgeInsets.symmetric(horizontal: 25, vertical: 5),
-          child: Row(
-            children: [
-              Container(
-                padding: const EdgeInsets.all(3.0),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(12),
-                  color: Color(0xff252932),
+          child: SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            child: Row(
+              children: [
+                Container(
+                  padding: const EdgeInsets.all(3.0),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(12),
+                    color: Color(0xff252932),
+                  ),
+
+                  width: 120,
+                  height: 45,
+                  child:  Center(
+                    child: Text(Category,style: TextStyle(color: Color(0xffB2B5BB)),),
+                  ),
                 ),
 
-                width: 120,
-                height: 45,
-                child:  Center(
-                  child: Text(Category,style: TextStyle(color: Color(0xffB2B5BB)),),
+                SizedBox(width: 20,),
+                Container(
+                  padding: const EdgeInsets.all(3.0),
+                  decoration: BoxDecoration(
+                    color: Color(0xff252932),
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  width: 120,
+                  height: 40,
+
+                  child:  Center(
+                    child: Text("type2",style: TextStyle(color: Color(0xffB2B5BB)),),
+                  ),
                 ),
-              ),
 
-              SizedBox(width: 20,),
-              Container(
-                padding: const EdgeInsets.all(3.0),
-                decoration: BoxDecoration(
-                  color: Color(0xff252932),
-                  borderRadius: BorderRadius.circular(12),
+
+                SizedBox(width: 20,),
+                Container(
+                  padding: const EdgeInsets.all(3.0),
+                  decoration: BoxDecoration(
+
+                    borderRadius: BorderRadius.circular(12),
+                    color: Color(0xff252932),
+                  ),
+                  width: 80,
+                  height: 40,
+
+                  child:  Center(
+                    child: Text(duration,style: TextStyle(color: Color(0xffB2B5BB)),),
+                  ),
                 ),
-                width: 120,
-                height: 40,
-
-                child:  Center(
-                  child: Text("type2",style: TextStyle(color: Color(0xffB2B5BB)),),
-                ),
-              ),
 
 
-              SizedBox(width: 20,),
-              Container(
-                padding: const EdgeInsets.all(3.0),
-                decoration: BoxDecoration(
-
-                  borderRadius: BorderRadius.circular(12),
-                  color: Color(0xff252932),
-                ),
-                width: 80,
-                height: 40,
-
-                child:  Center(
-                  child: Text(duration,style: TextStyle(color: Color(0xffB2B5BB)),),
-                ),
-              ),
-
-
-            ],
+              ],
+            ),
           ),
         ),
 
