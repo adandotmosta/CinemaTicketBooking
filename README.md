@@ -1,3 +1,10 @@
+<<<<<<< HEAD
+# CinemaTicketBooking
+CInema ticket reservation application developed using flutter
+
+
+the changes abdenour's_application-> cinema_ticket_booking_app
+=======
 
 # abdenour_s_application1
 ### Table of contents
@@ -57,3 +64,4 @@ Resolve the errors and warnings that are shown in the application.
 ### Support
 
 If you have any problems or questions, go to our Discord channel, where we will help you as quickly as possible: https://discord.com/invite/rFMnCG5MZ7
+>>>>>>> 07ad9b9d489c5bcae50996da53531b8577212086
