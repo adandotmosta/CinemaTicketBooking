@@ -1,0 +1,61 @@
+name: cinema_ticket_booking_app
+description: A new Flutter project.
+version: 1.0.0+1
+environment:
+  sdk: '>=2.12.0 <3.0.0'
+dependencies:
+  pdf: ^3.5.0
+  path_provider: ^2.0.5
+  flutter:
+    sdk: flutter
+  http: ^0.13.3
+  cached_network_image: ^3.2.1
+  chewie: ^1.2.2
+  url_launcher: ^6.0.9
+  video_player: ^2.3.1
+  flutter_svg: ^1.1.6
+  flutter_rating_bar: ^4.0.0
+  readmore: ^2.1.0
+  cron: ^0.5.1
+  dio: ^5.4.0
+  flutter_barcode_scanner: ^2.0.0
+  image_picker: ^1.0.4
+  path: ^1.8.3
+  sqflite: ^2.3.0
+  flutter_svg_provider: ^1.0.3
+  intl: ^0.18.0
+  fluttertoast: ^8.0.8
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+flutter:
+  uses-material-design: true
+  assets:
+    - assets/
+    - assets/images/
+    - assets/images/png/
+  fonts:
+    - family: Poppins
+      fonts:
+        - asset: assets/fonts/PoppinsRegular.ttf
+          weight: 400
+        - asset: assets/fonts/PoppinsMedium.ttf
+          weight: 500
+        - asset: assets/fonts/PoppinsLight.ttf
+          weight: 300
+        - asset: assets/fonts/PoppinsSemiBold.ttf
+          weight: 600
+        - asset: assets/fonts/PoppinsBold.ttf
+          weight: 700
+        - asset: assets/fonts/PoppinsBlack.ttf
+          weight: 900
+    - family: Laila
+      fonts:
+        - asset: assets/fonts/LailaMedium.ttf
+          weight: 500
+    - family: PT Root UI
+      fonts:
+        - asset: assets/fonts/PTRootUIMedium.ttf
+          weight: 500
+        - asset: assets/fonts/PTRootUIRegular.ttf
+          weight: 400
