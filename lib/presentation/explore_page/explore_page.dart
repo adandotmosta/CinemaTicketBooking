@@ -236,8 +236,10 @@ class ExplorePageState extends State<ExplorePage> {
 
 
   Future<List<Map>> getAllmovies()async {
+    print("get Movies(");
 
     await service_sync_movies();
+
     Future<List<Map>> locals =  DBMovies.getAllMovies();
     print("getmovies()    with locals $locals");
     return locals;

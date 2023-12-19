@@ -27,7 +27,7 @@ class SignUpScreen extends StatelessWidget {
 
 
   Future register() async {
-    var url = "http:///${Constants.hostname}/signup.php";
+    var url = "http://${Constants.hostname}/Cinema_Endpoints/signup.php";
       var response = await http.post(Uri.parse(url), body: {
         "username": usernameFieldController.text,
         "email": emailFieldController.text,
