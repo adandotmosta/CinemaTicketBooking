@@ -1,4 +1,4 @@
-git clone -b branch_name "https://github.com/adandotmosta/CinemaTicketBooking.git"
+git clone -b Django_Backend "https://github.com/adandotmosta/CinemaTicketBooking.git"
 Create a Virtual Environment:
 Inside the cloned project directory, create a virtual environment and activate it:
 
