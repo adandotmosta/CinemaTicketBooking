@@ -1,0 +1,21 @@
+git clone -b branch_name "https://github.com/adandotmosta/CinemaTicketBooking.git"
+Create a Virtual Environment:
+Inside the cloned project directory, create a virtual environment and activate it:
+
+python -m venv my_env
+source my_env/bin/activate  # On Linux or macOS
+# Or
+my_env\Scripts\activate  # On Windows
+Install Dependencies:
+****Install the project dependencies using pip:
+
+pip install -r requirements.txt
+Ensure that you have a requirements.txt file that lists all the required Python packages.
+
+****Database Setup:
+
+python manage.py migrate
+
+***Run the Server:
+Start the Django development server:
+python manage.py runserver
