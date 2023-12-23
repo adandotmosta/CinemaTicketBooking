@@ -6,7 +6,7 @@ import '../../../databases/DBMovies.dart';
 Future<List<Map<String, dynamic>>?> endpoint_api_get_movies() async {
   //This can be improved by placing API endpoints into a constant dart file
   try {
-    print("salam");
+    print("salam Getting Movies");
     final response = await http.get(Uri.parse(
         Endpoints.get_movies));
 

@@ -526,6 +526,7 @@ class _DetailsPageState extends State<DetailsPage> {
             }
 
             // Return the list of cast members
+            print("cast is ---------- =$castList");
             return castList;
           }
         }

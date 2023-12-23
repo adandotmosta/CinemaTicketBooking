@@ -5,7 +5,7 @@ import 'package:cinema_ticket_booking_app/core/app_export.dart';
 import 'package:cinema_ticket_booking_app/widgets/custom_elevated_button.dart';
 import 'package:cinema_ticket_booking_app/widgets/custom_text_form_field.dart';
 import 'package:flutter/material.dart';
-
+import 'package:cinema_ticket_booking_app/core/utils/api_endpoints.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
 import 'package:cinema_ticket_booking_app/core/constants/constants.dart';
@@ -23,7 +23,9 @@ class _LoginScreenState extends State<LoginScreen> {
   String responseMessage = "";
 
   Future<void> login(BuildContext context) async {
-    var url = "http://${Constants.hostname}/Cinema_Endpoints/login.php";
+
+    var url = Endpoints.login;
+
     var response = await http.post(Uri.parse(url), body: {
       "email": EmailController.text,
       "password": passwordController.text,

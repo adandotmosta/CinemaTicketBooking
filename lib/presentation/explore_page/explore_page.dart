@@ -36,7 +36,7 @@ class ExplorePageState extends State<ExplorePage> {
 
   Widget build(BuildContext context) {
 
-    Future<List<Map>> movie_list = getAllmovies();
+    Future<List<dynamic>?> movie_list = getAllmovies();
     return SafeArea(
 
         child:
@@ -235,21 +235,22 @@ class ExplorePageState extends State<ExplorePage> {
   }
 
 
-  Future<List<Map>> getAllmovies()async {
-    print("get Movies(");
+  Future<List<dynamic>?> getAllmovies() async {
+    print("inside get ALl movies");
 
-    await service_sync_movies();
+   // await service_sync_movies();
 
-    Future<List<Map>> locals =  DBMovies.getAllMovies();
-    print("getmovies()    with locals $locals");
+   // print("finish syncing");
+
+    List<dynamic>? locals =  await endpoint_api_get_movies();
+    print("getting all movies");
     return locals;
   }
 }
 
 Widget _build_list_movies(BuildContext context, AsyncSnapshot snapshot) {
   if(snapshot.hasData) {
-    print("snapshot.hasData");
-    List<Map> display_movies_list = snapshot.data as List<Map>;
+    List<Map> display_movies_list = snapshot.data ;
 
     return ListView.builder(
       scrollDirection: Axis.horizontal,
@@ -260,8 +261,8 @@ Widget _build_list_movies(BuildContext context, AsyncSnapshot snapshot) {
           onTap: () {
 
             Navigator.pushNamed(context,AppRoutes.movieSessionsTabContainerScreen,arguments:
-            { 'image' : display_movies_list[index]["Movie_image"],
-              'name':display_movies_list[index]["Movie_name"],
+            { 'image' : "wiiiw",
+              'name':display_movies_list[index]["Movie_title"],
               'director':display_movies_list[index]["Movie_director"],
               'category':display_movies_list[index]["Movie_duration"],
               'duration':display_movies_list[index]["Movie_category"],
@@ -292,7 +293,8 @@ Widget _build_list_movies(BuildContext context, AsyncSnapshot snapshot) {
                         child: ClipRRect(
                           borderRadius: BorderRadius.circular(15),
                           child: Image.network(
-                            display_movies_list[index]["Movie_image"], // Assuming you have imagePath defined in Movie
+                         //   display_movies_list[index]["Movie_image"],
+                            "https://www.themoviedb.org/t/p/w300_and_h450_bestv2/rkv0HAzhHeZbc70JW224rUy1cMk.jpg",
                             height: 280,
                             width: 190,
                             fit: BoxFit.cover,
@@ -304,7 +306,7 @@ Widget _build_list_movies(BuildContext context, AsyncSnapshot snapshot) {
                         children:[ Padding(
                           padding: const EdgeInsets.all(4.0),
                           child: Text(
-                            display_movies_list[index]["Movie_name"], // Assuming you have title defined in Movie
+                            display_movies_list[index]["Movie_title"], // Assuming you have title defined in Movie
                             style: const TextStyle(
                               color: Color.fromRGBO(255, 255, 255, 1),
                               fontSize: 16,
@@ -336,7 +338,6 @@ Widget _build_list_movies(BuildContext context, AsyncSnapshot snapshot) {
       },
     );}
   else if(snapshot.hasError){
-    print("44444444444444444444444444444");
     return Text("${snapshot.hasError}");
   }
   return CircularProgressIndicator();
@@ -422,7 +423,6 @@ Widget _buildItem2(BuildContext context, AsyncSnapshot<List<Movie>> snapshot) {
       ),
     );
   } else if (snapshot.hasError) {
-    print("44444444444444444444444444444");
     return Text("${snapshot.error}");
   }
   return CircularProgressIndicator();

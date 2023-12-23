@@ -28,15 +28,17 @@ class DBMovies {
           from MOVIE
           ''');
           print("abababa");
-          print(res);
+       //   print("local data " + res);
 
 
+    print("finished");
       return res;
     } catch (error) {
       print('Error in getALLMOVIES: $error');
       // Handle the error or rethrow it if needed
       throw error;
     }
+
   }
 
 
@@ -68,9 +70,11 @@ class DBMovies {
             print("helllo x");
     List local_data = await getAllMovies();
     
-    print("helllo");
+    print("---------------------");
+    print("local data is $local_data");
     Map index_remote = {};
     List local_ids = [];
+    print("remote data is $remote_data");
     for (Map item in local_data) {
       index_remote[item['remote_id']] = item['id'];
       local_ids.add(item['id']);
@@ -81,15 +85,14 @@ class DBMovies {
       String movie_name = item["Movie_title"];
       String Movie_duration= item["Movie_duration"];
       String movieDirector = item["Movie_director"];
-      String movie_image = item["Movie_image"];
       String movie_category = item["Movie_category"];
       String Movie_description=item["Movie_description"];
       if (index_remote.containsKey(remote_id)) {
         int local_id = index_remote[remote_id];
-        await updateRecord(local_id, {'Movie_name':movie_name,'Movie_image':movie_image,'Movie_director':movieDirector,"Movie_duration":Movie_duration,"Movie_category":movie_category,"Movie_description":Movie_description});
+        await updateRecord(local_id, {'Movie_name':movie_name,'Movie_director':movieDirector,"Movie_duration":Movie_duration,"Movie_category":movie_category,"Movie_description":Movie_description});
         local_ids.remove(local_id);
       } else {
-        await insertRecord({'remote_id' : remote_id,'Movie_name':movie_name,'Movie_image':movie_image,'Movie_director':movieDirector,"Movie_duration":Movie_duration,"Movie_category":movie_category ,"Movie_description":Movie_description});
+        await insertRecord({'remote_id' : remote_id,'Movie_name':movie_name,'Movie_director':movieDirector,"Movie_duration":Movie_duration,"Movie_category":movie_category ,"Movie_description":Movie_description});
       }
     }
     var res = await getAllMovies();

@@ -8,7 +8,7 @@ import 'package:sqflite/sqflite.dart';
 
 class DBHelper {
   static const _database_name = "Local_Cinema_DB";
-  static const _database_version =5;
+  static const _database_version =6;
   static var database;
 
   static Future getDatabase() async {

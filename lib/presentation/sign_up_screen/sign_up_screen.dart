@@ -11,6 +11,7 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
 import 'package:cinema_ticket_booking_app/core/constants/constants.dart';
+import 'package:cinema_ticket_booking_app/core/utils/api_endpoints.dart';
 
 class SignUpScreen extends StatelessWidget {
   SignUpScreen({Key? key})
@@ -27,13 +28,14 @@ class SignUpScreen extends StatelessWidget {
 
 
   Future register() async {
-    var url = "http://${Constants.hostname}/Cinema_Endpoints/signup.php";
-      var response = await http.post(Uri.parse(url), body: {
-        "username": usernameFieldController.text,
-        "email": emailFieldController.text,
-        "password": passwordFieldController.text,
-        "phone": phoneNumberFieldController.text
-      });
+    var url = Endpoints.signup;
+
+    var response = await http.post(Uri.parse(url), body: {
+      "username": usernameFieldController.text,
+      "email": emailFieldController.text,
+      "password": passwordFieldController.text,
+      "phone": phoneNumberFieldController.text
+    });
 
       var data = json.decode(response.body);
     if (data['success']) {

@@ -13,8 +13,8 @@ Future<List<Movie>> getTrendingMovies() async
   if(response.statusCode==200)
   {
     final decodedData= json.decode(response.body)['results']as List ;
-    print("++++++++++++ Trending movies ++++++++++++");
-    print(decodedData);
+  //  print("++++++++++++ Trending movies ++++++++++++");
+   // print(decodedData);
 return decodedData.map((movie) => Movie.fromJson(movie)).toList();
   }
   else
@@ -28,8 +28,8 @@ Future<List<Movie>> getComedyMovies() async
   if(response.statusCode==200)
   {
     final decodedData= json.decode(response.body)['results']as List ;
-    print("*****33333333333333333333333333332222++++++++++++");
-    print(decodedData);
+   // print("*****33333333333333333333333333332222++++++++++++");
+    //print(decodedData);
 return decodedData.map((movie) => Movie.fromJson(movie)).toList();
   }
   else

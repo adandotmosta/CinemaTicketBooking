@@ -8,12 +8,12 @@ import '../../../databases/DBCinemas.dart';
 Future<List<Map<String, dynamic>>?> endpoint_api_get_sessions_per_cinema(Cinema_id) async {
   //This can be improved by placing API endpoints into a constant dart file
   try {
-    print("salam");
+    print("salam im in endpoints");
     final response = await http.get(Uri.parse(
-       '${Endpoints.get_sessions_per_cinema}&id=$Cinema_id'));
+       '${Endpoints.get_sessions_per_cinema}?id=$Cinema_id'));
 
     print("malak");
-    print('url is '+ '${Endpoints.get_sessions_per_cinema}&id=$Cinema_id');
+    print('url is '+ '${Endpoints.get_sessions_per_cinema}?id=$Cinema_id');
     print("response ;  ${response.statusCode}");
     print("wii");
     if (response.statusCode == 200) {

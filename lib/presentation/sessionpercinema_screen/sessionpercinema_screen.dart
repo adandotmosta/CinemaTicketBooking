@@ -70,10 +70,7 @@ DateTime now = DateTime.now();
     mediaQueryData = MediaQuery.of(context);
 
     var args = ModalRoute.of(context)!.settings.arguments;
-    var cinema_id;
-    if(args is Map) {
-      cinema_id = args["id"];
-    }
+    var cinema_id = 1;
     Future<List<dynamic>?> Sessions = get_All_Sessions(cinema_id);
 
     return SafeArea(
@@ -201,6 +198,7 @@ DateTime now = DateTime.now();
   }
   Future<List<dynamic>?> get_All_Sessions(cinema_id) async {
     List<dynamic>? list = await endpoint_api_get_sessions_per_cinema(cinema_id);
+    print("list of sessions $list");
     return list;
   }
   Widget _buildUserProfile(BuildContext context, AsyncSnapshot snapshot) {
@@ -220,7 +218,8 @@ DateTime now = DateTime.now();
                 String? date = Sessions?[index]["Session_time"];
                 // extarct day from date ;
                 String? lang = Sessions?[index]["Session_version"];
-                String? img =  Sessions?[index]["Movie_image"];
+             //   String? img =  Sessions?[index]["Movie_image"];
+                String? img =  "https://www.themoviedb.org/t/p/w300_and_h450_bestv2/rkv0HAzhHeZbc70JW224rUy1cMk.jpg";
 
                 DateTime session_date = DateTime.parse(date!);
 
