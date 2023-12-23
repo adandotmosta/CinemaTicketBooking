@@ -1,0 +1,6 @@
+cin_env/
+*.pyc
+__pycache__/
+
+# Local development settings
+local_settings.py
