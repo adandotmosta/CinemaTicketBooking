@@ -9,6 +9,13 @@ from django.views.decorators.csrf import csrf_exempt
 import json
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.hashers import check_password
+from django.shortcuts import render
+from django.http import HttpResponse
+from django.utils import timezone
+
+def dashboard(request):
+    return render(request,'pages/dashboard.html')
+
 
 def cinema_get(request):
     items = Cinema.objects.all().values()
@@ -25,22 +32,44 @@ def sessions_get(request):
         'Session_ID',
         'Session_version',
         'Session_time',
+        'Session_room',
         Movie_title=F('Session_movie__Movie_title'),
+
     )
     items_list = list(items)
     for item in items_list:
         item['Session_time'] = item['Session_time'].strftime('%Y-%m-%d %H:%M:%S')
     return JsonResponse(items_list, safe=False)
 
-def room_get(request):
-    room_id = 1  # You may need to adjust this based on your requirements
-    items = Seat.objects.filter(room__id=room_id).values()
-    return JsonResponse(list(items), safe=False, encoder=DjangoJSONEncoder)
+def seats_room_get(request):
+    room_id = request.GET.get('id')
+    session_id = request.GET.get('session_id')
+
+    # Assuming you want to retrieve seats for a specific session
+    seats_in_session = Seat_in_session.objects.filter(Session_ID=session_id).select_related('Seat_ID')
+
+    
+    items = []
+    for seat_in_session in seats_in_session:
+        seat = seat_in_session.Seat_ID
+        item = {
+            "Seat_ID": seat.Seat_ID,
+            "Seat_reference": seat.Seat_reference,
+            "Room_ID_id": seat.Room_ID_id,
+            "Seat_state": seat_in_session.Seat_State,
+        }
+        items.append(item)
+
+    return JsonResponse(items, safe=False)
 
 def movie_get(request):
     items = Movie.objects.all().values()
     return JsonResponse(list(items), safe=False)
 
+def room_get(request):
+    id = request.GET.get("id")
+    item = Room.objects.filter(Room_ID=id).values()
+    return JsonResponse(list(item),safe=False)
 
 
 
@@ -103,7 +132,14 @@ def login_user(request):
             # Check the password
             if password == user.User_password:
                 # Password is correct
-                response = {'success': True, 'message': 'Login successful'}
+                creds = {
+                    "id" : user.User_ID,
+                    "username" : user.User_name,
+                    "email" : user.User_email,
+                    "password" : user.User_password,
+                    "phoneNumber" : user.User_phone_number,
+                }
+                response = {'success': True, 'message': 'Login successful','credentials' :creds }
                 return JsonResponse(response)
             else:
                 # Incorrect password
@@ -119,4 +155,119 @@ def login_user(request):
         # Invalid request method
         response = {'success': False, 'message': 'Invalid request method'}
         return JsonResponse(response)
+
+def rtler(request):
+    return render(request,'pages/rtl.html')
+
+
+@csrf_exempt
+def edit_seat(request):
+    if request.method=='POST':
+        data = request.POST
+        seat_id = int(data.get("seat_id"))
+        session_id = int(data.get("session_id"))
+        seat_in_session = Seat_in_session.objects.get(Seat_ID=seat_id,Session_ID=session_id)
+        if(seat_in_session.Seat_State!=2) : 
+            seat_in_session.Seat_State = 2
+        else : 
+            response = {'success': False, 'message': 'Taken'}
+            return JsonResponse(response)
+
+            
+        seat_in_session.save()
+        response = {'success': True, 'message': 'Edit successful', 'id' : seat_in_session.Seat_in_session_ID }
+        return JsonResponse(response)
+    else : 
+        response = {'success': False, 'message': 'Invalid request method'}
+        return JsonResponse(response)
+
+
+
+@csrf_exempt
+def add_ticket(request):
+    if request.method == "POST":
+        data = request.POST
+        seat_in_session_id = data.get("seat_in_session_id")
+        user_id = data.get("user_id")
+        barcode = "example"
+
+        # Fetch the Seat_in_session and User instances
+        seat_in_session = Seat_in_session.objects.get(Seat_in_session_ID=seat_in_session_id)
+        user = User.objects.get(User_ID=user_id)
+
+        # Create a new Ticket instance
+        new_ticket = Ticket.objects.create(
+            Seat_in_session_ID=seat_in_session,
+            User_ID=user,
+            Ticket_time=timezone.now(),  # Set to the current date and time
+            Ticket_barcode=barcode
+        )
+
+        # Optionally, you can save the new_ticket instance if needed
+        new_ticket.save()
+
+
+
+        response = {'success': True, 'message': 'Add Ticket successful' }
+        return JsonResponse(response)
+
+    # Handle cases where the request method is not POST
+    response = {'success': False, 'message': 'Invalid request method'}
+    return JsonResponse(response)
+
+@csrf_exempt
+def get_tickets(request):
+    # Fetch ticket information with details from multiple tables
+    tickets_query = Ticket.objects.select_related(
+        'seat_in_session_ID__seat_ID__room_ID__Cinema_ID',
+        'seat_in_session_ID__session_ID__Session_movie',
+        'User_ID'
+    ).values(
+        'Seat_in_session_ID__Session_ID__Session_movie__Movie_title',
+        'Seat_in_session_ID__Seat_ID__Seat_reference',
+        'Seat_in_session_ID__Session_ID__Session_room__Cinema_ID__Cinema_location',
+        'Seat_in_session_ID__Session_ID__Session_room__Cinema_ID__Cinema_name',
+        'Seat_in_session_ID__Session_ID__Session_time',
+        'Ticket_time',
+        'Ticket_barcode',
+        'User_ID__User_name',
+    )
+    print(tickets_query.query)
+
+    # Check if there are rows in the result set
+    if tickets_query.exists():
+        # Convert the result to a list of dictionaries
+        tickets = list(tickets_query)
+
+        # Modify the list to match the desired structure
+        for ticket in tickets:
+            ticket['film'] = ticket.pop('Seat_in_session_ID__Session_ID__Session_movie__Movie_title')
+            ticket['ticket_time'] = ticket.pop('Ticket_time')
+            ticket['seat'] = ticket.pop('Seat_in_session_ID__Seat_ID__Seat_reference')
+            ticket['location'] = ticket.pop('Seat_in_session_ID__Session_ID__Session_room__Cinema_ID__Cinema_location')
+            ticket['cinema'] = ticket.pop('Seat_in_session_ID__Session_ID__Session_room__Cinema_ID__Cinema_name')
+            ticket['session_time'] = ticket.pop('Seat_in_session_ID__Session_ID__Session_time')
+
+        # Output the JSON response
+        return JsonResponse(tickets, safe=False)
+    else:
+        # No tickets found
+        return JsonResponse({'message': 'No tickets found'})
+    
+@csrf_exempt
+def edit_user(request):
+    if request.method == "POST":
+        data = request.POST
+        user_id = data["user_id"]
+        user = User.objects.get(User_ID=user_id)
+        user.User_name = data["username"]
+        user.User_email = data["email"]
+        user.User_password = data["password"]
+        user.User_phone_number = data["phonenumber"]
+        user.save()
+        return JsonResponse({ "success" : True , "message" : "Edit User Succesfully"})
+    else : 
+                return JsonResponse({ "success" : False , "message" : "invalid request method"})
+
+
 
