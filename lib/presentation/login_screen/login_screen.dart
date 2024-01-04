@@ -56,8 +56,6 @@ class _LoginScreenState extends State<LoginScreen> {
         context,
         AppRoutes.homeScreen,
       );
-      String userId = data['user']['id'].toString();
-      saveUserIdToSharedPreferences(userId);
     }
   }
   @override

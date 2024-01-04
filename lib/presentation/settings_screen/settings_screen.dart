@@ -226,6 +226,7 @@ class SettingsScreen extends StatelessWidget {
 
   /// Section Widget
   Widget _buildProfileSection(BuildContext context) {
+
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [

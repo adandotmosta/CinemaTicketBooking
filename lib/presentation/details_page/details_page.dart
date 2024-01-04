@@ -105,7 +105,6 @@ class _DetailsPageState extends State<DetailsPage> {
                           child: ListView(
                             scrollDirection: Axis.horizontal,
                             children: [
-
                               _buildItem('${imagePaths[0]["Image"]}'),
                               _buildItem('${imagePaths[1]["Image"]}'),
                               _buildItem('${imagePaths[2]["Image"]}'),

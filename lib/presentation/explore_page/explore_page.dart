@@ -248,6 +248,9 @@ class ExplorePageState extends State<ExplorePage> {
 Widget _build_list_movies(BuildContext context, AsyncSnapshot snapshot) {
   if(snapshot.hasData) {
     List<Map> display_movies_list = snapshot.data ;
+    print("in snapshot");
+    print(snapshot.data);
+    print("finished");
 
     return ListView.builder(
       scrollDirection: Axis.horizontal,

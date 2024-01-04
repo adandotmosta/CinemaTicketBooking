@@ -79,7 +79,7 @@ class SignUpScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     mediaQueryData = MediaQuery.of(context);
 
-    Future<int?> counter = get_prefs();
+
 
     return Scaffold(
       resizeToAvoidBottomInset: true,
@@ -193,15 +193,7 @@ class SignUpScreen extends StatelessWidget {
       ),
     );
   }
-Future<int?> get_prefs() async{
 
-
-    prefs = SharedPreferences.getInstance() as SharedPreferences;
-    int? counter = await prefs.getInt("counter");
-    print("counter  = $counter");
-
-    return counter;
-}
   /// Section Widget
   Widget _buildUsernameField(BuildContext context) {
     return Padding(

@@ -49,6 +49,13 @@ class MovieSessionsPageState extends State<MovieSessionsPage>
   Widget build(BuildContext context) {
     mediaQueryData = MediaQuery.of(context);
 
+    var args = (ModalRoute.of(context)!.settings.arguments);
+    int movid_id = 1;
+    if(args is Map){
+      movid_id= args["id"];
+
+    }
+
     return SafeArea(
       child: Scaffold(
         body: SizedBox(
@@ -84,7 +91,7 @@ class MovieSessionsPageState extends State<MovieSessionsPage>
                         controller: _tabController,
                         children: List.generate(
                           tabTitles.length,
-                              (index) => _buildSessionList(context, index),
+                              (index) => _buildSessionList(context, index,movid_id),
                         ),
                       ),
                     ),
@@ -136,14 +143,14 @@ class MovieSessionsPageState extends State<MovieSessionsPage>
     );
   }
 
-  Widget _buildSessionList(BuildContext context, int day) {
+  Widget _buildSessionList(BuildContext context, int day,int movie_id) {
     return Align(
       alignment: Alignment.bottomCenter,
       child: Container(
         margin: EdgeInsets.only(top: 30.v),
         decoration: AppDecoration.fillOnPrimaryContainer,
         child: FutureBuilder<List<dynamic>?>(
-          future: getSessionsForDay(day),
+          future: getSessionsForDay(day,movie_id),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return CircularProgressIndicator();
@@ -187,9 +194,9 @@ class MovieSessionsPageState extends State<MovieSessionsPage>
       // Add more session data as needed
     ];
   }*/
-  Future<List<dynamic>?> getSessionsForDay(int day) async {
+  Future<List<dynamic>?> getSessionsForDay(int day,int movie_id) async {
     // Replace 'YOUR_API_ENDPOINT' with the actual API endpoint for fetching sessions
-    final apiUrl = Endpoints.getFilteredSessions(1);
+    final apiUrl = Endpoints.getFilteredSessions(movie_id);
 
     try {
       final response = await http.get(Uri.parse(apiUrl));
