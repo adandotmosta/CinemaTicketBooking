@@ -271,3 +271,51 @@ def edit_user(request):
 
 
 
+def cast_get(request, movie_id):
+    casts = CastPath.objects.filter(Movie_id=movie_id).values()
+    return JsonResponse(list(casts), safe=False)
+
+def images_get(request, movie_id):
+    images = ImagesPath.objects.filter(Movie_id=movie_id).values()
+    return JsonResponse(list(images), safe=False)
+
+def get_filtered_sessions(request, movie_id):
+    try:
+        current_time = timezone.now()
+
+        # Build the base queryset with filtering on Session_time
+        base_query = Session.objects.filter(Session_time__gte=current_time)
+
+        # Apply additional filter if movie_id is provided
+        if movie_id is not None:
+            base_query = base_query.filter(Session_movie__Movie_ID=movie_id)
+
+        # Retrieve the desired fields with formatted date and time
+        result = (
+            base_query
+            .values(
+                'Session_room__Room_number',  # Room number
+                'Session_movie__Movie_title',  # Movie name
+                'Session_movie__Image_path',
+                'Session_ID',
+                'Session_version',
+                'Session_price',
+                'Session_room_id',  # Add the room ID if needed
+                'Session_movie_id',  # Add the movie ID if needed
+                'Session_time',
+            )
+        )
+        # Format date and time for each session
+        formatted_sessions = []
+        for session in result:
+            session_time = session['Session_time']  # Assuming 'Session_time' is in the result
+            formatted_date = session_time.strftime('%Y-%m-%d')
+            formatted_time = session_time.strftime('%H:%M:%S')
+            session['formatted_date'] = formatted_date
+            session['formatted_time'] = formatted_time
+            formatted_sessions.append(session)
+
+        return JsonResponse({'sessions': formatted_sessions})
+        
+    except Exception as e:
+        return JsonResponse({'error': str(e)})

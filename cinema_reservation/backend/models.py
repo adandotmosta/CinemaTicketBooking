@@ -19,6 +19,7 @@ class Movie(models.Model):
     Movie_duration = models.FloatField(null=True, blank=True)
     Movie_director = models.TextField()
     Movie_path = models.TextField()
+    Image_path = models.CharField(max_length=255, null=True, blank=True)
 
 class CastPath(models.Model):
     ID = models.AutoField(primary_key=True)
@@ -92,3 +93,6 @@ class Todo(models.Model):
         return self.content
 
 
+class Token(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    key = models.CharField(max_length=40)

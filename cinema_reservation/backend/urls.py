@@ -15,7 +15,16 @@ urlpatterns = [
     path('ticket/get/',get_tickets,name="getTickets"),
     path('dashboard/',dashboard,name='dashboard'),
     path('rtler/', rtler ,name='rtler'),
-    path("user/edit/", edit_user, name="edit_user")
+    path("user/edit/", edit_user, name="edit_user"),
+
+
+
+    path('images/get/<int:movie_id>/', images_get, name='images_get'),
+    path('session/get/<int:movie_id>/', get_filtered_sessions, name='session_get'),
+    path('cast/get/<int:movie_id>/', cast_get, name='cast_get')
+
+
+
 
 
 
