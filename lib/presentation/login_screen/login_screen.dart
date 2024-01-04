@@ -7,11 +7,12 @@ import 'package:cinema_ticket_booking_app/widgets/custom_elevated_button.dart';
 import 'package:cinema_ticket_booking_app/widgets/custom_text_form_field.dart';
 import 'package:flutter/material.dart';
 import 'package:cinema_ticket_booking_app/core/utils/api_endpoints.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
 import 'package:cinema_ticket_booking_app/core/constants/constants.dart';
+
 import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
 
 class LoginScreen extends StatefulWidget {
   LoginScreen({Key? key}) : super(key: key);
@@ -55,6 +56,8 @@ class _LoginScreenState extends State<LoginScreen> {
         context,
         AppRoutes.homeScreen,
       );
+      String userId = data['user']['id'].toString();
+      saveUserIdToSharedPreferences(userId);
     }
   }
   @override
@@ -69,6 +72,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
 
   }
+
     @override
     Widget build(BuildContext context) {
       mediaQueryData = MediaQuery.of(context);

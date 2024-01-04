@@ -37,6 +37,7 @@ class ExplorePageState extends State<ExplorePage> {
   Widget build(BuildContext context) {
 
     Future<List<dynamic>?> movie_list = getAllmovies();
+
     return SafeArea(
 
         child:
@@ -237,15 +238,11 @@ class ExplorePageState extends State<ExplorePage> {
 
   Future<List<dynamic>?> getAllmovies() async {
     print("inside get ALl movies");
-
-   // await service_sync_movies();
-
-   // print("finish syncing");
-
     List<dynamic>? locals =  await endpoint_api_get_movies();
-    print("getting all movies");
+    print("getting all movies $locals");
     return locals;
   }
+
 }
 
 Widget _build_list_movies(BuildContext context, AsyncSnapshot snapshot) {
@@ -261,12 +258,16 @@ Widget _build_list_movies(BuildContext context, AsyncSnapshot snapshot) {
           onTap: () {
 
             Navigator.pushNamed(context,AppRoutes.movieSessionsTabContainerScreen,arguments:
-            { 'image' : "wiiiw",
+            {
+              'id': display_movies_list[index]["Movie_ID"],
+              'vedio' : display_movies_list[index]["Movie_path"],
               'name':display_movies_list[index]["Movie_title"],
               'director':display_movies_list[index]["Movie_director"],
-              'category':display_movies_list[index]["Movie_duration"],
-              'duration':display_movies_list[index]["Movie_category"],
-              'description':display_movies_list[index]["Movie_description"], });
+              'category':display_movies_list[index]["Movie_category"],
+              'duration':display_movies_list[index]["Movie_duration"],
+              'description':display_movies_list[index]["Movie_description"],
+              'image':display_movies_list[index]["Image_path"],
+            });
 
           },
 
@@ -293,8 +294,7 @@ Widget _build_list_movies(BuildContext context, AsyncSnapshot snapshot) {
                         child: ClipRRect(
                           borderRadius: BorderRadius.circular(15),
                           child: Image.network(
-                         //   display_movies_list[index]["Movie_image"],
-                            "https://www.themoviedb.org/t/p/w300_and_h450_bestv2/rkv0HAzhHeZbc70JW224rUy1cMk.jpg",
+                            display_movies_list[index]["Image_path"],
                             height: 280,
                             width: 190,
                             fit: BoxFit.cover,
@@ -329,6 +329,7 @@ Widget _build_list_movies(BuildContext context, AsyncSnapshot snapshot) {
                         _saveRating(rating);
                       },
                     ),
+
                   ],
                 ),
               ),

@@ -3,12 +3,25 @@ import 'package:flutter/material.dart';
 
 // ignore: must_be_immutable
 class SessionlistItemWidget extends StatelessWidget {
-
   final bool showAdditionalInfo;
+  final String filmImage;
+  final String MovieName;
+  final String version;
+  final String sessionTime;
+  final String price;
+  final int remainingPlaces;
+  final int RoomNumber;
 
   const SessionlistItemWidget({
     Key? key,
     required this.showAdditionalInfo,
+    required this.filmImage,
+    required this.MovieName,
+    required this.version,
+    required this.sessionTime,
+    required this.price,
+    required this.remainingPlaces,
+    required this.RoomNumber,
   }) : super(key: key);
 
   @override
@@ -19,77 +32,57 @@ class SessionlistItemWidget extends StatelessWidget {
         children: [
           Divider(),
           SizedBox(height: 14.v),
-          Align(
-            alignment: Alignment.centerLeft,
-            child: Padding(
-              padding: EdgeInsets.only(
-                left: 29.h,
-                right: 64.h,
-              ),
-              child: Row(
+          Padding(
+            padding: EdgeInsets.only(left: 29.h, right: 29.h),
+            child: GestureDetector(
+              onTap: () {
+                Navigator.pushNamed(context, AppRoutes.selectSeatsScreen);
+              },
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  GestureDetector(
-
-                    onTap: () {
-                      Navigator.pushNamed(
-                          context, AppRoutes.selectSeatsScreen);
-                    },
-                    child: Column(
-                      children: [
-
-                        Image.asset(
-                          'assets/images/TMV.jpg', // replace with actual image URL
-                          height: 50.v, // adjust height as needed
-                          width: 50.h, // adjust width as needed
-                        ),
-                      ],
-                    ),
+                  Image.network(
+                    filmImage,
+                    height: 200.v,
+                    fit: BoxFit.cover,
                   ),
-                  Padding(
-                    padding: EdgeInsets.only(left: 29.h),
-                    child: SizedBox(
-                      height: 46.v,
-                      child: VerticalDivider(
-                        width: 1.h,
-                        thickness: 1.v,
-                      ),
-                    ),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.only(left: 15.h),
-                    child: Column(
+                  SizedBox(height: 12.v),
+                  if (showAdditionalInfo)
+                    Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          "TMV CINEMA",
+                          "$MovieName",
                           style: CustomTextStyles.titleSmallWhiteA70001Bold,
                         ),
                         SizedBox(height: 6.v),
+                        Text(
+                          "Session Time: $sessionTime",
+                          style: CustomTextStyles.bodySmallGray600,
+                        ),
+                        SizedBox(height: 6.v),
+                        Text(
+                          "Version: $version",
+                          style: CustomTextStyles.bodySmallGray600,
+                        ),
+                        SizedBox(height: 6.v),
+                        Text(
+                          "Price: $price", // replace with actual price
+                          style: CustomTextStyles.bodySmallGray600,
+                        ),
+                       /* SizedBox(height: 6.v),
+                        Text(
+                          "Remaining Places: $remainingPlaces", // replace with actual count
+                          style: CustomTextStyles.bodySmallGray600,
+                        ),*/
+                        SizedBox(height: 6.v),
+                        Text(
+                          "Room number: $RoomNumber", // replace with actual count
+                          style: CustomTextStyles.bodySmallGray600,
+                        ),
 
-                        if (showAdditionalInfo)
-                        // Add additional information widgets here
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                "Session Time: 14:40",
-                                style: CustomTextStyles.bodySmallGray600,
-                              ),
-                              SizedBox(height: 6.v),
-                              Text(
-                                "Session Price: \900DA", // replace with actual price
-                                style: CustomTextStyles.bodySmallGray600,
-                              ),
-                              SizedBox(height: 6.v),
-                              Text(
-                                "Remaining Places: 20", // replace with actual count
-                                style: CustomTextStyles.bodySmallGray600,
-                              ),
-                            ],
-                          ),
                       ],
                     ),
-                  ),
                 ],
               ),
             ),

@@ -28,41 +28,47 @@ class SignUpScreen extends StatelessWidget {
   TextEditingController confirmPasswordFieldController = TextEditingController();
 
 
-  static late final SharedPreferences prefs;
+  Future<bool> register() async {
+    try {
+      var url = Endpoints.signup;
 
 
-  Future register() async {
-    var url = Endpoints.signup;
-
-    var response = await http.post(Uri.parse(url), body: {
-      "username": usernameFieldController.text,
-      "email": emailFieldController.text,
-      "password": passwordFieldController.text,
-      "phone": phoneNumberFieldController.text
-    });
+      var response = await http.post(Uri.parse(url), body: {
+        "username": usernameFieldController.text,
+        "email": emailFieldController.text,
+        "password": passwordFieldController.text,
+        "phone": phoneNumberFieldController.text
+      });
 
       var data = json.decode(response.body);
-    if (data['success']) {
-      Fluttertoast.showToast(
-        msg: data["message"],
-        toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.CENTER,
-        timeInSecForIosWeb: 1,
-        backgroundColor: Colors.green,
-        textColor: Colors.white,
-        fontSize: 16.0,
-      );
-    } else {
-      // Registration failed
-      Fluttertoast.showToast(
-        msg: data["message"],
-        toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.CENTER,
-        timeInSecForIosWeb: 1,
-        backgroundColor: Colors.red,
-        textColor: Colors.white,
-        fontSize: 16.0,
-      );
+      if (data['success']) {
+        Fluttertoast.showToast(
+          msg: data["message"],
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.CENTER,
+          timeInSecForIosWeb: 1,
+          backgroundColor: Colors.green,
+          textColor: Colors.white,
+          fontSize: 16.0,
+        );
+        return true; // Registration successful
+      } else {
+        // Registration failed
+        Fluttertoast.showToast(
+          msg: data["message"],
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.CENTER,
+          timeInSecForIosWeb: 1,
+          backgroundColor: Colors.red,
+          textColor: Colors.white,
+          fontSize: 16.0,
+        );
+        return false; // Registration failed
+      }
+    } catch (error) {
+      // Handle any unexpected errors during registration
+      print("Unexpected error during registration: $error");
+      return false; // Registration failed
     }
   }
   
@@ -341,21 +347,32 @@ Future<int?> get_prefs() async{
 
 
   /// Section Widget
-  Widget _buildCreateAccount(BuildContext context) {
+  _buildCreateAccount(BuildContext context) {
     return CustomElevatedButton(
-        onPressed: () {
- 
-          register();
-  
-          Navigator.pushNamed(context,
-            AppRoutes.loginScreen,);
-        },
-      width: MediaQuery.of(context).size.width*0.8,
+      onPressed: () async {
+        try {
+          bool success = await register();
+
+          if (success) {
+            // Registration successful, navigate to login screen
+            print("Navigating to login screen");
+            Navigator.pushNamed(context, AppRoutes.loginScreen);
+          } else {
+            // Registration failed
+            print("Registration failed");
+          }
+        } catch (error) {
+          // Handle any unexpected errors during registration
+          print("Unexpected error during registration: $error");
+        }
+      },
+      width: MediaQuery.of(context).size.width * 0.8,
       text: "Create account",
       buttonTextStyle: CustomTextStyles.titleMediumWhiteA700Bold,
       alignment: Alignment.center,
     );
   }
+
 
   /// Section Widget
   Widget _buildCreateAccountStack(BuildContext context) {

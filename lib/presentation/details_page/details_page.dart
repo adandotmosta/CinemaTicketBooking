@@ -5,6 +5,7 @@ import 'dart:convert';
 
 import 'package:cinema_ticket_booking_app/core/app_export.dart';
 import 'package:cinema_ticket_booking_app/core/utils/API/constants.dart';
+import 'package:cinema_ticket_booking_app/core/utils/Movie/movie.dart';
 import 'package:cinema_ticket_booking_app/presentation/select_seats_screen/select_seats_screen.dart';
 import 'package:cinema_ticket_booking_app/widgets/app_bar/appbar_title.dart';
 import 'package:cinema_ticket_booking_app/widgets/app_bar/custom_app_bar.dart';
@@ -14,6 +15,7 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:video_player/video_player.dart';
 import 'package:chewie/chewie.dart';
 import 'package:http/http.dart' as http;
+import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
 class DetailsPage extends StatefulWidget {
 
@@ -27,18 +29,38 @@ class DetailsPage extends StatefulWidget {
 
 
 class _DetailsPageState extends State<DetailsPage> {
+  late YoutubePlayerController _controller;
 
   @override
+  void initState(){
+    super.initState();
+    _controller = YoutubePlayerController(
+      initialVideoId: '',
+      flags: YoutubePlayerFlags(
+        autoPlay: true,
+        mute: true,
+      ),
+    );
+  }
+  @override
+  void dispose() {
+    _controller.dispose(); // Dispose of the controller when the widget is disposed.
+    super.dispose();
+  }
   Widget build(BuildContext context) {
     var args = (ModalRoute.of(context)!.settings.arguments);
-    var image_path = "";
+    var movie_vedio_path = "";
+    var movid_id;
     String movieName="";
     String movieDirector="";
     String movieCategory="";
-    String movieDuration="";
+    double movieDuration=0;
+    String image_path="";
     String movieDescription="";
     if(args is Map){
+      movid_id= args["id"];
       image_path  = args["image"];
+      movie_vedio_path=args["vedio"];
       movieName=args["name"];
       movieDirector=args["director"];
       movieCategory=args["category"];
@@ -48,11 +70,16 @@ class _DetailsPageState extends State<DetailsPage> {
     String directorText = "Director: $movieDirector";
 
 
-    Future<List<String>> imagePaths =getMovieImages(movieName);
-    Future<List<Map<String, String>>> movieCast=getMovieCast(movieName);
+    Future<List<dynamic>?> imagePaths =getAllimages(movid_id);
+
+    /// Future<List<Map<String, String>>> movieCast=getMovieCast(movieName);
+    Future<List<dynamic>?> movie_cast=getallcasts(movid_id);
+
 
     return SafeArea(
         child: Scaffold(
+
+
           //  appBar:_buildAppBar2(context,movieName),
 
           //     backgroundColor: const Color(0xFF1A2232),
@@ -62,8 +89,8 @@ class _DetailsPageState extends State<DetailsPage> {
                 SizedBox(
                   height: 390,
 
-                  child: FutureBuilder<List<String>>(
-                    future: getMovieImages(movieName),
+                  child:  FutureBuilder<List<dynamic>?>(
+                    future: imagePaths,
                     builder: (context, snapshot) {
                       if (snapshot.connectionState == ConnectionState.waiting) {
                         return CircularProgressIndicator();
@@ -72,16 +99,16 @@ class _DetailsPageState extends State<DetailsPage> {
                       } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
                         return Text('No images found for the specified movie.');
                       } else {
-                        List<String> imagePaths = snapshot.data!;
+                        List imagePaths = snapshot.data!;
 
                         return Container(
                           child: ListView(
                             scrollDirection: Axis.horizontal,
                             children: [
 
-                              _buildItem('${cnts.imagePath}${imagePaths[0]}'),
-                              _buildItem('${cnts.imagePath}${imagePaths[5]}'),
-                              _buildItem('${cnts.imagePath}${imagePaths[6]}'),
+                              _buildItem('${imagePaths[0]["Image"]}'),
+                              _buildItem('${imagePaths[1]["Image"]}'),
+                              _buildItem('${imagePaths[2]["Image"]}'),
                             ],
                           ),
                         );
@@ -90,7 +117,7 @@ class _DetailsPageState extends State<DetailsPage> {
                   ),
                 ),
 
-                _description(movieName, directorText,movieDuration,movieCategory),
+                _description(movieName, directorText,movieCategory,"$movieDuration"),
                 Padding(padding: EdgeInsets.symmetric(horizontal: 20,vertical: 5),
                   child: Column(
 
@@ -119,6 +146,7 @@ class _DetailsPageState extends State<DetailsPage> {
                         borderRadius: BorderRadius.circular(15),
                         child: Image.network(
                           image_path,
+
                           fit: BoxFit.cover,
                           height: 300,
                           width: 500,
@@ -129,10 +157,12 @@ class _DetailsPageState extends State<DetailsPage> {
                           onTap: () async {
 
 
-                            final MovieName = movieName; // Replace with the actual movie name
-                            final videoUrl = await getMovieVideoUrl(MovieName);
+                            //final MovieName = movieName; // Replace with the actual movie name
+                            //final videoUrl = await getMovieVideoUrl(MovieName);
 
-                            try {
+                            _showVideoPopup(context,movie_vedio_path);
+
+                            /*try {
                               final uri = Uri.parse(videoUrl!); // Convert the String to Uri
 
                               launch(videoUrl);
@@ -140,7 +170,8 @@ class _DetailsPageState extends State<DetailsPage> {
 
                             } catch (e) {
                               print('Error launching URL: $e');
-                            }
+                            }*/
+
 
 
 
@@ -156,22 +187,23 @@ class _DetailsPageState extends State<DetailsPage> {
                   ),
                 )
                 ),
-                FutureBuilder<List<Map<String, String>>>(
-                  future: movieCast,
-                  builder: (context, snapshot) {
+
+                FutureBuilder<List<dynamic>?>(
+                  future: movie_cast,
+                  builder: (context, AsyncSnapshot<List<dynamic>?> snapshot) {
                     if (snapshot.connectionState == ConnectionState.waiting) {
                       // If the Future is still running, show a loading indicator
                       return CircularProgressIndicator();
                     } else if (snapshot.hasError) {
                       // If there's an error, show an error message
                       return Text('Error: ${snapshot.error}');
-                    } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                    } else if (!snapshot.hasData || snapshot.data == null || snapshot.data!.isEmpty) {
                       // If there's no data, or the data is empty, show a message
                       return Text('No cast information available.');
                     } else {
                       // If data is available, display it using a ListView.builder
                       return Container(
-                        height: 160,
+                        height: 160.v,
                         child: ListView.builder(
                           scrollDirection: Axis.horizontal,
                           itemCount: snapshot.data!.length,
@@ -187,7 +219,7 @@ class _DetailsPageState extends State<DetailsPage> {
                                     child: ClipRRect(
                                       borderRadius: BorderRadius.circular(120),
                                       child: Image.network(
-                                        '${cnts.imagePath}${castMember['profile_path']!}',
+                                        '${cnts.imagePath}${castMember['Actor_path'] ?? ''}',
                                         fit: BoxFit.cover,
                                         width: 80,
                                         height: 80,
@@ -196,7 +228,7 @@ class _DetailsPageState extends State<DetailsPage> {
                                   ),
                                   const SizedBox(height: 8),
                                   Text(
-                                    castMember['original_name']!,
+                                    castMember['actor_name']?.toString() ?? 'Unknown',
                                     style: TextStyle(
                                       color: Colors.white,
                                     ),
@@ -210,6 +242,7 @@ class _DetailsPageState extends State<DetailsPage> {
                     }
                   },
                 ),
+
 
 
                 Container(
@@ -247,6 +280,31 @@ class _DetailsPageState extends State<DetailsPage> {
   }
 
 
+  void _showVideoPopup(BuildContext context,String movie_vedio_path) async {
+    // String videoId = await getMovieVideoUrl(movieName)??""; // Replace with your actual async logic
+
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return Dialog(
+          child: Container(
+            width: MediaQuery.of(context).size.width * 0.8,
+            height: 300.h,
+            child: YoutubePlayer(
+              controller: YoutubePlayerController(
+                initialVideoId: '${movie_vedio_path}',
+                flags: YoutubePlayerFlags(
+                  autoPlay: true,
+                  mute: false,
+                ),
+              ),
+              showVideoProgressIndicator: true,
+            ),
+          ),
+        );
+      },
+    );
+  }
 
   Future<List<String>> getMovieImages(  String movieName) async {
     List<String> imagePaths = [];
@@ -406,9 +464,9 @@ class _DetailsPageState extends State<DetailsPage> {
 
   Widget _buildItem(String img) {
     return Padding(
-      padding:EdgeInsets.all(20.0),
+      padding:EdgeInsets.all(15),
       child: Container(
-        width: 300,
+        width: 250.h,
         decoration: BoxDecoration(
           shape: BoxShape.rectangle,
           color: Color(0xFF1A2232),
@@ -471,7 +529,7 @@ class _DetailsPageState extends State<DetailsPage> {
               final trailerKey = trailerVideo['key'];
 
               // Construct the YouTube URL
-              final youtubeUrl = 'https://www.youtube.com/watch?v=$trailerKey';
+              final youtubeUrl = '$trailerKey';
               print(youtubeUrl);
 
               return youtubeUrl;
@@ -484,93 +542,75 @@ class _DetailsPageState extends State<DetailsPage> {
     // Return null if no trailer URL is found
     return null;
   }
+  Future<List<dynamic>?> getAllimages(movid_id) async {
+    print("inside get ALl images paths");
+    List<dynamic>? locals =  await endpoint_api_get_images(movid_id);
+    print("getting all movies $locals");
+    return locals;
+  }
+  Future<List<dynamic>?> getallcasts(movid_id) async {
+    print("inside get ALl movies");
 
+    // await service_sync_movies();
 
-  Future<List<Map<String, String>>> getMovieCast(String movieName) async {
-    final tmdbBaseUrl = 'https://api.themoviedb.org/3';
-    final searchEndpoint = '/search/movie';
-    String apiKey = '099607cdfcda12d90eb81fe600e301d7';
+    // print("finish syncing");
 
-    // Step 1: Search for the movie ID using the movie name
-    final searchUrl =
-    Uri.parse('$tmdbBaseUrl$searchEndpoint?api_key=$apiKey&query=$movieName');
-    final searchResponse = await http.get(searchUrl);
+    List<dynamic>? casts =  await endpoint_api_get_casts(movid_id);
+    print("getting all movies");
+    return casts;
+  }}
 
-    if (searchResponse.statusCode == 200) {
-      final searchResult = json.decode(searchResponse.body);
+Future<List<Map<String, String>>> getMovieCast(String movieName) async {
+  final tmdbBaseUrl = 'https://api.themoviedb.org/3';
+  final searchEndpoint = '/search/movie';
+  String apiKey = '099607cdfcda12d90eb81fe600e301d7';
 
-      // Check if any movies were found
-      if (searchResult['results'] != null && searchResult['results'].isNotEmpty) {
-        final movieId = searchResult['results'][0]['id'];
+  // Step 1: Search for the movie ID using the movie name
+  final searchUrl =
+  Uri.parse('$tmdbBaseUrl$searchEndpoint?api_key=$apiKey&query=$movieName');
+  final searchResponse = await http.get(searchUrl);
 
-        // Step 2: Get the credits for the movie using the movie ID
-        final castUrl = Uri.parse('$tmdbBaseUrl/movie/$movieId/credits?api_key=$apiKey');
-        final castResponse = await http.get(castUrl);
+  if (searchResponse.statusCode == 200) {
+    final searchResult = json.decode(searchResponse.body);
 
-        if (castResponse.statusCode == 200) {
-          final castResult = json.decode(castResponse.body);
+    // Check if any movies were found
+    if (searchResult['results'] != null && searchResult['results'].isNotEmpty) {
+      final movieId = searchResult['results'][0]['id'];
 
-          // Extracting information for all cast members
-          if (castResult['cast'] != null && castResult['cast'].isNotEmpty) {
-            final List<Map<String, String>> castList = [];
+      // Step 2: Get the credits for the movie using the movie ID
+      final castUrl = Uri.parse('$tmdbBaseUrl/movie/$movieId/credits?api_key=$apiKey');
+      final castResponse = await http.get(castUrl);
 
-            for (final castMember in castResult['cast']) {
-              final originalName = castMember['original_name'];
-              final profilePath = castMember['profile_path'];
+      if (castResponse.statusCode == 200) {
+        final castResult = json.decode(castResponse.body);
 
-              // Add cast member information to the list
-              if (profilePath != null ){castList.add({
-                'original_name': originalName ?? '',
-                'profile_path': profilePath ?? '',
-              });}
-            }
+        // Extracting information for all cast members
+        if (castResult['cast'] != null && castResult['cast'].isNotEmpty) {
+          final List<Map<String, String>> castList = [];
 
-            // Return the list of cast members
-            print("cast is ---------- =$castList");
-            return castList;
+          for (final castMember in castResult['cast']) {
+            final originalName = castMember['original_name'];
+            final profilePath = castMember['profile_path'];
+
+            // Add cast member information to the list
+            if (profilePath != null ){castList.add({
+              'original_name': originalName ?? '',
+              'profile_path': profilePath ?? '',
+            });}
           }
+
+          // Return the list of cast members
+          print("cast is ---------- =$castList");
+          return castList;
         }
       }
     }
-
-    // Return an empty list if no cast information is found
-    return [];
   }
 
-
-
-/*PreferredSizeWidget _buildAppBar2(BuildContext context,String title) {
->>>>>>> origin/secondSubmission
-    return CustomAppBar(
-      leadingWidth: 56.h,
-      leading: IconButton(
-        icon: Icon(Icons.arrow_back_ios ,color: Colors.white,),
-        onPressed: () {
-          Navigator.pop(context);
-        },
-      ),
-      centerTitle: true,
-      title: AppbarTitle(
-<<<<<<< HEAD
-        text: "Shang-Chi",
-=======
-        text: title,
->>>>>>> origin/secondSubmission
-      ),
-      //about and session
-
-    );
-<<<<<<< HEAD
-  }
-=======
-  }*/
+  // Return an empty list if no cast information is found
+  return [];
 }
-ChewieController _buildVideoPlayerController(String videoUrl) {
-  final videoPlayerController = VideoPlayerController.network(videoUrl);
-  final chewieController = ChewieController(
-    videoPlayerController: videoPlayerController,
-    autoPlay: false,
-    looping: true,
-  );
-  return chewieController;
-}
+
+
+
+

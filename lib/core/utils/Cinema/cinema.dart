@@ -11,7 +11,7 @@ Future<List<Map<String, dynamic>>?> endpoint_api_get_categories() async {
     print("salam");
     print(Endpoints.get_all_cinemas);
     final response = await http.get(Uri.parse(
-       Endpoints.get_all_cinemas ));
+        Endpoints.get_all_cinemas ));
     print("malak");
     print("response ;  ${response.statusCode}");
     print("wii");
