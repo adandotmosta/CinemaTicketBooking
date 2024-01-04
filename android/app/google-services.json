@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "64085766687",
+    "project_id": "cinemanoti-6fd59",
+    "storage_bucket": "cinemanoti-6fd59.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:64085766687:android:8e31fb2f090f63cdd3db2a",
+        "android_client_info": {
+          "package_name": "com.abdenoursapplication.app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDZkwA68HcKTLoqTVa95JuKhtFie14OzUg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

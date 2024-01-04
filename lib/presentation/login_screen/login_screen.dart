@@ -6,9 +6,11 @@ import 'package:cinema_ticket_booking_app/widgets/custom_elevated_button.dart';
 import 'package:cinema_ticket_booking_app/widgets/custom_text_form_field.dart';
 import 'package:flutter/material.dart';
 import 'package:cinema_ticket_booking_app/core/utils/api_endpoints.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
 import 'package:cinema_ticket_booking_app/core/constants/constants.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+
 class LoginScreen extends StatefulWidget {
   LoginScreen({Key? key}) : super(key: key);
 
@@ -41,7 +43,21 @@ class _LoginScreenState extends State<LoginScreen> {
         context,
         AppRoutes.homeScreen,
       );
+      String userId = data['user']['id'].toString();
+      saveUserIdToSharedPreferences(userId);
     }
+  }
+
+  // Method to save user ID in shared preferences
+  Future<void> saveUserIdToSharedPreferences(String userId) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setString('user_id', userId);
+  }
+
+  // Method to retrieve user ID from shared preferences
+  Future<String> getStoredUserId() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.getString('user_id') ?? ''; // Default value if not found
   }
 
     @override

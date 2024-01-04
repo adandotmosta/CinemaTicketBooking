@@ -4,13 +4,53 @@ import 'package:cinema_ticket_booking_app/core/utils/api_endpoints.dart';
 import '../../../databases/DBMovies.dart';
 
 Future<List<Map<String, dynamic>>?> endpoint_api_get_movies() async {
-  //This can be improved by placing API endpoints into a constant dart file
   try {
     print("salam Getting Movies");
     final response = await http.get(Uri.parse(
         Endpoints.get_movies));
 
     print("malak");
+    print("response ;  ${response.statusCode}");
+    print("wii");
+    if (response.statusCode == 200) {
+      print("-${response.body}-");
+      List<Map<String, dynamic>> ret =
+      List<Map<String, dynamic>>.from(jsonDecode(response.body));
+
+      return ret;
+    }
+  } catch (error) {
+    print("Error yes ${error.toString()}");
+    return null;
+  }
+  return null;
+}
+Future<List<Map<String, dynamic>>?> endpoint_api_get_casts(var movie_id) async {
+  try {
+    print("salam Getting Casts");
+    final response = await http.get(Uri.parse(
+        '${Endpoints.get_casts}/$movie_id'));
+    print("Received Casts");
+    print("response ;  ${response.statusCode}");
+    print("wii");
+    if (response.statusCode == 200) {
+      print("-${response.body}-");
+      List<Map<String, dynamic>> ret =
+      List<Map<String, dynamic>>.from(jsonDecode(response.body));
+      return ret;
+    }
+  } catch (error) {
+    print("Error yes ${error.toString()}");
+    return null;
+  }
+  return null;
+}
+Future<List<Map<String, dynamic>>?> endpoint_api_get_images(var movie_id) async {
+  try {
+    print("salam Getting Casts");
+    final response = await http.get(Uri.parse(
+        '${Endpoints.get_images}/$movie_id'));
+    print("Received Casts");
     print("response ;  ${response.statusCode}");
     print("wii");
     if (response.statusCode == 200) {
@@ -39,4 +79,27 @@ Future<bool> service_sync_movies() async {
   }
   else{print("remotedataisnull");}
   return false;
+}
+
+
+Future<List<Map<String, dynamic>>> getSessions(int movieId ) async {
+  try {
+    print("Getting sessions");
+    final response = await http.get(Uri.parse(
+        '${Endpoints.get_session}/$movieId')); // Ensure Endpoints.getSession is defined
+    print("Received sessions");
+    print("response: ${response.statusCode}");
+    print("wii");
+    if (response.statusCode == 200) {
+      print("-${response.body}-");
+      List<Map<String, dynamic>> ret =
+      List<Map<String, dynamic>>.from(jsonDecode(response.body)["sessions"]);
+      print(ret);
+      return ret;
+    }
+  } catch (error) {
+    print("Error: ${error.toString()}");
+    return [];
+  }
+  return [];
 }

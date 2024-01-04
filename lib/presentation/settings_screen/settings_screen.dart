@@ -7,6 +7,10 @@ import 'package:cinema_ticket_booking_app/widgets/custom_bottom_bar.dart';
 import 'package:cinema_ticket_booking_app/widgets/custom_icon_button.dart';
 import 'package:cinema_ticket_booking_app/widgets/custom_text_form_field.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:http/http.dart' as http;
+
+import '../../core/utils/api_endpoints.dart';
 
 class SettingsScreen extends StatelessWidget {
   SettingsScreen({Key? key})
@@ -88,8 +92,8 @@ class SettingsScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildPersonalData(BuildContext context,String title,leading_icon,color ){
-    return   Row(
+  Widget _buildPersonalData(BuildContext context, String title, String leadingIcon, Color color) {
+    return Row(
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
@@ -102,22 +106,15 @@ class SettingsScreen extends StatelessWidget {
           ),
           child: Padding(
             padding: const EdgeInsets.all(10.0),
-            /*          child: CustomImageView(
-              imagePath: ImageConstant.imgActivity,
-              width: 24.v,
-              height: 24.v,
-            ),*/
-            child : Image.asset(
-              leading_icon,
+            child: Image.asset(
+              leadingIcon,
               height: 24.v,
               width: 24.v,
             ),
           ),
         ),
         Container(
-          //  alignment: Alignment.topLeft*,
-         margin: EdgeInsets.only(left: 12.v,),
-
+          margin: EdgeInsets.only(left: 12.v),
           child: Text(
             title,
             style: TextStyle(
@@ -125,41 +122,76 @@ class SettingsScreen extends StatelessWidget {
               fontSize: 18.adaptSize,
             ),
             textAlign: TextAlign.left,
-
-
           ),
         ),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: [
-                  Container(
-
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(
-                        10.h,
-                      ),
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.all(10.0),
-                      child: GestureDetector(
-
-                        child: CustomImageView(
-                          imagePath: ImageConstant.imgBtnBackWhiteA70001,
-                          width: 24.v,
-                          height: 24.v,
-                        ),
-                      ),
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: [
+              Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(
+                    10.h,
+                  ),
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.all(10.0),
+                  child: GestureDetector(
+                    onTap: () {
+                      if (title == "Logout") {
+                        logout(context);
+                      } else {
+                        // Handle other actions
+                      }
+                    },
+                    child: CustomImageView(
+                      imagePath: ImageConstant.imgBtnBackWhiteA70001,
+                      width: 24.v,
+                      height: 24.v,
                     ),
                   ),
-                ],
+                ),
               ),
-            ),
-
-
+            ],
+          ),
+        ),
       ],
     );
   }
+
+  Future<bool> logout(BuildContext context) async {
+    try {
+      var url = Endpoints.logout;
+
+      // Get the CSRF token from the cookie
+      var csrfToken = 'your_csrf_token_value';  // Replace with the actual CSRF token
+      var headers = {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        'X-CSRFToken': csrfToken,
+      };
+
+      var response = await http.post(
+        Uri.parse(url),
+        headers: headers,
+        // Add any additional parameters needed for logout
+      );
+
+      // Check the response status
+        // Logout successful
+        Navigator.pushNamedAndRemoveUntil(
+          context,
+          AppRoutes.loginScreen,
+              (route) => false,
+        );
+        return true; // Logout successful
+
+    } catch (error) {
+      // Handle unexpected errors during logout
+      print('Error during logout: $error');
+      return false; // Logout failed
+    }
+  }
+
   /// Section Widget
   PreferredSizeWidget _buildAppBar(BuildContext context) {
     return CustomAppBar(
