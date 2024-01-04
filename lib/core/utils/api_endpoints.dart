@@ -7,11 +7,20 @@ class Endpoints{
   //static const String get_sessions_per_cinema = "http://${Constants.hostname}/Cinema_Endpoints/?action=sessions.get";
   static const String get_sessions_per_cinema = "http://${Constants.djangoHost}/api/sessions/get/";
 
-  static const String get_seats_per_room = "http://${Constants.hostname}/Cinema_Endpoints/?action=room.get";
+  //static const String get_seats_per_room = "http://${Constants.hostname}/Cinema_Endpoints/?action=room.get";
+  static const String get_seats_per_room = "http://${Constants.djangoHost}/api/seats_per_room/get/";
   //static const String get_movies = "http://${Constants.hostname}/Cinema_Endpoints/?action=movie.get";
+  static const String get_room = "http://${Constants.djangoHost}/api/room/get/";
    static const String get_movies = "http://${Constants.djangoHost}/api/movie/get";
    static const String signup = "http://${Constants.djangoHost}/api/register/";
  // static const String signup = "http://${Constants.hostname}/Cinema_Endpoints/signup.php";
  // static const String login = "http://${Constants.hostname}/Cinema_Endpoints/login.php";
   static const String login = "http://${Constants.djangoHost}/api/login/";
+
+
+  static const String Edit_Seat = "http://${Constants.djangoHost}/api/seat/edit/";
+
+  static const String add_ticket = "http://${Constants.djangoHost}/api/ticket/add/";
+
+  static const String edit_user = "http://${Constants.djangoHost}/api/user/edit/";
 }

@@ -12,6 +12,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
 import 'package:cinema_ticket_booking_app/core/constants/constants.dart';
 import 'package:cinema_ticket_booking_app/core/utils/api_endpoints.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SignUpScreen extends StatelessWidget {
   SignUpScreen({Key? key})
@@ -25,6 +26,9 @@ class SignUpScreen extends StatelessWidget {
   TextEditingController phoneNumberFieldController = TextEditingController();
   TextEditingController passwordFieldController = TextEditingController();
   TextEditingController confirmPasswordFieldController = TextEditingController();
+
+
+  static late final SharedPreferences prefs;
 
 
   Future register() async {
@@ -65,10 +69,11 @@ class SignUpScreen extends StatelessWidget {
   bool agreeCheckbox = false;
 
   GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-
   @override
   Widget build(BuildContext context) {
     mediaQueryData = MediaQuery.of(context);
+
+    Future<int?> counter = get_prefs();
 
     return Scaffold(
       resizeToAvoidBottomInset: true,
@@ -182,7 +187,15 @@ class SignUpScreen extends StatelessWidget {
       ),
     );
   }
+Future<int?> get_prefs() async{
 
+
+    prefs = SharedPreferences.getInstance() as SharedPreferences;
+    int? counter = await prefs.getInt("counter");
+    print("counter  = $counter");
+
+    return counter;
+}
   /// Section Widget
   Widget _buildUsernameField(BuildContext context) {
     return Padding(

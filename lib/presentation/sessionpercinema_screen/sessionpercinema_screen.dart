@@ -231,6 +231,9 @@ DateTime now = DateTime.now();
 
                 print("number of days is"+  date);*/
 
+                var session_room = Sessions[index]["Session_room"];
+
+
 
 
 
@@ -252,7 +255,7 @@ DateTime now = DateTime.now();
                     movie_img: img,
                     movie_lang: lang,
                     onTapImgUserImage: () {
-                      onTapImgUserImage(context);
+                      onTapImgUserImage(context,Sessions?[index]);
                     }
                 )
                     :
@@ -267,8 +270,9 @@ DateTime now = DateTime.now();
     return CircularProgressIndicator();
   }
 
-  onTapImgUserImage(BuildContext context) {
-    Navigator.pushNamed(context, AppRoutes.selectSeatsScreen);
+  onTapImgUserImage(BuildContext context, session) {
+    print("inside onTap =  $session");
+    Navigator.pushNamed(context, AppRoutes.selectSeatsScreen, arguments: { 'room_id' : session['Session_room'], 'Session_id' : session['Session_ID'] },);
   }
   dateFormatter(int i){
     DateTime now = DateTime.now();

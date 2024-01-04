@@ -89,75 +89,87 @@ class SettingsScreen extends StatelessWidget {
   }
 
   Widget _buildPersonalData(BuildContext context,String title,leading_icon,color ){
-    return   Row(
-      mainAxisAlignment: MainAxisAlignment.start,
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        Container(
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(
-              10.h,
+    return   GestureDetector(
+      onTap: (){
+        if(title=="Personal Data") {
+          Navigator.pushNamed(
+              context, AppRoutes.account);
+        } else if(title=="Logout"){
+          Navigator.pushNamed(
+              context, AppRoutes.loginScreen);
+        }
+      },
+
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(
+                10.h,
+              ),
+              color: color,
             ),
-            color: color,
-          ),
-          child: Padding(
-            padding: const EdgeInsets.all(10.0),
-            /*          child: CustomImageView(
-              imagePath: ImageConstant.imgActivity,
-              width: 24.v,
-              height: 24.v,
-            ),*/
-            child : Image.asset(
-              leading_icon,
-              height: 24.v,
-              width: 24.v,
+            child: Padding(
+              padding: const EdgeInsets.all(10.0),
+              /*          child: CustomImageView(
+                imagePath: ImageConstant.imgActivity,
+                width: 24.v,
+                height: 24.v,
+              ),*/
+              child : Image.asset(
+                leading_icon,
+                height: 24.v,
+                width: 24.v,
+              ),
             ),
           ),
-        ),
-        Container(
-          //  alignment: Alignment.topLeft*,
-         margin: EdgeInsets.only(left: 12.v,),
+          Container(
+            //  alignment: Alignment.topLeft*,
+           margin: EdgeInsets.only(left: 12.v,),
 
-          child: Text(
-            title,
-            style: TextStyle(
-              fontWeight: FontWeight.w500,
-              fontSize: 18.adaptSize,
+            child: Text(
+              title,
+              style: TextStyle(
+                fontWeight: FontWeight.w500,
+                fontSize: 18.adaptSize,
+              ),
+              textAlign: TextAlign.left,
+
+
             ),
-            textAlign: TextAlign.left,
-
-
           ),
-        ),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: [
-                  Container(
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    Container(
 
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(
-                        10.h,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(
+                          10.h,
+                        ),
                       ),
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.all(10.0),
-                      child: GestureDetector(
+                      child: Padding(
+                        padding: const EdgeInsets.all(10.0),
+                        child: GestureDetector(
 
-                        child: CustomImageView(
-                          imagePath: ImageConstant.imgBtnBackWhiteA70001,
-                          width: 24.v,
-                          height: 24.v,
+                          child: CustomImageView(
+                            imagePath: ImageConstant.imgBtnBackWhiteA70001,
+                            width: 24.v,
+                            height: 24.v,
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
-            ),
 
 
-      ],
+        ],
+      ),
     );
   }
   /// Section Widget
