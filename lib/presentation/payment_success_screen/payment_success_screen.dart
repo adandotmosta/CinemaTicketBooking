@@ -87,17 +87,9 @@ class _PaymentSuccessScreenState extends State<PaymentSuccessScreen> {
   PreferredSizeWidget _buildAppBar(BuildContext context) {
     return CustomAppBar(
       leadingWidth: 56.h,
-      leading: AppbarLeadingImage(
-        imagePath: ImageConstant.imgBtnBack,
-        margin: EdgeInsets.only(
-          left: 30.h,
-          top: 15.v,
-          bottom: 14.v,
-        ),
-      ),
       centerTitle: true,
       title: AppbarTitle(
-        text: "Checkout",
+        text: "Chekout",
       ),
     );
   }

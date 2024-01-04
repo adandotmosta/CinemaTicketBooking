@@ -20,8 +20,12 @@ import 'package:cinema_ticket_booking_app/presentation/movie_sessions_tab_contai
 import 'package:cinema_ticket_booking_app/presentation/saved_plan_screen/saved_plan_screen.dart';
 import 'package:cinema_ticket_booking_app/presentation/settings_screen/settings_screen.dart';
 import 'package:cinema_ticket_booking_app/presentation/app_navigation_screen/app_navigation_screen.dart';
+import 'package:cinema_ticket_booking_app/presentation/Account/Account.dart';
+import 'package:path/path.dart';
 
 class AppRoutes {
+
+  static const String account = "/Account";
   static const String allCinemasScreen = '/all_cinemas_screen';
 
   static const String sessionpercinemaScreen = '/sessionpercinema_screen';
@@ -71,6 +75,7 @@ class AppRoutes {
   static const String appNavigationScreen = '/app_navigation_screen';
 
   static Map<String, WidgetBuilder> routes = {
+    account:  (context) => Account(),
     allCinemasScreen: (context) => AllCinemasScreen(),
     sessionpercinemaScreen: (context) => SessionpercinemaScreen(),
     cinemaDescriptionScreen: (context) => CinemaDescriptionScreen2(),

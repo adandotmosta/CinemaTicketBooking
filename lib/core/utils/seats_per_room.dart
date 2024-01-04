@@ -4,13 +4,13 @@ import 'api_endpoints.dart';
 
 import '../../../databases/DBCinemas.dart';
 
-Future<List<Map<String, dynamic>>?> endpoint_api_get_room() async {
+Future<List<Map<String, dynamic>>?> endpoint_api_get_seats_per_room(room_id,session_id) async {
   //This can be improved by placing API endpoints into a constant dart file
   try {
-    print("salam");
+    print("salam in seats per room");
     print(Endpoints.get_seats_per_room);
     final response = await http.get(Uri.parse(
-        Endpoints.get_seats_per_room ));
+        "${Endpoints.get_seats_per_room}?id=$room_id&session_id=$session_id" ));
     print("malak");
     print("response ;  ${response.statusCode}");
     print("wii");
@@ -41,15 +41,23 @@ Future<List<Map<String, dynamic>>?> endpoint_api_get_room() async {
   }
   return false;
 }*/
-List<Map<String, List<String>>> mapSeatData(List<Map<String, dynamic>> seatData) {
+List<Map<String, List<String>>>? mapSeatData(List<Map<String, dynamic>> seatData) {
   Map<int, List<String>> seatMap = {};
 
   seatData.forEach((seat) {
-    int rowIndex = int.parse(seat['Seat_reference'].split('#')[1].split('x')[0]);
-    String seatRef = seat['Seat_reference'];
+    final seatReference = seat['Seat_reference'] as String?;
+    final seatState = seat['Seat_state'];
+    final seatID = seat['Seat_ID'];
 
-    seatMap.putIfAbsent(rowIndex, () => []);
-    seatMap[rowIndex]?.add(seatRef);
+    if (seatReference != null) {
+      final rowIndex = int.parse(seatReference.split('#')[1].split('x')[0]);
+      print("indexer =  $rowIndex");
+
+      final seatRef = '$seatReference*$seatState/$seatID';
+
+      seatMap.putIfAbsent(rowIndex, () => []);
+      seatMap[rowIndex]?.add(seatRef);
+    }
   });
 
   List<Map<String, List<String>>> result = seatMap.entries.map((entry) {

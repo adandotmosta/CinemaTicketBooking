@@ -1,5 +1,6 @@
 
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:cinema_ticket_booking_app/core/app_export.dart';
 import 'package:cinema_ticket_booking_app/widgets/custom_elevated_button.dart';
@@ -8,6 +9,8 @@ import 'package:flutter/material.dart';
 import 'package:cinema_ticket_booking_app/core/utils/api_endpoints.dart';
 import 'package:http/http.dart' as http;
 import 'package:cinema_ticket_booking_app/core/constants/constants.dart';
+
+import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 
@@ -19,6 +22,10 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+
+
+
+
   TextEditingController EmailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   GlobalKey<FormState> _formKey = GlobalKey<FormState>();
@@ -32,12 +39,18 @@ class _LoginScreenState extends State<LoginScreen> {
       "email": EmailController.text,
       "password": passwordController.text,
     });
+
     var data = json.decode(response.body);
+    print(data);
     setState(() {
       responseMessage = data["message"];
     });
 
     if (data['success']) {
+      var credentials = data["credentials"];
+      print(credentials);
+      await writeCredentials(credentials["id"], credentials["username"], credentials["password"], credentials["email"], credentials["phoneNumber"]);
+      await readCounter();
       await Future.delayed(Duration(seconds: 2));
       Navigator.pushNamed(
         context,
@@ -47,22 +60,24 @@ class _LoginScreenState extends State<LoginScreen> {
       saveUserIdToSharedPreferences(userId);
     }
   }
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
 
-  // Method to save user ID in shared preferences
-  Future<void> saveUserIdToSharedPreferences(String userId) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setString('user_id', userId);
-  }
+    print("hello world");
 
-  // Method to retrieve user ID from shared preferences
-  Future<String> getStoredUserId() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    return prefs.getString('user_id') ?? ''; // Default value if not found
+
+
+
+
   }
 
     @override
     Widget build(BuildContext context) {
       mediaQueryData = MediaQuery.of(context);
+
+
 
       return SafeArea(
         child: Scaffold(
@@ -106,7 +121,49 @@ class _LoginScreenState extends State<LoginScreen> {
 
       );
     }
+    Future<String> get _localPath async{
 
+        final directory = await getApplicationDocumentsDirectory();
+        return directory.path;
+
+
+    }
+  Future<File> get _localFile async {
+    final path = await _localPath;
+    return File('$path/credentials.json');
+  }
+  Future<void> writeCredentials(user_id,username,email,password,phonenumber) async {
+    final file = await _localFile;
+
+
+    Map<String,dynamic> creds = {
+      "id" : user_id,
+      "username" : username.toString(),
+      "password" : email.toString(),
+      "email" : password.toString(),
+      "phonenumber" : phonenumber.toString(),
+    };
+    String jsonmap = jsonEncode(creds);
+
+    // Write the file
+    file.writeAsString(jsonmap);
+  }
+  Future<Map> readCounter() async {
+    try {
+      final file = await _localFile;
+
+      // Read the file
+      final contents = await file.readAsString();
+      Map<String,dynamic> mapObj = jsonDecode(contents);
+      print("read counter is called");
+      print(mapObj);
+      return mapObj;
+
+    } catch (e) {
+      // If encountering an error, return 0
+      return {};
+    }
+  }
     /// Section Widget
     Widget _buildUsername(BuildContext context) {
       return Padding(
@@ -198,7 +255,10 @@ class _LoginScreenState extends State<LoginScreen> {
   /// Section Widget
     Widget _buildCreateAccount(BuildContext context) {
       return CustomElevatedButton(
-        onPressed: () {
+        onPressed: () async {
+
+
+
           Navigator.pushNamed(context,
             AppRoutes.signUpScreen,);
         },
