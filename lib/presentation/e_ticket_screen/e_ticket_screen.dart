@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:cinema_ticket_booking_app/core/app_export.dart';
 import 'package:cinema_ticket_booking_app/presentation/home_screen/home_screen.dart';
 
@@ -8,11 +10,14 @@ import 'package:cinema_ticket_booking_app/widgets/app_bar/custom_app_bar.dart';
 import 'package:cinema_ticket_booking_app/widgets/custom_elevated_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg_provider/flutter_svg_provider.dart' as fs;
+import 'package:intl/intl.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:readmore/readmore.dart';
 
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'dart:typed_data';
+import "package:cinema_ticket_booking_app/core/utils/api_endpoints.dart";
 
 class ETicketScreen extends StatefulWidget {
   const ETicketScreen({Key? key}) : super(key: key);
@@ -73,34 +78,88 @@ class _ETicketScreenState extends State<ETicketScreen> {
     // Call the function to fetch ticket data when the widget is first created
     fetchTicketData();
   }
+  Future<String> get _localPath async{
+
+    final directory = await getApplicationDocumentsDirectory();
+    return directory.path;
+
+
+  }
+  Future<File> get _localFile async {
+    final path = await _localPath;
+    return File('$path/credentials.json');
+  }
+  Future<void> writeCredentials(user_id,username,email,password,phonenumber) async {
+    final file = await _localFile;
+
+
+    Map<String,dynamic> creds = {
+      "id" : user_id,
+      "username" : username.toString(),
+      "password" : email.toString(),
+      "email" : password.toString(),
+      "phonenumber" : phonenumber.toString(),
+    };
+    String jsonmap = jsonEncode(creds);
+
+    // Write the file
+    file.writeAsString(jsonmap);
+  }
+  Future<Map> readCounter() async {
+    try {
+      final file = await _localFile;
+
+      // Read the file
+      final contents = await file.readAsString();
+      Map<String,dynamic> mapObj = jsonDecode(contents);
+      print("read counter is called");
+      print(mapObj);
+      return mapObj;
+
+    } catch (e) {
+      // If encountering an error, return 0
+      return {};
+    }
+  }
 
   Future<void> fetchTicketData() async {
-    var url = "http://192.168.177.56/Login-sign_up-flutter/ticket.php";
-    final response = await http.get(Uri.parse(url));
+    Map creds = await readCounter();
+    int user_id = creds["id"];
+
+    final response = await http.get(Uri.parse("${Endpoints.get_tickets}?user_id=$user_id"));
 
     if (response.statusCode == 200) {
       // If the server returns a 200 OK response, parse the JSON
       List<dynamic> jsonResponse = json.decode(response.body);
+      print(jsonResponse);
 
       // Map each JSON object to a TicketData object
+      print("before");
       List<TicketData> ticketList = jsonResponse.map((json) {
+        DateTime dateTime = DateTime.parse(json['session_time']);
+        String formattedDate = DateFormat('yyyy-MM-dd HH:mm:ss').format(dateTime);
+        DateTime dateTime2 = DateTime.parse(json['ticket_time']);
+        String date2 = DateFormat('yyyy-MM-dd HH:mm:ss').format(dateTime2);
         return TicketData(
           film: json['film'],
-          date: json['date'],
-          seats: json['seats'],
+          date: formattedDate,
+          seats: json['seat'],
           location: json['location'],
           cinema: json['cinema'],
-          time: json['time'],
-          ticket_time: json['ticket_time'],
+          time: json['ticket_time'],
+          ticket_time: date2,
           Ticket_barcode: json['Ticket_barcode'],
-          paymentStatus: json['paymentStatus'],
+          paymentStatus: json['payementStatus'],
           orderNumber: json['orderNumber'],
         );
       }).toList();
 
+      print("after listing");
+
       // Update the state to trigger a rebuild of the widget with the fetched data
       setState(() {
         tickets = ticketList;
+        print(tickets);
       });
     } else {
       // If the server did not return a 200 OK response,
@@ -222,12 +281,12 @@ class _ETicketScreenState extends State<ETicketScreen> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  "Movie Date",
+                                  "Ticket Issue Date",
                                   style: theme.textTheme.titleSmall,
                                 ),
                                 SizedBox(height: 8.h),
                                 Text(
-                                  ticket.date,
+                                  ticket.ticket_time,
                                   style: CustomTextStyles.titleSmallBlack900,
                                 ),
                               ],
@@ -245,7 +304,7 @@ class _ETicketScreenState extends State<ETicketScreen> {
                                 Align(
                                   alignment: Alignment.center,
                                   child: Text(
-                                    ticket.seats,
+                                    ticket.seats.split("#")[0],
 
                                     style: CustomTextStyles.titleSmallBlack900,
                                   ),
@@ -289,7 +348,7 @@ class _ETicketScreenState extends State<ETicketScreen> {
                                 ),
                                 SizedBox(height: 8.h),
                                 Text(
-                                  ticket.time,
+                                  ticket.date,
 
                                   style: CustomTextStyles.titleSmallBlack900,
                                 ),
@@ -309,7 +368,7 @@ class _ETicketScreenState extends State<ETicketScreen> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  "Ticket Time: ${ticket.ticket_time}",
+                                "",//  "Ticket Time: ${ticket.ticket_time}",
                                   style: CustomTextStyles.titleSmallBlack900,
                                 ),
                               ],

@@ -16,6 +16,7 @@ class Endpoints{
   static const String get_casts = "http://${Constants.djangoHost}/api/cast/get";
   static const String get_images = "http://${Constants.djangoHost}/api/images/get";
    static const String signup = "http://${Constants.djangoHost}/api/register/";
+   static const String get_tickets = "http://${Constants.djangoHost}/api/ticket/get/";
  // static const String signup = "http://${Constants.hostname}/Cinema_Endpoints/signup.php";
  // static const String login = "http://${Constants.hostname}/Cinema_Endpoints/login.php";
   static const String login = "http://${Constants.djangoHost}/api/login/";

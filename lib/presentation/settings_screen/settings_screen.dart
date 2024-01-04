@@ -102,6 +102,9 @@ class SettingsScreen extends StatelessWidget {
         } else if(title=="Logout"){
           Navigator.pushNamed(
               context, AppRoutes.loginScreen);
+        } else if(title=="Your Ticket"){
+          Navigator.pushNamed(
+              context, AppRoutes.eTicketScreen);
         }
       },
 
