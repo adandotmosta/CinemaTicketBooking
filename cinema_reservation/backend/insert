@@ -1,0 +1,72 @@
+#################### Creating seats for room 1 (10,20) ###########
+
+from backend.models import Seat, Room
+
+##### Params
+room_id = 1
+n_rows = 10
+n_cols = 20
+
+
+#########
+
+# Get the room with Room_ID room_id
+room = Room.objects.get(Room_ID=room_id)
+
+# Delete existing seats for Room_ID 1 (optional, if needed)
+Seat.objects.filter(Room_ID=room).delete()
+
+
+all_letters = "ABCDEFGHEJKLMNOPQRSTUVWXYZ"
+
+
+
+# Insert seats into the Seat model
+for row_index in range(n_rows):
+    for column_index in range(n_cols):
+        seat_reference = f'{all_letters[row_index]}#{row_index}x{column_index}'
+        Seat.objects.create(Seat_reference=seat_reference, Room_ID=room)
+
+# Display the inserted seats
+seats = Seat.objects.filter(Room_ID=room)
+for seat in seats:
+    print(seat.Seat_ID, seat.Seat_reference, seat.Room_ID.Room_ID)
+
+
+    ################################################################
+
+
+###################### creating seat in sessions for seats of Room2, Session_id=13, ###########
+    
+from backend.models import Seat_in_session, Seat, Session
+
+# Parameters
+room_id = 1
+session_id = Session.objects.get(Session_ID=13)
+
+# Fetch all seats in the specified room
+all_seats_in_room = Seat.objects.filter(Room_ID=room_id)
+
+# Iterate through each seat and create Seat_in_session instance
+for seat in all_seats_in_room:
+    seat_in_session = Seat_in_session.objects.create(
+        Seat_ID=seat,
+        Session_ID=session_id,
+        Seat_State=0,
+    )
+    seat_in_session.save()
+
+# Display the created Seat_in_session instances
+all_seat_in_session_instances = Seat_in_session.objects.filter(Session_ID=session_id)
+for seat_in_session_instance in all_seat_in_session_instances:
+    print(
+        f"Seat_in_session_ID: {seat_in_session_instance.Seat_in_session_ID}, "
+        f"Seat_ID: {seat_in_session_instance.Seat_ID.Seat_ID}, "
+        f"Session_ID: {seat_in_session_instance.Session_ID.Session_ID}, "
+        f"Seat_State: {seat_in_session_instance.Seat_State}"
+    )
+
+
+
+
+    ###################################################################""

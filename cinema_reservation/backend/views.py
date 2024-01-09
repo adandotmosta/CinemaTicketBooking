@@ -59,6 +59,7 @@ def seats_room_get(request):
             "Seat_state": seat_in_session.Seat_State,
         }
         items.append(item)
+    print(items)
 
     return JsonResponse(items, safe=False)
 
@@ -217,6 +218,8 @@ def add_ticket(request):
 
 @csrf_exempt
 def get_tickets(request):
+    user_id = request.GET.get("user_id")
+ #   user_id = request.GET["user_id"]
     # Fetch ticket information with details from multiple tables
     tickets_query = Ticket.objects.select_related(
         'seat_in_session_ID__seat_ID__room_ID__Cinema_ID',
@@ -231,7 +234,7 @@ def get_tickets(request):
         'Ticket_time',
         'Ticket_barcode',
         'User_ID__User_name',
-    )
+    ).filter(User_ID=user_id).order_by("-Ticket_time")
     print(tickets_query.query)
 
     # Check if there are rows in the result set
@@ -242,11 +245,16 @@ def get_tickets(request):
         # Modify the list to match the desired structure
         for ticket in tickets:
             ticket['film'] = ticket.pop('Seat_in_session_ID__Session_ID__Session_movie__Movie_title')
-            ticket['ticket_time'] = ticket.pop('Ticket_time')
+
+
+            ticket["ticket_time"]   = ticket.pop('Ticket_time')
             ticket['seat'] = ticket.pop('Seat_in_session_ID__Seat_ID__Seat_reference')
             ticket['location'] = ticket.pop('Seat_in_session_ID__Session_ID__Session_room__Cinema_ID__Cinema_location')
             ticket['cinema'] = ticket.pop('Seat_in_session_ID__Session_ID__Session_room__Cinema_ID__Cinema_name')
             ticket['session_time'] = ticket.pop('Seat_in_session_ID__Session_ID__Session_time')
+            ticket['Ticket_barcode'] = ticket.pop('Ticket_barcode')
+            ticket["payementStatus"] = ""
+            ticket["orderNumber"] = ""
 
         # Output the JSON response
         return JsonResponse(tickets, safe=False)

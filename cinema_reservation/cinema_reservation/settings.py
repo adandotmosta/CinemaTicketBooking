@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     "backend",
     "rest_framework",
     'admin_black.apps.AdminBlackConfig',
+    'django_crontab',
 ]
 
 MIDDLEWARE = [
@@ -168,4 +169,7 @@ REST_FRAMEWORK = {
 
 
 
-
+#Cron jobs
+CRONJOBS = [
+     ('*/1  * * * *', 'backend.tasks.check_ticket_validity'), 
+]
