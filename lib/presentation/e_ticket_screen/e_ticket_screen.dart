@@ -224,6 +224,7 @@ class _ETicketScreenState extends State<ETicketScreen> {
   PreferredSizeWidget _buildAppBar(BuildContext context) {
     return CustomAppBar(
       leadingWidth: 56.v,
+      settings: true,
 
       centerTitle: true,
       title: AppbarTitle(

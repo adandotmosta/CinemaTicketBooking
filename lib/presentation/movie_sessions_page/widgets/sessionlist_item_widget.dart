@@ -11,6 +11,9 @@ class SessionlistItemWidget extends StatelessWidget {
   final String price;
   final int remainingPlaces;
   final int RoomNumber;
+  final int session_id;
+  final int room_id;
+
 
   const SessionlistItemWidget({
     Key? key,
@@ -22,6 +25,9 @@ class SessionlistItemWidget extends StatelessWidget {
     required this.price,
     required this.remainingPlaces,
     required this.RoomNumber,
+    required this.session_id,
+    required this.room_id
+
   }) : super(key: key);
 
   @override
@@ -36,7 +42,7 @@ class SessionlistItemWidget extends StatelessWidget {
             padding: EdgeInsets.only(left: 29.h, right: 29.h),
             child: GestureDetector(
               onTap: () {
-                Navigator.pushNamed(context, AppRoutes.selectSeatsScreen);
+                Navigator.pushNamed(context, AppRoutes.selectSeatsScreen, arguments: { 'room_id' : room_id, 'Session_id' :session_id});
               },
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,

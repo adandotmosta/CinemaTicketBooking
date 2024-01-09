@@ -11,6 +11,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
     this.title,
     this.centerTitle,
     this.actions,
+    this.settings,
   }) : super(
           key: key,
         );
@@ -24,6 +25,9 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   final Widget? title;
 
   final bool? centerTitle;
+
+  final bool? settings;
+
 
 
   final List<Widget>? actions;
@@ -40,7 +44,14 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
         iconSize: 20.v,
       icon: Icon(Icons.arrow_back_ios ,color: Colors.white,),
     onPressed: () {
-    Navigator.pop(context);
+
+    if(settings==true) {
+      Navigator.pushNamed(context,AppRoutes.settingsScreen);
+
+    } else{
+      Navigator.pop(context);
+
+    }
     },
     ),
       title: title,

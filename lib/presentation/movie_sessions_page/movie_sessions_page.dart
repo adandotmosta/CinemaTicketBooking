@@ -167,6 +167,8 @@ class MovieSessionsPageState extends State<MovieSessionsPage>
                 itemBuilder: (context, index) {
                   return SessionlistItemWidget(
                     showAdditionalInfo: true,
+                    session_id: sessions[index]["Session_ID"],
+                    room_id: sessions[index]["Session_room_id"],
                     filmImage: sessions[index]['Session_movie__Image_path'],
                     MovieName: sessions[index]['Session_movie__Movie_title'],
                     version: sessions[index]['Session_version'],

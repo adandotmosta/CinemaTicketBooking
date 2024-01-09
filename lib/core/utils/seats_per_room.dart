@@ -11,13 +11,18 @@ Future<List<Map<String, dynamic>>?> endpoint_api_get_seats_per_room(room_id,sess
     print(Endpoints.get_seats_per_room);
     final response = await http.get(Uri.parse(
         "${Endpoints.get_seats_per_room}?id=$room_id&session_id=$session_id" ));
+
+    await Future.delayed(Duration(seconds: 2)); // Delay for 2 seconds
     print("malak");
     print("response ;  ${response.statusCode}");
-    print("wii");
+
     if (response.statusCode == 200) {
+      print("woiiiiiii arwah see response before mapSeat data  = ${response.body} ");
+      await Future.delayed(Duration(seconds: 2)); // Delay for 2 seconds
       List<Map<String, dynamic>> ret =
       List<Map<String, dynamic>>.from(jsonDecode(response.body));
       var formatted_ret = mapSeatData(ret);
+      await Future.delayed(Duration(seconds: 2)); // Delay for 2 seconds
       print(formatted_ret);
       return formatted_ret;
     }
@@ -50,19 +55,31 @@ List<Map<String, List<String>>>? mapSeatData(List<Map<String, dynamic>> seatData
     final seatID = seat['Seat_ID'];
 
     if (seatReference != null) {
-      final rowIndex = int.parse(seatReference.split('#')[1].split('x')[0]);
-      print("indexer =  $rowIndex");
+      try {
+        final rowIndex = int.parse(seatReference.split('#')[1].split('x')[0]);
+        print("indexer = $rowIndex");
 
-      final seatRef = '$seatReference*$seatState/$seatID';
+        final seatRef = '$seatReference*$seatState/$seatID';
 
-      seatMap.putIfAbsent(rowIndex, () => []);
-      seatMap[rowIndex]?.add(seatRef);
+        seatMap.putIfAbsent(rowIndex, () => []);
+        seatMap[rowIndex]?.add(seatRef);
+
+        if (seatID >= 393) {
+          print("ana 3law ma printawnich");
+          print(seatRef);
+          print(seatMap);
+        }
+      } catch (e) {
+        print("Error parsing rowIndex: $e");
+      }
     }
   });
 
   List<Map<String, List<String>>> result = seatMap.entries.map((entry) {
     return {entry.key.toString(): entry.value};
   }).toList();
+
+  print("from map seat data = $result ");
 
   return result;
 }
