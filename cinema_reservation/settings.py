@@ -11,7 +11,7 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 """
 
 from pathlib import Path
-
+import os
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -39,6 +39,10 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "backend",
     "rest_framework",
+    'admin_black.apps.AdminBlackConfig',
+    'django_crontab',
+    'push_notifications',
+    'fcm_django',
 ]
 
 MIDDLEWARE = [
@@ -125,11 +129,34 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
 
 STATIC_URL = "static/"
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
+STATICFILES_DIRS = (
+    os.path.join(BASE_DIR, 'static'),
+)
+
+TEMPLATES = [
+    {
+        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
+        'APP_DIRS': True,
+        'OPTIONS': {
+            'context_processors': [
+                'django.template.context_processors.debug',
+                'django.template.context_processors.request',
+                'django.contrib.auth.context_processors.auth',
+                'django.contrib.messages.context_processors.messages',
+            ],
+        },
+    },
+]
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
+LOGIN_REDIRECT_URL = '/'
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+
 
 AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend',
@@ -140,3 +167,21 @@ REST_FRAMEWORK = {
         'rest_framework.authentication.TokenAuthentication',
     ),
 }
+
+
+# Static files (CSS, JavaScript, Images)
+# https://docs.djangoproject.com/en/4.1/howto/static-files/
+
+
+
+#Cron jobs
+CRONJOBS = [
+     ('*/1  * * * *', 'backend.tasks.check_ticket_validity'), 
+]
+
+PUSH_NOTIFICATIONS_SETTINGS = {
+    "FCM_API_KEY": "AAAADuvPMh8:APA91bHdVHiVXDMIdxEbx0u9OlB7-YWxu22E7aDrVsxExrw_RbBToZD0qN4N92sTGHdeDW4xkV_eLsqmDGKb-1d6HfaN12pD0r4FzltgenZ-JCDe2G1aHSLPXuaeVMZxUzpofn1dIJBK", 
+    #"APNS_CERTIFICATE": "/path/to/your/certificate.pem",  # Replace with your APNS certificate path
+}
+
+

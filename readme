@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 git clone -b Django_Backend "https://github.com/adandotmosta/CinemaTicketBooking.git"
+=======
+git clone -b branch_name "https://github.com/adandotmosta/CinemaTicketBooking.git"
+>>>>>>> project/Django_Backend
 Create a Virtual Environment:
 Inside the cloned project directory, create a virtual environment and activate it:
 
@@ -18,4 +22,8 @@ python manage.py migrate
 
 ***Run the Server:
 Start the Django development server:
+<<<<<<< HEAD
 python manage.py runserver
+=======
+python manage.py runserver
+>>>>>>> project/Django_Backend
