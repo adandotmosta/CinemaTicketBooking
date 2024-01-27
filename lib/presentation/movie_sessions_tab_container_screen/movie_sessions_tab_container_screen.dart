@@ -37,10 +37,20 @@ class MovieSessionsTabContainerScreenState
     });
   }
 
+  int upcoming = 0;
+
   @override
   Widget build(BuildContext context) {
     mediaQueryData = MediaQuery.of(context);
 
+    var args = (ModalRoute.of(context)!.settings.arguments);
+
+
+    if(args is Map){
+      upcoming = args["upcoming"];
+
+
+    }
     return SafeArea(
       child: Scaffold(
         appBar: _buildAppBar(context),
@@ -55,8 +65,9 @@ class MovieSessionsTabContainerScreenState
                   child: TabBarView(
                     controller: tabviewController,
                     children: [
-                      DetailsPage(),
-                      MovieSessionsPage(),
+
+                      DetailsPage() ,
+                       MovieSessionsPage() ,
                     ],
                   ),
                 ),
@@ -116,7 +127,8 @@ class MovieSessionsTabContainerScreenState
                     ),
                   ),
                   SizedBox(width: 10.h),
-                  Expanded(
+                   upcoming!=1 ?
+                   Expanded(
                     child: GestureDetector(
                       onTap: () {
                         setState(() {
@@ -141,7 +153,8 @@ class MovieSessionsTabContainerScreenState
                         ),
                       ),
                     ),
-                  ),
+                  )
+                  : Text("")
                 ],
               ),
             ),

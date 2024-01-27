@@ -118,8 +118,11 @@ class DownloadETicketScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     mediaQueryData = MediaQuery.of(context);
 
+
     return SafeArea(
+
       child: Scaffold(
+        resizeToAvoidBottomInset: true,
         body: Container(
           width: double.maxFinite,
           padding: EdgeInsets.symmetric(vertical: 29.v),

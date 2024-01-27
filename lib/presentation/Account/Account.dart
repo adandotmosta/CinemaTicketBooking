@@ -251,20 +251,9 @@ class Account extends StatelessWidget {
   /// Section Widget
   PreferredSizeWidget _buildAppBar(BuildContext context) {
     return CustomAppBar(
-      leadingWidth: 56.h,
-      leading: AppbarLeadingImage(
-        imagePath: ImageConstant.imgBtnBack,
-        margin: EdgeInsets.only(
-          left: 30.h,
-          top: 15.v,
-          bottom: 14.v,
-        ),
-      ),
-      centerTitle: true,
-      title: AppbarTitle(
-        text: "Account",
-      ),
-    );
+        leadingWidth: 56.h,
+        centerTitle: true,
+        title: AppbarTitle(text: "Account"));
   }
   /// Section Widget
   Widget _buildUsernameField(BuildContext context,username) {
@@ -460,62 +449,7 @@ class Account extends StatelessWidget {
     );
   }
 
-  /// Section Widget
-  Widget _buildDate(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              "Date",
-              style: theme.textTheme.labelLarge,
-            ),
-            SizedBox(height: 8.v),
-            CustomDropDown(
-              width: 148.h,
-              icon: Container(
-                margin: EdgeInsets.fromLTRB(7.h, 16.v, 25.h, 16.v),
-                child: CustomImageView(
-                  imagePath: ImageConstant.imgArrowdown,
-                  height: 16.adaptSize,
-                  width: 16.adaptSize,
-                ),
-              ),
-              hintText: "02 Nov 2024",
-              items: dropdownItemList1,
-              onChanged: (value) {},
-            ),
-          ],
-        ),
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              "Time",
-              style: theme.textTheme.labelLarge,
-            ),
-            SizedBox(height: 8.v),
-            CustomDropDown(
-              width: 147.h,
-              icon: Container(
-                margin: EdgeInsets.fromLTRB(29.h, 16.v, 25.h, 16.v),
-                child: CustomImageView(
-                  imagePath: ImageConstant.imgArrowdown,
-                  height: 16.adaptSize,
-                  width: 16.adaptSize,
-                ),
-              ),
-              hintText: "01.00 PM",
-              items: dropdownItemList2,
-              onChanged: (value) {},
-            ),
-          ],
-        ),
-      ],
-    );
-  }
+
 
 
 
@@ -529,28 +463,11 @@ class Account extends StatelessWidget {
             onPressed: () async{
              await _handle_logic(user_id);
             },
-            text: "Checkout",
+            text: "Save",
             margin: EdgeInsets.only(bottom: 1.v),
           ),
         ),
-        Container(
-          height: 58.v,
-          width: 64.h,
-          margin: EdgeInsets.only(left: 20.h),
-          padding: EdgeInsets.symmetric(
-            horizontal: 15.h,
-            vertical: 12.v,
-          ),
-          decoration: AppDecoration.outlineBlue.copyWith(
-            borderRadius: BorderRadiusStyle.roundedBorder12,
-          ),
-          child: CustomImageView(
-            imagePath: ImageConstant.imgDelete,
-            height: 32.adaptSize,
-            width: 32.adaptSize,
-            alignment: Alignment.center,
-          ),
-        ),
+
       ],
     );
   }

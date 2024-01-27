@@ -40,7 +40,7 @@ class _PaymentSuccessScreenState extends State<PaymentSuccessScreen> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        resizeToAvoidBottomInset: false,
+        resizeToAvoidBottomInset: true,
         appBar: _buildAppBar(context),
         body: SizedBox(
           width: double.maxFinite,

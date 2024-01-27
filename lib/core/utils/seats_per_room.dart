@@ -12,17 +12,14 @@ Future<List<Map<String, dynamic>>?> endpoint_api_get_seats_per_room(room_id,sess
     final response = await http.get(Uri.parse(
         "${Endpoints.get_seats_per_room}?id=$room_id&session_id=$session_id" ));
 
-    await Future.delayed(Duration(seconds: 2)); // Delay for 2 seconds
     print("malak");
     print("response ;  ${response.statusCode}");
 
     if (response.statusCode == 200) {
       print("woiiiiiii arwah see response before mapSeat data  = ${response.body} ");
-      await Future.delayed(Duration(seconds: 2)); // Delay for 2 seconds
       List<Map<String, dynamic>> ret =
       List<Map<String, dynamic>>.from(jsonDecode(response.body));
       var formatted_ret = mapSeatData(ret);
-      await Future.delayed(Duration(seconds: 2)); // Delay for 2 seconds
       print(formatted_ret);
       return formatted_ret;
     }

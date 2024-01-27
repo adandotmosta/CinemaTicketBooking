@@ -219,7 +219,7 @@ DateTime now = DateTime.now();
                 // extarct day from date ;
                 String? lang = Sessions?[index]["Session_version"];
              //   String? img =  Sessions?[index]["Movie_image"];
-                String? img =  "https://www.themoviedb.org/t/p/w300_and_h450_bestv2/rkv0HAzhHeZbc70JW224rUy1cMk.jpg";
+                String? img =  Sessions?[index]["Movie_img"];
 
                 DateTime session_date = DateTime.parse(date!);
 

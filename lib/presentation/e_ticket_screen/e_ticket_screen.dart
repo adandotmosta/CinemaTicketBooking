@@ -215,7 +215,6 @@ class _ETicketScreenState extends State<ETicketScreen> {
             ],
           ),
         ),
-        bottomNavigationBar: _buildDownloadETicketButton(context),
       ),
     );
   }

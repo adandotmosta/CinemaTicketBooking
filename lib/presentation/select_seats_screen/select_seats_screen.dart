@@ -11,6 +11,7 @@ import 'package:cinema_ticket_booking_app/widgets/custom_radio_button.dart';
 import 'package:flutter/material.dart';
 import 'package:cinema_ticket_booking_app/core/utils/seats_per_room.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:cinema_ticket_booking_app/core/utils/credentials_imports.dart';
 
 class SelectSeatsScreen extends StatefulWidget {
   @override
@@ -214,7 +215,7 @@ class MyState extends State<SelectSeatsScreen> {
             Align(
               alignment: Alignment.centerLeft,
               child: Text(
-                "The movie will take palace in room 3",
+                "",
                 style: theme.textTheme.labelLarge,
               ),
             ),
@@ -718,7 +719,7 @@ class MyState extends State<SelectSeatsScreen> {
     );
   }
   void _proceedToPaymentSuccessScreen(BuildContext context) {
-    Navigator.pushNamed(context, AppRoutes.paymentSuccessScreen);
+    Navigator.pushNamed(context, AppRoutes.settingsScreen);
   }
   void _perform_Synch(only_selected) async{
     var key,value;
@@ -734,7 +735,8 @@ class MyState extends State<SelectSeatsScreen> {
 
       print(" seat_id that will be reserbed =  $seat_id");
       int seat_in_session_id = await endpoint_edit_seat(session_id=session, seat_id=seat_id);
-      int user_id = 1;
+      var creds  = await readCounter();
+      int user_id = creds["id"];
       print("after completing endpooint_edit_seat with seat_in_session = $seat_in_session_id");
       await endpoint_generate_ticket(user_id, seat_in_session_id);
 

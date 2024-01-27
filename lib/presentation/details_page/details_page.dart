@@ -100,14 +100,15 @@ class _DetailsPageState extends State<DetailsPage> {
                         return Text('No images found for the specified movie.');
                       } else {
                         List imagePaths = snapshot.data!;
+                        print("image paths = $imagePaths");
 
                         return Container(
                           child: ListView(
                             scrollDirection: Axis.horizontal,
                             children: [
-                              _buildItem('${imagePaths[0]["Image"]}'),
-                              _buildItem('${imagePaths[1]["Image"]}'),
-                              _buildItem('${imagePaths[2]["Image"]}'),
+                              _buildItem('${imagePaths[0]["Image_path"]}'),
+                              _buildItem('${imagePaths[1]["Image_path"]}'),
+                              _buildItem('${imagePaths[2]["Image_path"]}'),
                             ],
                           ),
                         );
@@ -200,6 +201,7 @@ class _DetailsPageState extends State<DetailsPage> {
                       // If there's no data, or the data is empty, show a message
                       return Text('No cast information available.');
                     } else {
+                      print("casts = ${snapshot.data}");
                       // If data is available, display it using a ListView.builder
                       return Container(
                         height: 160.v,
@@ -218,7 +220,7 @@ class _DetailsPageState extends State<DetailsPage> {
                                     child: ClipRRect(
                                       borderRadius: BorderRadius.circular(120),
                                       child: Image.network(
-                                        '${cnts.imagePath}${castMember['Actor_path'] ?? ''}',
+                                        "${cnts.castPath}${castMember['Actor_path'] ?? ''}",
                                         fit: BoxFit.cover,
                                         width: 80,
                                         height: 80,
@@ -244,30 +246,6 @@ class _DetailsPageState extends State<DetailsPage> {
 
 
 
-                Container(
-                  decoration: BoxDecoration(
-                    color: const Color(0xFF54A8E5),
-                    borderRadius: BorderRadius.circular(20),
-                  ),
-                  width: 320,
-                  height: 60,
-                  child: TextButton(
-                    style: ButtonStyle(
-                      backgroundColor: MaterialStateProperty.all<Color>(Colors.transparent),
-                      foregroundColor: MaterialStateProperty.all<Color>(Colors.white),
-                    ),
-                    onPressed: () {
-                      Navigator.push(context,
-                        MaterialPageRoute(builder:(context) => SelectSeatsScreen()),
-                      );
-                    },
-                    child: const Text(
-                      'Book Ticket',
-                      style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                    ),
-                  ),
-
-                ),
                 SizedBox(height: 20,)]),
             // const Spacer(),
 

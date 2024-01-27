@@ -40,7 +40,7 @@ class SettingsScreen extends StatelessWidget {
           ),
           child: Column(
             children: [
-              _buildProfileSection(context),
+           //   _buildProfileSection(context),
               SizedBox(height: 34.v),
               Divider(
                 color: appTheme.whiteA70001.withOpacity(0.3),
@@ -59,7 +59,6 @@ class SettingsScreen extends StatelessWidget {
               SizedBox(height: 22.v),
               _buildPersonalData(context,"Email & Payement", "assets/images/png/img_add_user.png",Color(0xFF54C2E5)),
               SizedBox(height: 22.v),
-              _buildPersonalData(context,"Desactive Account", "assets/images/png/img_delete.png",Color(0xFFE55454)),
 
               SizedBox(height: 34.v),
               Align(

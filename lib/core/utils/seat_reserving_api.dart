@@ -46,7 +46,7 @@ Future<int> endpoint_generate_ticket(user_id,seat_in_session_id) async{
     }
     );
 
-    print("after posting a ticket");
+    print("after posting a ticket wiiiiii ");
 
     if (response.statusCode == 200) {
       Map<String, dynamic> ret =

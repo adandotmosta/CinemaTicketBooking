@@ -160,4 +160,7 @@ class ImageConstant {
   static String imgDelete = '$imagePath/img_delete.svg';
 
   static String imageNotFound = 'assets/images/image_not_found.png';
+
+  static String map_img = 'assets/images/map.png';
+  static String tmv = "assets/images/png/TMV.png";
 }

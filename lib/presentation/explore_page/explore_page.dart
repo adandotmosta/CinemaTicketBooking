@@ -7,6 +7,7 @@ import 'package:cinema_ticket_booking_app/presentation/categories_screen/categor
 import '../../widgets/app_bar/appbar_title.dart';
 import '../../widgets/app_bar/custom_app_bar.dart';
 import '../../widgets/custom_bottom_bar.dart';
+import 'package:carousel_slider/carousel_slider.dart';
 import '../details_page/details_page.dart';
 import '../explore_page/widgets/topmoviessection_item_widget.dart';
 import 'package:cinema_ticket_booking_app/core/app_export.dart';
@@ -51,90 +52,21 @@ class ExplorePageState extends State<ExplorePage> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  const SizedBox(height: 20,),
-                  Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 40),
-                    child: Container(
-                      height: 60,
-                      width: 350,
-                      decoration: BoxDecoration(
-                        //     color: const Color(0xFF32363D),
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 10),
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            ElevatedButton(
-                              onPressed: () {
-                                setState(() {
-                                  selectedButton = 'Now Showing';
-                                });
-                              },
-                              style: ElevatedButton.styleFrom(
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(5.0),
-                                ),
-                                primary: selectedButton == 'Now Showing'
-                                    ? Colors.blue
-                                    : const Color(0xFF32363D),fixedSize: Size(120, 40),
-                              ),
-                              child:  Text( "Now Showing",
-                                style: TextStyle(
-                                  fontSize: 16,
-                                  color: selectedButton == 'Now Showing'
-                                      ? Colors.white
-                                      : Colors.grey,
-                                ),),
-                            ),
-                            ElevatedButton(
-                              onPressed: () {
-                                setState(() {
-                                  selectedButton = 'Upcoming';
-                                });
-                              },
-                              style: ElevatedButton.styleFrom(
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(5.0),
-                                ),
-                                primary: selectedButton == 'Upcoming'
-                                    ? Colors.blue
-                                    : const Color(0xFF32363D),fixedSize: Size(120, 40),
-                              ),
-                              child:  Text( "Upcoming",
-                                style: TextStyle(
-                                  fontSize: 16,
-                                  color: selectedButton == 'Upcoming'
-                                      ? Colors.white
-                                      : Colors.grey,),
-                              ),),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
+
+
                   const SizedBox(height: 20),
                   const Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
                       Text(
-                        "Top Movies",
+                        "Now Showing movies",
                         style: TextStyle(
                           color: Colors.white,
                           fontSize: 20,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
-                      Text(
-                        "SeeAll",
-                        style: TextStyle(
-                          color: Colors.grey,
-                          fontSize: 15,
-                          fontWeight: FontWeight.normal,
-                        ),
-                      ),
+
                     ],
                   ),
                   SizedBox(
@@ -147,21 +79,14 @@ class ExplorePageState extends State<ExplorePage> {
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
                       Text(
-                        "Recommended",
+                        "Upcoming movies",
                         style: TextStyle(
                           color: Colors.white,
                           fontSize: 20,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
-                      Text(
-                        "SeeAll",
-                        style: TextStyle(
-                          color: Colors.grey,
-                          fontSize: 15,
-                          fontWeight: FontWeight.normal,
-                        ),
-                      ),
+
                     ],
                   ),
 
@@ -176,21 +101,14 @@ class ExplorePageState extends State<ExplorePage> {
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
                       Text(
-                        "Comedy",
+                        "Top rated movies",
                         style: TextStyle(
                           color: Colors.white,
                           fontSize: 20,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
-                      Text(
-                        "SeeAll",
-                        style: TextStyle(
-                          color: Colors.grey,
-                          fontSize: 15,
-                          fontWeight: FontWeight.normal,
-                        ),
-                      ),
+
                     ],
                   ),
                   SizedBox(
@@ -200,16 +118,7 @@ class ExplorePageState extends State<ExplorePage> {
 
                   ),
                   SizedBox(height: 20),
-                  GestureDetector(
 
-                    onTap: (){
-                      Navigator.pushNamed(context,
-                        AppRoutes.categories, );
-                    },
-                    child:
-                    Text("See more",style: TextStyle(fontSize: 26,fontWeight: FontWeight.bold,color: Colors.grey),),
-
-                  ),     SizedBox(height: 200),
                 ],
               ),
             ),
@@ -248,41 +157,51 @@ class ExplorePageState extends State<ExplorePage> {
 Widget _build_list_movies(BuildContext context, AsyncSnapshot snapshot) {
   if(snapshot.hasData) {
     List<Map> display_movies_list = snapshot.data ;
-    print("in snapshot");
-    print(snapshot.data);
-    print("finished");
 
-    return ListView.builder(
-      scrollDirection: Axis.horizontal,
+    return CarouselSlider.builder(
       itemCount: display_movies_list.length,
-      itemBuilder: (context, index) {
-
+      options: CarouselOptions(
+        // Define your carousel options here
+        height: 500.v,
+        aspectRatio: 16 / 9,
+        viewportFraction: 0.55,
+        initialPage: 0,
+        enableInfiniteScroll: true,
+        reverse: false,
+        autoPlay: true,
+        autoPlayInterval: Duration(seconds: 3),
+        autoPlayAnimationDuration: Duration(milliseconds: 800),
+        autoPlayCurve: Curves.fastOutSlowIn,
+        enlargeCenterPage: true,
+        scrollDirection: Axis.horizontal,
+      ),
+      itemBuilder: (BuildContext context, int index, int realIndex) {
+        var upcoming = display_movies_list[index]["upcoming"];
         return GestureDetector(
           onTap: () {
-
-            Navigator.pushNamed(context,AppRoutes.movieSessionsTabContainerScreen,arguments:
-            {
-              'id': display_movies_list[index]["Movie_ID"],
-              'vedio' : display_movies_list[index]["Movie_path"],
-              'name':display_movies_list[index]["Movie_title"],
-              'director':display_movies_list[index]["Movie_director"],
-              'category':display_movies_list[index]["Movie_category"],
-              'duration':display_movies_list[index]["Movie_duration"],
-              'description':display_movies_list[index]["Movie_description"],
-              'image':display_movies_list[index]["Image_path"],
-            });
-
+            Navigator.pushNamed(
+              context,
+              AppRoutes.movieSessionsTabContainerScreen,
+              arguments: {
+                'id': display_movies_list[index]["Movie_ID"],
+                'vedio' : display_movies_list[index]["Movie_path"],
+                'name':display_movies_list[index]["Movie_title"],
+                'director':display_movies_list[index]["Movie_director"],
+                'category':display_movies_list[index]["Movie_category"],
+                'duration':display_movies_list[index]["Movie_duration"],
+                'description':display_movies_list[index]["Movie_description"],
+                'image':display_movies_list[index]["Image_path"],
+                'upcoming' : 0,
+              },
+            );
           },
-
           child: Padding(
             padding: EdgeInsets.all(MediaQuery.of(context).size.width * 0.03),
             child: Container(
               width: MediaQuery.of(context).size.width * 0.5,
               decoration: BoxDecoration(
                 shape: BoxShape.rectangle,
-                // color: const Color(0xFF1A2232),
               ),
-
               child: SingleChildScrollView(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -306,10 +225,11 @@ Widget _build_list_movies(BuildContext context, AsyncSnapshot snapshot) {
                       ),
                     ),
                     Wrap(
-                        children:[ Padding(
+                      children: [
+                        Padding(
                           padding: const EdgeInsets.all(4.0),
                           child: Text(
-                            display_movies_list[index]["Movie_title"], // Assuming you have title defined in Movie
+                            display_movies_list[index]["Movie_title"],
                             style: const TextStyle(
                               color: Color.fromRGBO(255, 255, 255, 1),
                               fontSize: 16,
@@ -317,7 +237,8 @@ Widget _build_list_movies(BuildContext context, AsyncSnapshot snapshot) {
                             ),
                           ),
                         ),
-                        ]),
+                      ],
+                    ),
                     RatingBar.builder(
                       initialRating: 3,
                       minRating: 1,
@@ -332,7 +253,6 @@ Widget _build_list_movies(BuildContext context, AsyncSnapshot snapshot) {
                         _saveRating(rating);
                       },
                     ),
-
                   ],
                 ),
               ),
